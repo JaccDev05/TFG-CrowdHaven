@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CommunityRepository extends JpaRepository <Community, Long> {
-    Optional<Community> findByName (String name);
-    //List<Community> findByUserID (Long id);
+public interface CommunityRepository extends JpaRepository<Community, Long> {
+
+    // Obtener comunidades por el ID del creador
+    List<Community> findByUserId(Long userId);
+
     boolean existsByName(String name);
-
-
+    Optional<Community>findByName(String name);
 }

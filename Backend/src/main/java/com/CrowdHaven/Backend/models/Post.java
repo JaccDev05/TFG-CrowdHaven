@@ -3,7 +3,6 @@ package com.CrowdHaven.Backend.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "posts")
 @Data
+
 public class Post {
 
     @Id
@@ -31,8 +31,12 @@ public class Post {
     private String content;
     private String image;
 
+    private Integer like_count = 0;
+    private Integer dislike_count = 0;
+
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comentarios = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     @CreationTimestamp
     @Column(nullable = false)

@@ -9,8 +9,8 @@ import lombok.Data;
 
 public class PostDTO {
 
-    private String user;
-    private String Community;
+    private Long userId;
+    private Long communityId;
     private String title;
     private String content;
     private String image;

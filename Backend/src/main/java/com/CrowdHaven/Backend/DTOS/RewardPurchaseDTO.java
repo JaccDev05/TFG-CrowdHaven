@@ -1,14 +1,17 @@
 package com.CrowdHaven.Backend.DTOS;
 
-import com.CrowdHaven.Backend.models.Reward;
-import com.CrowdHaven.Backend.models.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 public class RewardPurchaseDTO {
 
-    private User user;
-    private Reward reward;
+    private String user;
+    private String reward;
+    private BigDecimal total;
+
 }

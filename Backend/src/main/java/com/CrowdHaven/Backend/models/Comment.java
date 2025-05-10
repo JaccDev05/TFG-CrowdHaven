@@ -1,5 +1,6 @@
 package com.CrowdHaven.Backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,9 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "comments")
+
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Comment {
 
     @Id
@@ -21,18 +22,15 @@ public class Comment {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "community_id", nullable = false)
-    private  Community community;
-
-    @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
+    @JsonIgnoreProperties("comments") // evita recursividad de community -> roles -> community
     private Post post;
 
     @Column(nullable = false, length = 200)
     private String content;
 
-    private int like = 0;
-    private int dislike = 0;
+    private Integer like_count = 0;
+    private Integer dislike_count = 0;
 
     @CreationTimestamp
     @Column(nullable = false)

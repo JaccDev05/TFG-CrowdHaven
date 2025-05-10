@@ -1,10 +1,11 @@
 package com.CrowdHaven.Backend.services;
 
 import com.CrowdHaven.Backend.DTOS.RewardPurchaseDTO;
+import com.CrowdHaven.Backend.models.Reward;
 import com.CrowdHaven.Backend.models.RewardPurchase;
+import com.CrowdHaven.Backend.models.User;
 import com.CrowdHaven.Backend.repositories.RewardPurchaseRepository;
 import com.CrowdHaven.Backend.repositories.RewardRepository;
-import com.CrowdHaven.Backend.repositories.RewardTypeRepository;
 import com.CrowdHaven.Backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,32 +20,31 @@ public class RewardPurchaseService {
     private final RewardRepository rewardRepository;
     private final RewardPurchaseRepository rewardPurchaseRepository;
 
-    public RewardPurchase createRewardPurchase(RewardPurchaseDTO rewardPurchaseDTO) {
+    public RewardPurchase buyReward(RewardPurchaseDTO rewardPurchaseDTO) {
 
-        if (!this.userRepository.existsByUsername(rewardPurchaseDTO.getUser().getUsername())) {
-            throw new IllegalArgumentException("no existe el user");
-        } else {
-
-            RewardPurchase rewardPurchase = new RewardPurchase();
-
-            rewardPurchase.setUser(this.userRepository.findById(rewardPurchaseDTO.getUser().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("No se encontró el user")));
-
-            rewardPurchase.setReward(this.rewardRepository.
-                    findByRewName(rewardPurchaseDTO.getReward().getName())
-                    .orElseThrow(() -> new IllegalArgumentException("No se encontró la reward")));
-
-            this.rewardPurchaseRepository.save(rewardPurchase);
-            return rewardPurchase;
+        //Post
+        Optional<User> user = this.userRepository.findByUsername(rewardPurchaseDTO.getUser());
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("Usuario no encontrado");
         }
-    }
 
-    public List<RewardPurchase> getAllPurchases() {
-        return rewardPurchaseRepository.findAll();
-    }
+        Optional<Reward> reward = rewardRepository.findByName(rewardPurchaseDTO.getReward());
 
-    public Optional<RewardPurchase> getPurchasesById (Long id) {
-        return this.rewardPurchaseRepository.findById(id);
+        if (reward.isEmpty()) {
+            throw new IllegalArgumentException("reward no encontrado");
+        }
+
+        RewardPurchase rewardPurchase = new RewardPurchase();
+
+        rewardPurchase.setUser(user.get());
+        rewardPurchase.setReward(reward.get());
+        rewardPurchase.setTotal(reward.get().getPrice());
+
+        return rewardPurchaseRepository.save(rewardPurchase);
+
+    }
+    public List<RewardPurchase> getPurchaseByUserId(Long userId) {
+        return rewardPurchaseRepository.findByUserId(userId);
     }
 
     public void deletePurchases(Long id){

@@ -1,6 +1,5 @@
 package com.CrowdHaven.Backend.DTOS;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,9 +7,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class CommentDTO {
 
-    private String user;
-    private String community;
-    private Long post_Id;
+    private Long userId;
+    private Long communityId;
+    private Long postId;
     private String content;
 
 }

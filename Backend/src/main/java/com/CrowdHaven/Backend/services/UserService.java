@@ -6,11 +6,9 @@ import com.CrowdHaven.Backend.DTOS.LoginRequest;
 import com.CrowdHaven.Backend.DTOS.LoginResponse;
 import com.CrowdHaven.Backend.DTOS.RegisterRequest;
 import com.CrowdHaven.Backend.models.User;
-import com.CrowdHaven.Backend.repositories.RoleRepository;
 import com.CrowdHaven.Backend.repositories.UserRepository;
 import com.CrowdHaven.Backend.security.JwtUtil;
 import jakarta.transaction.Transactional;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,17 +24,13 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository,
-                         AuthenticationManager authenticationManager,
+    public UserService(UserRepository userRepository,
+
                        PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
@@ -90,6 +85,19 @@ public class UserService implements UserDetailsService {
 
     }
 
+    @Transactional
+    public User updateUser(Long id, User userUp) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("user no encontrado"));
+
+        user.setEmail(userUp.getEmail());
+        user.setUsername(userUp.getUsername());
+        user.setUpdatedAt(LocalDateTime.now());
+
+        return userRepository.save(user);
+
+    }
 
     public LoginResponse login(LoginRequest credentials) {
         // Comprobamos si el usuario existe

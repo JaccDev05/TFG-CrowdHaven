@@ -1,5 +1,6 @@
 package com.CrowdHaven.Backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "communities")
 @Data
+
 public class Community {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +28,10 @@ public class Community {
 
     private String img_banner;
 
-    @OneToOne
-    @JoinColumn(name = "admin_id", nullable = false)
-    private User admin;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"email", "password", "crowdCoin", "createdAt", "updatedAt", "roles", "communities"})
+    private User user; //el que crea la comunidad
 
     @CreationTimestamp
     @Column(nullable = false)
@@ -39,6 +42,11 @@ public class Community {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("community") // evita la recursividad en la serialización
     private List<Role> roles = new ArrayList<>();
+
+    @ManyToMany
+    @JsonIgnoreProperties({"email", "password", "crowdCoin", "createdAt", "updatedAt", "roles", "communities"})
+    private List<User> members;
 
 }

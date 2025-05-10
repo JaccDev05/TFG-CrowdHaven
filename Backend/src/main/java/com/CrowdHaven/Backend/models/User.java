@@ -5,10 +5,11 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Data
 public class User {
 
@@ -27,16 +28,8 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
-
     @Column(name = "crowdCoin", nullable = false)
-    private double crowdCoin = 0;
-
-    @ManyToOne
-    @JoinColumn(name = "community_id", nullable = false)
-    private Community community;
+    private BigDecimal crowdCoin = new BigDecimal("100.00");
 
     @CreationTimestamp
     @Column(nullable = false)

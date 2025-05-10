@@ -5,8 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Table(name = "members_communities")
@@ -27,11 +26,9 @@ public class Member_Community {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
-    private Role role_Community;
-
-
+    private Role role;
 
     @CreationTimestamp
     @Column(nullable = false)
-    private LocalDateTime joinedAt = LocalDateTime.now();
+    private LocalDateTime joinedAt ;
 }

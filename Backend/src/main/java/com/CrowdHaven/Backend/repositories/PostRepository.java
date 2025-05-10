@@ -8,6 +8,9 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByUserId(Long userId);
+    // Obtener todos los posts de una comunidad
     List<Post> findByCommunityId(Long communityId);
+
+    // Obtener todos los posts de un usuario
+    List<Post> findByUserId(Long userId);
 }

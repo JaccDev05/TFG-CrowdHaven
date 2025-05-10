@@ -2,26 +2,29 @@ package com.CrowdHaven.Backend.services;
 
 import com.CrowdHaven.Backend.DTOS.RewardDTO;
 import com.CrowdHaven.Backend.models.Reward;
+import com.CrowdHaven.Backend.repositories.RewardPurchaseRepository;
 import com.CrowdHaven.Backend.repositories.RewardRepository;
-import com.CrowdHaven.Backend.repositories.RewardTypeRepository;
+import com.CrowdHaven.Backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class RewardService {
 
     private final RewardRepository rewardRepository;
-    private final RewardTypeRepository rewardTypeRepository;
+    private final UserRepository userRepository;
+    private final RewardPurchaseRepository rewardPurchaseRepository;
 
     public List<Reward> getAllRewards() {
         return rewardRepository.findAll();
     }
 
-    public List<Reward> getRewardsByUserID(Long userId) {
-        return rewardRepository.findByUserId(userId); // Llama al repositorio para obtener los productos
+    public Optional<Reward> getRewardsById(Long rewardId) {
+        return rewardRepository.findById(rewardId);
     }
 
     public Reward createReward(RewardDTO rewardFromFront) {
@@ -35,6 +38,7 @@ public class RewardService {
                     () -> new IllegalArgumentException("Role no permitido")
             );*/
 
+
             Reward reward = new Reward();
             reward.setName(rewardFromFront.getName());
             reward.setRewardType(rewardFromFront.getRewardType());
@@ -45,6 +49,9 @@ public class RewardService {
             return reward;
         }
     }
+
+
+
 
     public void deleteReward(Long id) {
         rewardRepository.deleteById(id);

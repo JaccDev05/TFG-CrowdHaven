@@ -1,6 +1,5 @@
 package com.CrowdHaven.Backend.DTOS;
 
-import com.CrowdHaven.Backend.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,6 +10,7 @@ public class CommunityDTO {
     private String name;
     private String description;
     private String img_photo;
-    private String admin;
+    private String img_banner;
+    private String user; //admin
 
 }
