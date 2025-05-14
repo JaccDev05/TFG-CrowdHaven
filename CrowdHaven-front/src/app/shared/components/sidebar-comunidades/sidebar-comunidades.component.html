@@ -1,0 +1,11 @@
+<div class="sidebar-container">
+    <h3>Popular Communities</h3>
+    <ul>
+      <li *ngFor="let community of communities">
+        <a [routerLink]="['/community', community.id]">
+          <strong>{{ community.name }}</strong>
+          <span>{{ community.memberCount }} members</span>
+        </a>
+      </li>
+    </ul>
+  </div>

@@ -1,0 +1,31 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Comment } from '../../models/comment.model';
+import { CommentDTO } from '../../dtos/comment-dto';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CommentService {
+  private apiUrl = 'http://localhost:8080/CrowdHaven/comments';
+
+  constructor(private http: HttpClient) {}
+
+  getCommentsByPostId(postId: number): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.apiUrl}/post/${postId}`);
+  }
+
+  createComment(commentDTO: CommentDTO): Observable<Comment> {
+    return this.http.post<Comment>(this.apiUrl, commentDTO);
+  }
+
+  updateReaction(commentId: number, isLike: boolean): Observable<Comment> {
+    const params = new HttpParams().set('isLike', isLike);
+    return this.http.put<Comment>(`${this.apiUrl}/${commentId}/reaction`, null, { params });
+  }
+
+  deleteComment(commentId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/delete/${commentId}`);
+  }
+}

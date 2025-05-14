@@ -1,0 +1,17 @@
+<div class="feed-container">
+    <h2>Postear</h2>
+    <!--<button (click)=""... etc-->
+    <div class="post" *ngFor="let post of posts">
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.content }}</p>
+      <div class="post-meta">
+        <span>{{ post.author }}</span> | 
+        <span>{{ post.createdAt }}</span>
+        <!--<span>{{ post.createdAt | date: 'short' }}</span> -> no funciona pipe Date porque createdAt no es tipo Date en el back-->
+      </div>
+      <div class="post-actions">
+        <button (click)="likePost(post.id)">Like ({{ post.likes }})</button>
+        <button (click)="commentOnPost(post.id)">Comment ({{ post.comments }})</button>
+      </div>
+    </div>
+  </div>
