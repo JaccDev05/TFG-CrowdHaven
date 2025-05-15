@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Community } from '../../../core/models/community.model';
 import { CommunityService } from '../../../core/services/community/community.service';
 import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar-comunidades',
   standalone: true,
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './sidebar-comunidades.component.html',
   styleUrl: './sidebar-comunidades.component.scss'
 })

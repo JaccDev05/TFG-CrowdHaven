@@ -4,7 +4,7 @@
       <li *ngFor="let community of communities">
         <a [routerLink]="['/community', community.id]">
           <strong>{{ community.name }}</strong>
-          <span>{{ community.memberCount }} members</span>
+          <span>{{ community.members }} members</span>
         </a>
       </li>
     </ul>
