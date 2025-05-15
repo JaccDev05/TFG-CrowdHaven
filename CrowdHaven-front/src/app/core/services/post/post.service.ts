@@ -39,4 +39,12 @@ export class PostService {
   updatePostReaction(id: number, isLike: boolean): Observable<Post> {
     return this.http.put<Post>(`${this.apiUrl}/${id}/reaction?isLike=${isLike}`, {});
   }
+  
+  likePost(postId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${postId}/like`, {});
+  }
+  
+  dislikePost(postId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${postId}/dislike`, {});
+  }
 }

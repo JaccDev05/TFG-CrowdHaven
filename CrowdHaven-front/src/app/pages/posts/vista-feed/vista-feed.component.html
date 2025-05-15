@@ -1,0 +1,42 @@
+<div class="container mt-4 feed-container">
+  <h2 class="mb-4">Feed de Publicaciones</h2>
+
+  <div class="text-end mb-4">
+    <button class="btn btn-primary" (click)="crearPost()">Crear nuevo post</button>
+  </div>
+
+  <div class="post mb-4 p-3 border rounded shadow-sm" *ngFor="let post of posts">
+    <!-- Post Header -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div>
+        <strong>{{ post.user.username }}</strong> en 
+        <span class="text-muted">{{ post.community.name }}</span>
+      </div>
+      <small class="text-muted">{{ post.createdAt }}</small>
+      <!--<small class="text-muted">{{ post.createdAt | date: 'short' }}</small>-->
+    </div>
+
+    <h4 class="mb-2">{{ post.title }}</h4>
+    <img *ngIf="post.image" [src]="post.image" alt="Imagen del post" class="img-fluid rounded mb-2" />
+    <!--meter imagen del post si la hay-->
+    <p>{{ post.content }}</p>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <div>
+        <button class="btn btn-outline-success btn-sm me-2" (click)="likePost(post.id)">
+          👍 LIKE ({{ post.likeCount }})
+        </button>
+        <button class="btn btn-outline-danger btn-sm me-2" (click)="dislikePost(post.id)">
+          👎 DISLIKE ({{ post.dislikeCount }})
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" (click)="commentOnPost(post.id)">
+          💬 COMMENTS ({{ post.comments.length }})
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--<div *ngIf="posts.length === 0" class="text-center text-muted">
+    No hay publicaciones aún.
+  </div>-->
+</div>

@@ -43,14 +43,16 @@ export class SidebarComponent implements OnInit {
       this.router.navigate(['/login']);
     }, 1500)
   }
+  
   goToProfile() {
-  this.router.navigate(['/app/perfil']);
+  //this.router.navigate(['']);
 }
-goToProductos() {
-  this.router.navigate(['/tienda']);
+
+goToCom() {
+  //this.router.navigate(['']);
 }
-goToInicio() {
-  this.router.navigate(['/']);
+goToFeed() {
+  this.router.navigate(['']);
 }
 
 }

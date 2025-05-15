@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DetailComponent } from './detail.component';
+import { VistaFeedComponent } from './vista-feed.component';
 
-describe('DetailComponent', () => {
-  let component: DetailComponent;
-  let fixture: ComponentFixture<DetailComponent>;
+describe('VistaFeedComponent', () => {
+  let component: VistaFeedComponent;
+  let fixture: ComponentFixture<VistaFeedComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetailComponent]
+      imports: [VistaFeedComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DetailComponent);
+    fixture = TestBed.createComponent(VistaFeedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
