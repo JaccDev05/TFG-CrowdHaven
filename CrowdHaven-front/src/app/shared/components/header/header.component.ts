@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SidebarStatusService } from '../../status/sidebar-status.service';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 
@@ -22,7 +21,6 @@ export class HeaderComponent {
   }
 
   constructor(
-    private sidebarStatusService: SidebarStatusService,
     private router: Router
   ) {}
 

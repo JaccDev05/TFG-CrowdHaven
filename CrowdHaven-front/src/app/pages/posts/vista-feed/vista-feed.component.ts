@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from '../../../core/models/post.model';
-import { PostService } from '../../../core/services/post/post.service';
+import { Post } from '../../../api/models/post.model';
+import { PostService } from '../../../api/services/post/post.service';
 import { Router } from '@angular/router';
 //import { DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';

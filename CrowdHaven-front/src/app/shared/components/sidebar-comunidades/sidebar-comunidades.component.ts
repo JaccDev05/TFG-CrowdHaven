@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Community } from '../../../core/models/community.model';
-import { CommunityService } from '../../../core/services/community/community.service';
+
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Community } from '../../../api/models/community.model';
+import { CommunityService } from '../../../api/services/community/community.service';
 
 @Component({
   selector: 'app-sidebar-comunidades',
