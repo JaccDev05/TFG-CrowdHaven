@@ -25,12 +25,12 @@ export class HeaderComponent {
   ) {}
 
   goToLogin(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   // Método para redirigir a la página de Register
   goToRegister(): void {
-    this.router.navigate(['/registro']);
+    this.router.navigate(['/auth/register']);
   }
   // isActiveNotification: boolean = false;
 

@@ -2,9 +2,12 @@
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 
-$primary: #de283b;
-$secondary: #ff6366;
-/*$tertiary: pink;*/
+
+
+$principal: #1f2b3e;
+$secundario: #374357;
+
+
 $blue: #0f42cf;
 $rojovino: #ad0043;
 
@@ -20,5 +23,7 @@ $theme-colors: (
   "success": $success,
   "blue" : $blue,
   "rojovino": $rojovino,
+  "principal": $principal,
+  "secundario": $secundario,
   /*"tertiary": $tertiary,*/
 );

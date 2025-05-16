@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Community } from '../../models/community.model';
-import { CommunityDTO } from '../../dtos/community-dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommunityService {
+
+  /*
   private apiUrl = 'http://localhost:8080/CrowdHaven/communities';
 
   constructor(private http: HttpClient) {}
@@ -35,4 +36,5 @@ export class CommunityService {
   getCommunitiesByUser(userId: number): Observable<Community[]> {
     return this.http.get<Community[]>(`${this.apiUrl}/user/${userId}`);
   }
+    */
 }
