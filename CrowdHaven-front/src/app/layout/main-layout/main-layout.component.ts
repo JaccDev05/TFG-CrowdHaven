@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
-import { HeaderComponent } from '../../shared/components/header/header.component';
-import { SidebarComunidadesComponent } from '../../shared/components/sidebar-comunidades/sidebar-comunidades.component';
+import { SidebarComponent } from '../../Feed/components/sidebar/sidebar.component';
+import { HeaderComponent } from '../../Feed/components/header/header.component';
+import { SidebarComunidadesComponent } from '../../Feed/components/sidebar-comunidades/sidebar-comunidades.component';
 
 @Component({
   selector: 'app-main-layout',
