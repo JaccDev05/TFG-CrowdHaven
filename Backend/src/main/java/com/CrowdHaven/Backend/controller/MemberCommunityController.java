@@ -14,6 +14,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
+@CrossOrigin("*")
+
 public class MemberCommunityController {
 
     private final MemberCommunityService memberCommunityService;

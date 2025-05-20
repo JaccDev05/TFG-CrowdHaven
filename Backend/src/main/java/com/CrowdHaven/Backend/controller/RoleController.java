@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/roles")
 @AllArgsConstructor
+@CrossOrigin("*")
 
 public class RoleController {
 

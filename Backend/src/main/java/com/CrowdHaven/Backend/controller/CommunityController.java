@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping("/communities")
 @CrossOrigin("*")
 @AllArgsConstructor
+
 public class CommunityController {
 
     // http://localhost:8080/CrowdHaven/Communities
