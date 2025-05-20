@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from '../../models/post.model';
-import { PostDTO } from '../../dtos/post-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -28,9 +27,10 @@ export class PostService {
     return this.http.get<Post[]>(`${this.apiUrl}/user/${userId}`);
   }
 
+  /*
   createPost(postDTO: PostDTO): Observable<Post> {
     return this.http.post<Post>(this.apiUrl, postDTO);
-  }
+  }*/
 
   deletePost(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);

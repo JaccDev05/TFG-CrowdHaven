@@ -5,6 +5,7 @@ import { LoginInterface, RegisterInterface, UserInterface } from '../../api/mode
 import { Router } from '@angular/router';
 import { PopupService } from '../loginservices/popup.service';
 import { UserStateService } from '../loginservices/user-state.service';
+import { TokenService } from '../../api/auth-services/token.service';
 
 
 
@@ -24,7 +25,8 @@ export class LoginComponent {
     private credentialsService: CredentialsService,
     private router: Router,
     private popupService: PopupService,
-    private userStateService: UserStateService
+    private userStateService: UserStateService,
+    private tokenService : TokenService
 
   )
 
@@ -44,15 +46,15 @@ export class LoginComponent {
     this.credentialsService.login(this.loginForm.value as LoginInterface).subscribe({
       next: (data) => {
 
-        this.popupService.loader("Cargando...", "Espere un momento");
+        this.popupService.loader("Iniciado sesion...", "Espere un momento");
         setTimeout(() => {
-          
+
+          this.tokenService.saveTokens(data.token, "234325423423")
           this.userStateService.save(data.username);
-
           sessionStorage.setItem('username', data.username);
-
           this.popupService.close();
           this.router.navigate(['/']);
+          
         }, 1500)
       },
 

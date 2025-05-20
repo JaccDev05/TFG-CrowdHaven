@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Role } from '../../models/role.model';
-import { RoleDTO } from '../../dtos/role-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +15,7 @@ export class RoleService {
     return this.http.get<Role[]>(`${this.apiUrl}/community/${communityId}`);
   }
 
-  addRoleToCommunity(roleDTO: RoleDTO): Observable<RoleDTO> {
+  /*addRoleToCommunity(roleDTO: RoleDTO): Observable<RoleDTO> {
     return this.http.post<RoleDTO>(this.apiUrl, roleDTO);
   }
 
@@ -26,5 +25,5 @@ export class RoleService {
 
   deleteRole(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
+  }*/
 }

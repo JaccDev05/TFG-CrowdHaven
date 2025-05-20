@@ -8,7 +8,7 @@ import { Community } from '../../models/community.model';
 })
 export class CommunityService {
 
-  /*
+  
   private apiUrl = 'http://localhost:8080/CrowdHaven/communities';
 
   constructor(private http: HttpClient) {}
@@ -21,10 +21,11 @@ export class CommunityService {
     return this.http.get<Community>(`${this.apiUrl}/${id}`);
   }
 
+  /*
   createCommunity(communityDTO: CommunityDTO): Observable<CommunityDTO> {
     return this.http.post<CommunityDTO>(`${this.apiUrl}/create`, communityDTO);
   }
-
+*/
   updateCommunity(comId: number, community: Community): Observable<Community> {
     return this.http.put<Community>(`${this.apiUrl}/update/${comId}`, community);
   }
@@ -36,5 +37,5 @@ export class CommunityService {
   getCommunitiesByUser(userId: number): Observable<Community[]> {
     return this.http.get<Community[]>(`${this.apiUrl}/user/${userId}`);
   }
-    */
+    
 }

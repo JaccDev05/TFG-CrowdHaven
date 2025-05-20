@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reward } from '../../models/reward.model';
-import { RewardDTO } from '../../dtos/reward-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -19,11 +18,11 @@ export class RewardService {
   getRewardById(id: number): Observable<Reward> {
     return this.http.get<Reward>(`${this.apiUrl}/getRew/${id}`);
   }
-
+/*
   createReward(rewardDTO: RewardDTO): Observable<Reward> {
     return this.http.post<Reward>(this.apiUrl, rewardDTO);
   }
-
+*/
   deleteReward(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

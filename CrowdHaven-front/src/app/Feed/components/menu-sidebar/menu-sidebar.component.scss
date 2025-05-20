@@ -1,0 +1,44 @@
+.sidebar {
+  position: fixed;
+  top: 66px;
+  right: -300px; // Oculto por defecto
+  width: 270px;
+  height: calc(100vh - 66px);
+  color: white;
+  background-color: #1F3A5F;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.3s ease-in-out;
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.sidebar.open {
+  right: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;         /* Centra verticalmente */
+  justify-content: space-between; /* Texto a la izquierda, botón a la derecha */
+  width: 100%;
+}
+
+.opciones:hover {
+   
+    cursor: pointer;
+    background-color: #3D5A80;
+  
+}
+  .close-btn {
+   
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+  }
+  
