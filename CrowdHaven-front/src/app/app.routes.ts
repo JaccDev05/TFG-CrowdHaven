@@ -7,7 +7,10 @@ import { LoginComponent } from './PagInicio/login/login.component';
 
 export const routes: Routes = [
   {
-    path: "", component: MainLayoutComponent, children: [ // -> www.ejemplo.com
+    path: '', 
+    component: MainLayoutComponent, 
+    //canActivate: [authGuard],
+    children: [ // -> www.ejemplo.com
      ]
   },
  
