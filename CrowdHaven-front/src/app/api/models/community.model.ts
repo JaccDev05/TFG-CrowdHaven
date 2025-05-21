@@ -5,8 +5,8 @@ export interface Community {
   id: number;
   name: string;
   description: string;
-  imgPhoto: string;
-  imgBanner: string;
+  img_photo: string;
+  img_banner: string;
   user: User;
   createdAt: string;
   updatedAt: string;
