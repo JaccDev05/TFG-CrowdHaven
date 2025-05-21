@@ -20,12 +20,21 @@ export class CommentService {
     return this.http.post<Comment>(this.apiUrl, commentDTO);
   }*/
 
-  updateReaction(commentId: number, isLike: boolean): Observable<Comment> {
-    const params = new HttpParams().set('isLike', isLike);
-    return this.http.put<Comment>(`${this.apiUrl}/${commentId}/reaction`, null, { params });
-  }
+  updateCommentReaction(id: number, isLike: boolean): Observable<Comment> {
+      return this.http.put<Comment>(`${this.apiUrl}/${id}/reaction?isLike=${isLike}`, {});
+    }
+    
 
   deleteComment(commentId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${commentId}`);
+  }
+
+
+  likeComment(commentId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${commentId}/reaction`, {});
+  }
+  
+  dislikeComment(commentId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${commentId}/reaction`, {});
   }
 }

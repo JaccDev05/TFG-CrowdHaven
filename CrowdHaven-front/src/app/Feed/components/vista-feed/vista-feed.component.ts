@@ -72,7 +72,7 @@ export class VistaFeedComponent implements OnInit {
   }
 
   commentOnPost(postId: number): void {
-      this.router.navigate([`/posts/${postId}/comments`]);
+      this.router.navigate([`/posts/${postId}`]);
   }
   
 }
