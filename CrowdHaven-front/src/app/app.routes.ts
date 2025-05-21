@@ -8,16 +8,11 @@ import { VistaFeedComponent } from './Feed/components/vista-feed/vista-feed.comp
 
 export const routes: Routes = [
   {
-<<<<<<< HEAD
     path: '', 
     component: MainLayoutComponent, 
     //canActivate: [authGuard],
     children: [ 
       
-=======
-    path: "", component: MainLayoutComponent, children: [
-      { path: '', component: VistaFeedComponent } // -> www.ejemplo.com
->>>>>>> c5104c418a9f46840614fcf7239f55ee1392cb99
      ]
   },
  
