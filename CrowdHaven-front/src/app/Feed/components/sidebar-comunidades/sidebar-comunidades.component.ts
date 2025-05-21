@@ -19,13 +19,13 @@ export class SidebarComunidadesComponent implements OnInit {
   constructor(private communityService: CommunityService) {}
 
   ngOnInit(): void {
-    //this.loadCommunities();
+    this.loadCommunities();
   }
 
-  /*
+  
   loadCommunities(): void {
     this.communityService.getAllCommunities().subscribe((data) => {
       this.communities = data;
     });
-  }*/
+  }
 }
