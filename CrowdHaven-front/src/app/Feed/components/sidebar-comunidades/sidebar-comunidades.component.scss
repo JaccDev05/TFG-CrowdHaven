@@ -1,0 +1,43 @@
+.sidebar-container {
+    
+    background-color: #1F3A5F;
+
+     ul  {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+      }
+      
+      .com-cont {
+        margin-bottom: 1rem;
+      }
+      
+      .com {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: background-color 0.2s;
+      }
+      
+      .com:visited,
+      .com:active,
+      .com:focus {
+        text-decoration: none;
+        color: inherit;
+      }
+      
+      .com:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #ccc;
+      }
+      
+      .com-img {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 50%; /* Por si no se carga Bootstrap */
+      }
+}
+

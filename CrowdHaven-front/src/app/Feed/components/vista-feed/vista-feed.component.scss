@@ -1,0 +1,26 @@
+.post {
+    width: 70%;
+    background-color: #1f2b3e;
+
+    .post-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+        max-height: 500px; /* Limita la altura para evitar imágenes demasiado grandes */
+      }
+}
+
+.sidebar-left {
+  width: 300px;
+  height: 500px;
+  position: fixed;
+  top: 140px; /* o la altura de tu navbar si tienes una fija */
+  bottom: 0;
+  left: 20px;
+  overflow-y: auto;
+  background-color: #1F3A5F;  padding: 1rem;
+  z-index: 1000;
+}

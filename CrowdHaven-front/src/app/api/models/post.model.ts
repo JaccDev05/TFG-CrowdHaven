@@ -9,8 +9,8 @@ export interface Post {
   title: string;
   content: string;
   image: string;
-  likeCount: number;
-  dislikeCount: number;
+  like_count: number;
+  dislike_count: number;
   comments: Comment[];
   createdAt: Date; //no string, si no no funciona la pipe Date
 }
