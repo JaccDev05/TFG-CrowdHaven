@@ -4,10 +4,13 @@ import { PostService } from '../../../api/services/post/post.service';
 import { Router } from '@angular/router';
 //import { DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
+import { SidebarComunidadesComponent } from '../sidebar-comunidades/sidebar-comunidades.component';
 
 @Component({
   selector: 'app-vista-feed',
-  imports: [CommonModule],
+  imports: [CommonModule,
+    SidebarComunidadesComponent
+  ],
     //providers: [DatePipe],
   templateUrl: './vista-feed.component.html',
   styleUrl: './vista-feed.component.scss'
@@ -15,7 +18,6 @@ import { CommonModule } from '@angular/common';
 
 export class VistaFeedComponent implements OnInit {
   posts: Post[] = [];
-  loading: boolean = false;
   error: string | null = null;
 
   constructor(
@@ -28,16 +30,14 @@ export class VistaFeedComponent implements OnInit {
   }
 
   loadPosts(): void {
-    this.loading = true;
     this.postService.getAllPosts().subscribe({
-      next: (posts) => {
-        this.posts = posts;
-        this.loading = false;
+      next: (data) => {
+        this.posts = data;
+        
       },
       error: (err) => {
-        console.error('Error al cargar los posts', err);
-        this.error = 'No se pudieron cargar las publicaciones.';
-        this.loading = false;
+        this.error = 'Error al cargar las publicaciones';
+        console.error(err);
       }
     });
   }
@@ -75,8 +75,4 @@ export class VistaFeedComponent implements OnInit {
       this.router.navigate([`/posts/${postId}/comments`]);
   }
   
-
-  crearPost(): void {
-    this.router.navigate(['/crear-post']);
-  }
 }
