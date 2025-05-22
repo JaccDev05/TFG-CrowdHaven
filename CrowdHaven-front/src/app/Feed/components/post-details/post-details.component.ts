@@ -4,11 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from '../../../api/models/post.model';
 import { CommonModule } from '@angular/common';
 import { CommentService } from '../../../api/services/comment/comment.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-post-details',
   imports: [
-    CommonModule
+    CommonModule,
+    RouterLink
   ],
   templateUrl: './post-details.component.html',
   styleUrl: './post-details.component.scss'

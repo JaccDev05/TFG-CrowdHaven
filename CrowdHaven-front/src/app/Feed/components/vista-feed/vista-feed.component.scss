@@ -24,3 +24,13 @@
   background-color: #1F3A5F;  padding: 1rem;
   z-index: 1000;
 }
+
+a {
+  text-decoration: none;
+  color: #acc2ef;
+}
+
+a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

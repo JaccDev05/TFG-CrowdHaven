@@ -12,3 +12,13 @@
         max-height: 500px; /* Limita la altura para evitar imágenes demasiado grandes */
       }
 }
+
+a {
+  text-decoration: none;
+  color: #acc2ef;
+}
+
+a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -12,14 +12,20 @@
     <!-- Post Header -->
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="d-flex justify-content-between align-items-center w-100 my-1">
-        <p class="text-white m-0">{{ post.user.username }} en ch/{{ post.community.name }}</p> 
-        <small class="text-white m-0 align-self-end">  {{ post.createdAt | date: 'dd/MM/yyyy' }}
-        </small>
-      </div>
+        <div class="d-flex gap-1">
+            <div>
+                <img [src]="post.user.avatar" class="rounded-circle me-2 " width="25" height="25" (error)="post.user.avatar='err.jpg'" >
+            </div>
+            <div class="">
+                <strong class="text-white ">{{ post.user.username }} en <a [routerLink]="['/community', post.community.id]"  >ch/{{ post.community.name }}</a> </strong>
+            </div>
+        </div>
+      <small class="text-white m-0 align-self-end">  {{ post.createdAt | date: 'dd/MM/yyyy' }}</small>
+    </div>
     </div>
 
     <h4 class="mb-2 text-white">{{ post.title }}</h4>
-    <img *ngIf="post.image" [src]="post.image" alt="Imagen del post" class="w-100 post-img img-fluid rounded m-auto mb-2" />
+    <img *ngIf="post.image" [src]="post.image" class="w-100 post-img img-fluid rounded m-auto mb-2"  />
     <p class="text-white ">{{ post.content }}</p>
 
     <div class="d-flex justify-content-between align-items-center mt-3 w-100">

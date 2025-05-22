@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Post } from '../../../api/models/post.model';
 import { PostService } from '../../../api/services/post/post.service';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 //import { DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { SidebarComunidadesComponent } from '../sidebar-comunidades/sidebar-comunidades.component';
@@ -9,7 +10,8 @@ import { SidebarComunidadesComponent } from '../sidebar-comunidades/sidebar-comu
 @Component({
   selector: 'app-vista-feed',
   imports: [CommonModule,
-    SidebarComunidadesComponent
+    SidebarComunidadesComponent,
+    RouterLink
   ],
     //providers: [DatePipe],
   templateUrl: './vista-feed.component.html',
@@ -27,6 +29,7 @@ export class VistaFeedComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPosts();
+    
   }
 
   loadPosts(): void {

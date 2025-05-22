@@ -10,11 +10,11 @@
         <div class="d-flex justify-content-between align-items-center w-100 my-1">
             <div class="d-flex gap-2">
                 <div>
-                    <img [src]="post.user.avatar" class="rounded-circle me-2" width="25" height="25">
+                    <img [src]="post.user.avatar" class="rounded-circle me-2" width="25" height="25" (error)="post.user.avatar='err.jpg'" >
 
                 </div>
                 <div>
-                    <strong class="text-white">{{ post.user.username }} en ch/{{ post.community.name }}</strong>
+                    <strong class="text-white">{{ post.user.username }} en <a [routerLink]="['/community', post.community.id]" > ch/{{ post.community.name }}</a></strong>
 
                 </div>
             </div>
@@ -53,7 +53,7 @@
           <div class="d-flex justify-content-between mb-3">
             <div class="d-flex gap-2">
                 <div>
-                    <img [src]="comment.user.avatar" class="rounded-circle me-2" width="25" height="25">
+                    <img [src]="comment.user.avatar" class="rounded-circle me-2" width="25" height="25" (error)="comment.user.avatar='err.jpg'">
 
                 </div>
                 <div>
