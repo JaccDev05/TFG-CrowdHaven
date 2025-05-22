@@ -14,12 +14,12 @@ export class MenuSidebarComponent {
   @Input() isOpen: boolean = false; // <- controla si está abierto
   @Input() visible: boolean = false;
   @Output() close = new EventEmitter<void>();
-  
+
   constructor(
     private popupService: PopupService,
     private router: Router,
     private userStateService: UserStateService
-  ) {}
+  ) { }
 
   onClose() {
     this.close.emit();
@@ -28,22 +28,33 @@ export class MenuSidebarComponent {
   goToHome() {
 
     this.popupService.loader("Cargando...");
-        setTimeout(() => {  
-          this.popupService.close();
-                    window.location.reload();
-                    
-        }, 800)
-    
+    setTimeout(() => {
+      this.popupService.close();
+      window.location.reload();
+
+    }, 800)
+
+    this.onClose();
+  }
+
+  goToPerfil() {
+
+    this.popupService.loader("Cargando...");
+    setTimeout(() => {
+      this.popupService.close();
+      window.location.href = '/perfil';
+    }, 800)
+
     this.onClose();
   }
 
   removeSession(): void {
     this.popupService.loader("Cerrando Sesion...");
-        setTimeout(() => {  
-          this.userStateService.removeSession();
-          this.popupService.close();
-          this.router.navigate(['/auth/login']);
-                    
-        }, 800)
+    setTimeout(() => {
+      this.userStateService.removeSession();
+      this.popupService.close();
+      this.router.navigate(['/auth/login']);
+
+    }, 800)
   }
 }

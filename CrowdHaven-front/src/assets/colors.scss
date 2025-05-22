@@ -1,27 +1,39 @@
-
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 
 
-
-$principal: #1f2b3e;
+/*$principal: #1f2b3e;
 $secundario: #374357;
-$blue: #0f42cf;
-$rojovino: #ad0043;
+$blue: #0f42cf;*/
+//COLORES PRINCIPALES
+$principal: #101c2c;                  // (dark navy) Fondo principal
+$secundario: #202c3c;                 // (navy gray) Tarjetas y contenedores
+$navy-blue: #203c5c;//SECONDARY       // Elementos destacados
+$vibrant-blue: #1854bc;//PRIMARY      // Botones principales
+$white: #ffffff;                      // Texto principal
+
+$sky-blue: #4a90e2;                   // Links e información
+$emerald-green: #059669;              // Éxito y confirmaciones
+$golden-orange: #ffa500;              // CrowdCoins y recompensas
+$coral-orange: #ff6b35;               // Call-to-action importantes
+$red: #dc2626;                        // Errores y peligro
+$amber: #d97706;                      // Advertencias
+$light-gray: #e6e6e6;                 // Fondos secundarios
+$medium-gray: #b0b0b0;                // Texto deshabilitado
+
 
 $theme-colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  "info": $info,
-  "light": $light,
-  "dark": $dark,
-  "warning": $warning,
-  "danger": $danger,
-  "white": $white,
-  "success": $success,
-  "blue" : $blue,
-  "rojovino": $rojovino,
   "principal": $principal,
-  "secundario": $secundario,
-  /*"tertiary": $tertiary,*/
+  "secundario": $secundario,  
+  "primary": $vibrant-blue,
+  "secondary": $navy-blue,
+  "info": $sky-blue,
+  "light": $light-gray,
+  "warning": $amber,
+  "danger": $red,
+  "white": $white,
+  "success": $emerald-green,
+  "blue" : $blue,
+  "accent": $coral-orange,
+  "crowdcoin": $golden-orange
 );

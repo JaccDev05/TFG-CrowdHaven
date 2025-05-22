@@ -1,0 +1,197 @@
+<!-- Loading state -->
+<div class="loading-state" *ngIf="isLoading">
+    <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+    </div>
+    <p>Cargando perfil...</p>
+</div>
+
+<!-- Error state -->
+<div class="error-state" *ngIf="error && !isLoading">
+    <div class="error-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3>Error al cargar el perfil</h3>
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="refreshUserData()">
+        <i class="fas fa-redo"></i>
+        Reintentar
+    </button>
+</div>
+
+<div class="profile-container" *ngIf="user && !isLoading && !error">
+    <!-- Header del perfil -->
+    <div class="profile-header">
+        <div class="profile-avatar-section">
+            <div class="avatar-container">
+                <img [src]="previewAvatar || user?.avatar || '/default-avatar.png'" 
+                    [alt]="(user?.username || 'Usuario') + ' avatar'" class="profile-avatar">
+                <div class="avatar-overlay" *ngIf="isEditMode">
+                    <label for="avatar-input" class="avatar-upload-btn">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                    <input id="avatar-input" type="file" accept="image/*" (change)="onFileSelected($event)"
+                        class="hidden-input">
+                    <button *ngIf="previewAvatar" class="avatar-remove-btn" (click)="removeAvatar()" type="button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-info">
+            <div class="profile-basic-info">
+                <!-- Modo visualización -->
+                <div *ngIf="!isEditMode" class="view-mode">
+                    <h1 class="username">{{ user?.username }}</h1>
+                    <!--<p class="bio">Esta es la biografía del usuario (no implementado)</p>-->
+                    <p class="email">
+                        <i class="fas fa-envelope"></i>
+                        {{ user?.email }}
+                    </p>
+                </div>
+                
+                <!-- Modo edición -->
+                <div *ngIf="isEditMode" class="edit-mode">
+                    <form [formGroup]="editProfileForm" (ngSubmit)="saveProfile()">
+                        <div class="form-group">
+                            <label for="username">Nombre de usuario</label>
+                            <input id="username" type="text" formControlName="username" class="form-control"
+                                [class.error]="editProfileForm.get('username')?.invalid && editProfileForm.get('username')?.touched">
+                            <div class="error-message"
+                                *ngIf="editProfileForm.get('username')?.invalid && editProfileForm.get('username')?.touched">
+                                {{ usernameErrors }}
+                            </div>
+                        </div>
+                        <!--
+                        <div class="form-group">
+                            <label for="bio">Biografía</label>
+                            <textarea id="bio" formControlName="bio" class="form-control bio-textarea"
+                                placeholder="Cuéntanos sobre ti..." rows="3"
+                                [class.error]="editProfileForm.get('bio')?.invalid && editProfileForm.get('bio')?.touched"></textarea>
+                            <div class="error-message"
+                                *ngIf="editProfileForm.get('bio')?.invalid && editProfileForm.get('bio')?.touched">
+                                {{ bioErrors }}
+                            </div>
+                            <div class="character-count">
+                                {{ editProfileForm.get('bio')?.value?.length || 0 }}/500
+                            </div>
+                        </div>-->
+                    </form>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="profile-actions">
+                <button *ngIf="!isEditMode" class="btn btn-primary" (click)="toggleEditMode()">
+                    <i class="fas fa-edit"></i>
+                    Editar Perfil
+                </button>
+
+                <div *ngIf="isEditMode" class="edit-actions">
+                    <button type="button" class="btn btn-secondary" (click)="toggleEditMode()">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-success" (click)="saveProfile()"
+                        [disabled]="editProfileForm.invalid || isLoading">
+                        <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+                        <i class="fas fa-save" *ngIf="!isLoading"></i>
+                        {{ isLoading ? 'Guardando...' : 'Guardar' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información adicional del usuario -->
+    <div class="profile-details">
+        <div class="detail-card">
+            <h3><i class="fas fa-coins"></i> CrowdCoins</h3>
+            <p class="crowd-coins">{{ user?.crowdCoin }}</p>
+        </div>
+
+        <div class="detail-card">
+            <h3><i class="fas fa-calendar"></i> Miembro desde</h3>
+            <p>{{ user?.createdAt ? getFormattedDate(user?.createdAt) : 'No disponible' }}</p>
+        </div>
+    </div>
+
+    <!-- Estadísticas de actividad -->
+    <div class="activity-section">
+        <h2 class="section-title">
+            <i class="fas fa-chart-line"></i>
+            Actividad del Usuario
+        </h2>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ userStats.totalPosts }}</h3>
+                    <p>Posts Realizados</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ userStats.totalComments }}</h3>
+                    <p>Comentarios</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roles del usuario -->
+    <div class="roles-section" *ngIf="userRoles.length > 0">
+        <h2 class="section-title">
+            <i class="fas fa-user-tie"></i>
+            Roles en Comunidades
+        </h2>
+
+        <div class="roles-grid">
+            <div class="role-card" *ngFor="let role of userRoles">
+                <div class="role-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="role-info">
+                    <h4>{{ role.roleName }}</h4>
+                    <p>{{ role.community.name }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recompensas e insignias -->
+    <div class="rewards-section" *ngIf="userRewards.length > 0">
+        <h2 class="section-title">
+            <i class="fas fa-trophy"></i>
+            Recompensas e Insignias
+        </h2>
+
+        <div class="rewards-grid">
+            <div class="reward-card" *ngFor="let reward of userRewards">
+                <div class="reward-icon">
+                    {{ getRewardTypeIcon(reward.rewardType) }}
+                </div>
+                <div class="reward-info">
+                    <h4>{{ reward.name }}</h4>
+                    <p>{{ reward.description }}</p>
+                    <span class="reward-type">{{ reward.rewardType }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje cuando no hay datos -->
+    <div class="empty-state" *ngIf="userRoles.length === 0 && userRewards.length === 0 && !isLoading">
+        <i class="fas fa-user-plus"></i>
+        <h3>¡Únete a comunidades!</h3>
+        <p>Participa en comunidades para obtener roles y recompensas</p>
+    </div>
+</div>

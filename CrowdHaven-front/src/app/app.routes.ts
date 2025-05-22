@@ -5,6 +5,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { RegisterComponent } from './PagInicio/register/register.component';
 import { LoginComponent } from './PagInicio/login/login.component';
 import { VistaFeedComponent } from './Feed/components/vista-feed/vista-feed.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 export const routes: Routes = [
   {
@@ -12,7 +13,8 @@ export const routes: Routes = [
     component: MainLayoutComponent, 
     //canActivate: [authGuard],
     children: [ 
-      
+      { path: '', component: VistaFeedComponent},
+      { path: 'perfil', component: PerfilComponent}
      ]
   },
  
