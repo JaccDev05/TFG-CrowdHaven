@@ -18,6 +18,8 @@ import { RouterLink } from '@angular/router';
 export class PostDetailsComponent implements OnInit {
  
   post : Post  | null = null;
+  username: string | null = null;
+  
   constructor(
     private route: ActivatedRoute,
     private postService: PostService,

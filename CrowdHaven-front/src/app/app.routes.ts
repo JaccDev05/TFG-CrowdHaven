@@ -8,6 +8,7 @@ import { VistaFeedComponent } from './Feed/components/vista-feed/vista-feed.comp
 import { PostDetailsComponent } from './Feed/components/post-details/post-details.component';
 import { UserFunctionsLayoutComponent } from './layout/user-functions-layout/user-functions-layout.component';
 import { UserCommunitiesComponent } from './FuncionesSidebar/user-communities/user-communities.component';
+import { UserPostsComponent } from './FuncionesSidebar/user-posts/user-posts.component';
 
 export const routes: Routes = [
   {
@@ -19,8 +20,9 @@ export const routes: Routes = [
 
   {
     path: "user", component: UserFunctionsLayoutComponent, children: [
-      { path: 'comunidades-user/:id', component: UserCommunitiesComponent }, // -> www.ejemplo.com
-     ]
+      {path: 'comunidades-user/:id', component: UserCommunitiesComponent },
+      {path: 'posts-user/:id', component: UserPostsComponent}
+    ]
   },
  
   {
