@@ -6,7 +6,7 @@ export interface Comment {
   user: User;
   post: Post;
   content: string;
-  likeCount: number;
-  dislikeCount: number;
+  like_count: number;
+  dislike_count: number;
   createdAt: string;
 }

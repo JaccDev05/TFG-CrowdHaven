@@ -1,0 +1,14 @@
+.post {
+    width: 70%;
+    background-color: #1f2b3e;
+
+    .post-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+        max-height: 500px; /* Limita la altura para evitar imágenes demasiado grandes */
+      }
+}

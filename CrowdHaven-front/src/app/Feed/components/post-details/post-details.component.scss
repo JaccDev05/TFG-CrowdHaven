@@ -13,18 +13,6 @@
       }
 }
 
-.sidebar-left {
-  width: 300px;
-  height: 500px;
-  position: fixed;
-  top: 140px; /* o la altura de tu navbar si tienes una fija */
-  bottom: 0;
-  left: 20px;
-  overflow-y: auto;
-  background-color: #1F3A5F;  padding: 1rem;
-  z-index: 1000;
-}
-
 a {
   text-decoration: none;
   color: #acc2ef;

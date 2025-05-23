@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { User } from '../api/models/user.model';
-import { Post } from '../api/models/post.model';
-import { Role } from '../api/models/role.model';
-import { Reward } from '../api/models/reward.model';
-import { RewardPurchase } from '../api/models/reward-purchase';
-import { Community } from '../api/models/community.model';
-import { UserService } from '../api/services/user/user.service';
-import { PostService } from '../api/services/post/post.service';
-import { CommunityService } from '../api/services/community/community.service';
-import { RewardService } from '../api/services/reward/reward.service';
+import { User } from '../../api/models/user.model';
+import { Post } from '../../api/models/post.model';
+import { Role } from '../../api/models/role.model';
+import { Reward } from '../../api/models/reward.model';
+import { RewardPurchase } from '../../api/models/reward-purchase';
+import { Community } from '../../api/models/community.model';
+import { UserService } from '../../api/services/user/user.service';
+import { PostService } from '../../api/services/post/post.service';
+import { CommunityService } from '../../api/services/community/community.service';
+import { RewardService } from '../../api/services/reward/reward.service';
 
 interface UserStats {
   totalPosts: number;
