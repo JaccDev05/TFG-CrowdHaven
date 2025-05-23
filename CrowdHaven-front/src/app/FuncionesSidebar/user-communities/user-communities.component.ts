@@ -1,11 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Community } from '../../api/models/community.model';
+import { CommunityService } from '../../api/services/community/community.service';
+import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-communities',
-  imports: [],
+  imports: [
+    RouterLink,
+    CommonModule
+  ],
   templateUrl: './user-communities.component.html',
   styleUrl: './user-communities.component.scss'
 })
-export class UserCommunitiesComponent {
+export class UserCommunitiesComponent implements OnInit {
 
+  communities: Community[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private comService: CommunityService
+  ) {}
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const idParam = params.get('id');
+      if (idParam) {
+        const userId = parseInt(idParam, 10);
+        this.loadCommunities(userId);
+      }
+    });
+  }
+
+  loadCommunities(userId: number): void {
+    this.comService.getCommunitiesByUser(userId).subscribe((data) => {
+      this.communities = data;
+    });
+  }
 }

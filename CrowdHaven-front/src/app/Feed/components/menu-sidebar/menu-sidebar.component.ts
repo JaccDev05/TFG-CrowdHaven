@@ -37,7 +37,6 @@ export class MenuSidebarComponent implements OnInit {
   }
 
   
-
   goToHome() {
 
     this.popupService.loader("Cargando...");

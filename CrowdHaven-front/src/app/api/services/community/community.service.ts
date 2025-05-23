@@ -10,6 +10,7 @@ export class CommunityService {
 
   
   private apiUrl = 'http://localhost:8080/CrowdHaven/communities';
+  private apiUrl2 = 'http://localhost:8080/CrowdHaven/members';
 
   constructor(private http: HttpClient) {}
 
@@ -35,7 +36,7 @@ export class CommunityService {
   }
 
   getCommunitiesByUser(userId: number): Observable<Community[]> {
-    return this.http.get<Community[]>(`${this.apiUrl}/user/${userId}`);
+    return this.http.get<Community[]>(`${this.apiUrl2}/user/${userId}`);
   }
     
 }
