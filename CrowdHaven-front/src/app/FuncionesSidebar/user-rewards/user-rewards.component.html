@@ -1,0 +1,17 @@
+<div class="w-75 m-auto my-4">
+    <ul class="com-list m-0 w-75 m-auto">
+        <li *ngFor="let rewP of rewardPurchases" class="com-cont my-4">
+          
+    
+            <div class="d-flex gap-3">
+              <div>
+                <strong class="m-0 mb-0 text-white fs-5">{{ rewP.reward.name }}</strong><br>
+                <p class="m-0 mt-0 text-white fs-6">{{ rewP.reward.description }} members</p>
+    
+              </div>
+    
+            </div>
+        </li>
+      </ul>
+    
+    </div>
