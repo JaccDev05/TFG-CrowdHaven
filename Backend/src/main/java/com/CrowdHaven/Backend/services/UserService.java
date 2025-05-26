@@ -93,6 +93,8 @@ public class UserService implements UserDetailsService {
 
         user.setEmail(userUp.getEmail());
         user.setUsername(userUp.getUsername());
+        user.setAvatar(userUp.getAvatar());
+        user.setCrowdCoin(userUp.getCrowdCoin());
         user.setUpdatedAt(LocalDateTime.now());
 
         return userRepository.save(user);
