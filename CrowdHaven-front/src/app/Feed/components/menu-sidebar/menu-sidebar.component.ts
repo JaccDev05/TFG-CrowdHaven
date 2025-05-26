@@ -54,7 +54,7 @@ export class MenuSidebarComponent implements OnInit {
     this.popupService.loader("Cargando...");
     setTimeout(() => {
       this.popupService.close();
-      this.router.navigate([`/user/perfil`]);
+      this.router.navigate([`/user/perfil/${this.user?.id}`]);
 
     }, 800)
 
