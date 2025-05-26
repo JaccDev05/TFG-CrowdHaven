@@ -9,6 +9,7 @@ import { PostDetailsComponent } from './Feed/components/post-details/post-detail
 import { UserFunctionsLayoutComponent } from './layout/user-functions-layout/user-functions-layout.component';
 import { UserCommunitiesComponent } from './FuncionesSidebar/user-communities/user-communities.component';
 import { UserPostsComponent } from './FuncionesSidebar/user-posts/user-posts.component';
+import { UserRewardsComponent } from './FuncionesSidebar/user-rewards/user-rewards.component';
 
 export const routes: Routes = [
   {
@@ -21,7 +22,8 @@ export const routes: Routes = [
   {
     path: "user", component: UserFunctionsLayoutComponent, children: [
       {path: 'comunidades-user/:id', component: UserCommunitiesComponent },
-      {path: 'posts-user/:id', component: UserPostsComponent}
+      {path: 'posts-user/:id', component: UserPostsComponent},
+      {path: 'rewards-user/:id', component: UserRewardsComponent}
     ]
   },
  

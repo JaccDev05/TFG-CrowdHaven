@@ -1,0 +1,18 @@
+<div class="w-75 m-auto my-4">
+  <p class="h2 text-white text-center mb-5">Mis Rewards</p>
+
+  <div class="row">
+    <div *ngFor="let rewP of rewardPurchases; let i = index" class="col-md-4 mb-4">
+      <div class="cont-rew border rounded-3 p-3 m-0 pb-0 h-100">
+        <strong class="text-white fs-5">{{ rewP.reward.name }}</strong><br>
+        <p class="text-white fs-6">{{ rewP.reward.description }}</p>
+        <p class="text-white fs-6 text-end">Precio: {{ rewP.reward.price }}$</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center mt-4">
+    <button class="btn btn-outline-success align-items-center justify-content-center fs-4 m-auto " (click)="goToRewardsShop()">! Compra mas Rewards !</button>
+
+  </div>
+</div>
