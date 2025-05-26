@@ -38,4 +38,8 @@ export class UserRewardsComponent implements OnInit {
     })
 
   }
+
+  goToRewardsShop() {
+    window.location.href = '/rewards';
+  }
 }
