@@ -6,7 +6,7 @@
 
         <div class="d-flex gap-3">
           <div>
-            <img [src]="community.img_photo" class="com-img img-fluid ">
+            <img [src]="community.img_photo" class="com-img img-fluid " (error)="community.img_photo='pperr.jpg'">
           </div>
 
           <div>

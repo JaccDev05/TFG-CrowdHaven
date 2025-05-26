@@ -1,47 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { Post } from '../../../api/models/post.model';
-import { PostService } from '../../../api/services/post/post.service';
-import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
-//import { DatePipe } from '@angular/common';
+import { Component } from '@angular/core';
+import { Post } from '../../api/models/post.model';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { PostService } from '../../api/services/post/post.service';
 import { CommonModule } from '@angular/common';
-import { SidebarComunidadesComponent } from '../sidebar-comunidades/sidebar-comunidades.component';
 
 @Component({
-  selector: 'app-vista-feed',
+  selector: 'app-user-posts',
   imports: [CommonModule,
-    SidebarComunidadesComponent,
     RouterLink
   ],
-    //providers: [DatePipe],
-  templateUrl: './vista-feed.component.html',
-  styleUrl: './vista-feed.component.scss'
+  templateUrl: './user-posts.component.html',
+  styleUrl: './user-posts.component.scss'
 })
+export class UserPostsComponent {
 
-export class VistaFeedComponent implements OnInit {
   posts: Post[] = [];
-  error: string | null = null;
 
   constructor(
+    private route: ActivatedRoute,
     private postService: PostService,
     private router: Router
+
   ) {}
 
   ngOnInit(): void {
-    this.loadPosts();
-    
+    this.route.paramMap.subscribe(params => {
+      const idParam = params.get('id');
+      if (idParam) {
+        const userId = parseInt(idParam, 10);
+        this.loadPosts(userId);
+      }
+    });
   }
 
-  loadPosts(): void {
-    this.postService.getAllPosts().subscribe({
-      next: (data) => {
-        this.posts = data;
-        
-      },
-      error: (err) => {
-        this.error = 'Error al cargar las publicaciones';
-        console.error(err);
-      }
+  loadPosts(userId: number): void {
+    this.postService.getPostsByUser(userId).subscribe((data) => {
+      this.posts = data;
     });
   }
 
@@ -79,3 +73,4 @@ export class VistaFeedComponent implements OnInit {
   }
   
 }
+
