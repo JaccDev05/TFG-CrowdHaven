@@ -24,8 +24,8 @@ export class CommunityService {
 
   /*
   createCommunity(communityDTO: CommunityDTO): Observable<CommunityDTO> {
-    return this.http.post<CommunityDTO>(`${this.apiUrl}/create`, communityDTO);
-  }
+  return this.http.post<CommunityDTO>(`${this.apiUrl}/create`, communityDTO);
+}
 */
   updateCommunity(comId: number, community: Community): Observable<Community> {
     return this.http.put<Community>(`${this.apiUrl}/update/${comId}`, community);
@@ -36,7 +36,7 @@ export class CommunityService {
   }
 
   getCommunitiesByUser(userId: number): Observable<Community[]> {
-    return this.http.get<Community[]>(`${this.apiUrl2}/user/${userId}`);
+    return this.http.get<Community[]>(`${this.apiUrl}/user/${userId}`);
   }
     
 }

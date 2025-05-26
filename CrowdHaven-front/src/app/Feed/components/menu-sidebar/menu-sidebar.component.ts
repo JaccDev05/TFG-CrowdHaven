@@ -40,12 +40,24 @@ export class MenuSidebarComponent implements OnInit {
   goToHome() {
 
     this.popupService.loader("Cargando...");
-        setTimeout(() => {  
-          this.popupService.close();
-          this.router.navigate([`/`]); // <- ruta correcta sin ':'
-                    
-        }, 800)
-    
+    setTimeout(() => {
+      this.popupService.close();
+      this.router.navigate([`/`]); // <- ruta correcta sin ':'
+
+    }, 800)
+
+    this.onClose();
+  }
+
+  goToPerfil() {
+
+    this.popupService.loader("Cargando...");
+    setTimeout(() => {
+      this.popupService.close();
+      this.router.navigate([`/user/perfil/${this.user?.id}`]);
+
+    }, 800)
+
     this.onClose();
   }
   goToUserComs() {
@@ -94,11 +106,11 @@ export class MenuSidebarComponent implements OnInit {
 
   removeSession(): void {
     this.popupService.loader("Cerrando Sesion...");
-        setTimeout(() => {  
-          this.userStateService.removeSession();
-          this.popupService.close();
-          this.router.navigate(['/auth/login']);
-                    
-        }, 800)
+    setTimeout(() => {
+      this.userStateService.removeSession();
+      this.popupService.close();
+      this.router.navigate(['/auth/login']);
+
+    }, 800)
   }
 }

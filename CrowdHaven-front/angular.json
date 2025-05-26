@@ -37,7 +37,10 @@
               "src/styles.scss",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/assets"]
+            }
           },
           "configurations": {
             "production": {
