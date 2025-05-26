@@ -122,14 +122,14 @@
         </h2>
 
         <div class="rewards-grid">
-            <div class="reward-card" *ngFor="let reward of userRewards">
+            <div class="reward-card" *ngFor="let rewP of userRewards">
                 <div class="reward-icon">
                     <!--{{ getRewardTypeIcon(reward.rewardType) }}-->
                 </div>
                 <div class="reward-info">
-                    <h4>{{ reward.name }}</h4>
-                    <p>{{ reward.description }}</p>
-                    <span class="reward-type">{{ reward.rewardType }}</span>
+                    <h4>{{ rewP.reward.name }}</h4>
+                    <p>{{ rewP.reward.description }}</p>
+                    <span class="reward-type">{{ rewP.reward.rewardType }}</span>
                 </div>
             </div>
         </div>

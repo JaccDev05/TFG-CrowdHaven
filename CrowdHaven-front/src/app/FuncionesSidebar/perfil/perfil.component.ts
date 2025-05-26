@@ -6,7 +6,6 @@ import { User } from '../../api/models/user.model';
 import { Post } from '../../api/models/post.model';
 import { Role } from '../../api/models/role.model';
 import { Reward } from '../../api/models/reward.model';
-import { RewardPurchase } from '../../api/models/reward-purchase';
 import { Community } from '../../api/models/community.model';
 import { UserService } from '../../api/services/user/user.service';
 import { PostService } from '../../api/services/post/post.service';
@@ -14,6 +13,8 @@ import { CommunityService } from '../../api/services/community/community.service
 import { RewardService } from '../../api/services/reward/reward.service';
 import { UserStateService } from '../../PagInicio/loginservices/user-state.service';
 import { UserDTO } from '../../api/dtos/user-dto';
+import { RewardPurchaseService } from '../../api/services/rew-purchase/reward-purchase.service';
+import { RewardPurchase } from '../../api/models/reward-purchase.model';
 
 interface UserStats {
   totalPosts: number;
@@ -50,7 +51,7 @@ export class PerfilComponent implements OnInit {
 
   // Roles y recompensas
   userRoles: Role[] = [];
-  userRewards: Reward[] = [];
+  userRewards: RewardPurchase[] = [];
   userCommunities: Community[] = [];
 
   // Para obtener el ID del usuario (puede venir de la ruta o del usuario logueado)
@@ -67,7 +68,8 @@ export class PerfilComponent implements OnInit {
     private rewardService: RewardService,
     private route: ActivatedRoute,
     private router: Router,
-    private userStateService: UserStateService
+    private userStateService: UserStateService,
+    private rewPurchaseService: RewardPurchaseService
   ) {
     this.editProfileForm = this.createForm();
   }
@@ -159,7 +161,7 @@ export class PerfilComponent implements OnInit {
       }
     });
 
-    this.rewardService.getAllRewards().subscribe({
+    this.rewPurchaseService.getRewardPurchaseById(this.userId).subscribe({
       next: (rewards) => {
         this.userRewards = rewards.slice(0, 5);
       },
