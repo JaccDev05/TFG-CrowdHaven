@@ -84,6 +84,17 @@ export class MenuSidebarComponent implements OnInit {
     this.onClose();
   }
 
+  goToUserRewards() {
+    if (!this.user?.id) return;
+    
+    this.popupService.loader("Cargando...");
+    setTimeout(() => {
+      this.popupService.close();
+      this.router.navigate([`/user/rewards-user/${this.user?.id}`]); // <- ruta correcta sin ':'
+    }, 800);
+
+    this.onClose();
+  }
   loadUserInfo() {
     this.username = this.userStateService.getUsername();
     if (this.username) {
