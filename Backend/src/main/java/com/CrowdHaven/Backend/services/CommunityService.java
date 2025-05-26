@@ -54,7 +54,7 @@ public class CommunityService {
             community.setImg_photo(communityFromFront.getImg_photo());
             community.setImg_banner(communityFromFront.getImg_banner());
             community.setUser(optionalAdmin.get());
-
+            //mod
             this.communityRepository.save(community);
             return community;
         }
