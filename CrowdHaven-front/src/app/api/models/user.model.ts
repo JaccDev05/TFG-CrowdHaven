@@ -4,7 +4,7 @@ export interface User {
     password: string;
     avatar: string | null;
     email: string;
-    crowdCoin: string;
+    crowdCoin: number;
     createdAt: string;
     updatedAt: string;
   }

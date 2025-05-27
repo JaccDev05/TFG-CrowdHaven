@@ -29,7 +29,7 @@ public class User {
     private String email;
 
     @Column(name = "crowdCoin", nullable = false)
-    private BigDecimal crowdCoin = new BigDecimal("100.00");
+    private double crowdCoin ;
 
     @CreationTimestamp
     @Column(nullable = false)
