@@ -2,7 +2,7 @@ export interface Reward {
     id: number;
     name: string;
     description: string;
-    price: string;
+    price: number;
     rewardType: string;
   }
   

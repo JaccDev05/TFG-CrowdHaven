@@ -12,7 +12,7 @@ import { UserFunctionsLayoutComponent } from './layout/user-functions-layout/use
 import { UserCommunitiesComponent } from './FuncionesSidebar/user-communities/user-communities.component';
 import { UserPostsComponent } from './FuncionesSidebar/user-posts/user-posts.component';
 import { CommunityDetailsComponent } from './Feed/components/community-details/community-details.component';
-import { UserRewardsComponent } from './FuncionesSidebar/user-rewards/user-rewards.component';
+import { RewardsShopComponent } from './FuncionesSidebar/rewards-shop/rewards-shop.component';
 
 export const routes: Routes = [
   {
@@ -28,7 +28,7 @@ export const routes: Routes = [
       {path: 'comunidades-user/:id', component: UserCommunitiesComponent },
       {path: 'posts-user/:id', component: UserPostsComponent},
       { path: "perfil/:id", component: PerfilComponent},
-      {path: 'rewards-user/:id', component: UserRewardsComponent}
+      {path: 'shop-rewards', component: RewardsShopComponent}
     ]
   },
  

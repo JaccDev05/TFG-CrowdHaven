@@ -84,13 +84,13 @@ export class MenuSidebarComponent implements OnInit {
     this.onClose();
   }
 
-  goToUserRewards() {
+  goToShopRewards() {
     if (!this.user?.id) return;
     
     this.popupService.loader("Cargando...");
     setTimeout(() => {
       this.popupService.close();
-      this.router.navigate([`/user/rewards-user/${this.user?.id}`]); // <- ruta correcta sin ':'
+      this.router.navigate([`/user/shop-rewards`]); // <- ruta correcta sin ':'
     }, 800);
 
     this.onClose();

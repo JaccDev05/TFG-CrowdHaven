@@ -1,1 +1,18 @@
-<p>rewards-shop works!</p>
+<h4 class="text-white text-center my-4">Rewards Shop</h4>
+
+<div class="container my-2">
+  <div class="row justify-content-center">
+    <div class="col-md-4 mb-2 d-flex justify-content-center" *ngFor="let reward of rewards">
+      <div class="border rounded p-2 w-100" style="min-height: 200px;">
+        <p class="text-white m-0 fs-5">{{ reward.name }}</p>
+        <p class="text-white">{{ reward.description }}</p>
+        <p class="text-white text-end me-1">{{ reward.price }} crowdcoin$</p>
+        <button class="btn btn-success w-100 m-0" (click)="buyReward(reward)">Comprar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="w-75 m-auto row my-4"> 
+  <p class="text-white h5">CrowdCoin$: {{ user?.crowdCoin }}$</p>
+</div>

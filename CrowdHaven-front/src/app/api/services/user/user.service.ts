@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../../models/user.model';
 import { UserDTO } from '../../dtos/user-dto';
+import { CrowDTO } from '../../dtos/crowd-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,10 @@ export class UserService {
   }
 
   updateUser(id: number, userUp: UserDTO): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${id}`, userUp);
+  }
+
+  updateCrowdCoins(id: number, userUp: CrowDTO): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/${id}`, userUp);
   }
 
