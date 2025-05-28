@@ -19,13 +19,12 @@ export const routes: Routes = [
     path: "", component: MainLayoutComponent, children: [
       { path: '', component: VistaFeedComponent }, // -> www.ejemplo.com
       {path: "posts/:id", component: PostDetailsComponent},
-      { path: "community/:id", component: CommunityDetailsComponent}
     ]
   },
 
   {
     path: "user", component: UserFunctionsLayoutComponent, children: [
-      {path: 'comunidades-user/:id', component: UserCommunitiesComponent },
+      { path: ':userId/community/:communityId', component: CommunityDetailsComponent},      
       {path: 'posts-user/:id', component: UserPostsComponent},
       { path: "perfil/:id", component: PerfilComponent},
       {path: 'shop-rewards', component: RewardsShopComponent}
