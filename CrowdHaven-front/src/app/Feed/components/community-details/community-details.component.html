@@ -30,20 +30,60 @@
           </div>
         </div>
 
-        <!-- Botones de membresía -->
-        <div class="membership-buttons">
-          <button *ngIf="!isMember" class="btn btn-primary me-2" (click)="joinCommunity()"
+        <!-- Botones de membresía y edición -->
+        <div class="action-buttons d-flex gap-2">
+          <!-- Botón editar comunidad (solo para el creador) -->
+          <button *ngIf="isOwner" class="btn btn-outline-warning" (click)="toggleEditMode()">
+            <i class="bi bi-pencil-fill me-1"></i>
+            {{ editMode ? 'Cancelar' : 'Editar' }}
+          </button>
+
+          <button *ngIf="!isMember && !isOwner" class="btn btn-primary" (click)="joinCommunity()"
             [disabled]="joiningCommunity">
             <i class="bi bi-plus-circle me-1" *ngIf="!joiningCommunity"></i>
             <span class="spinner-border spinner-border-sm me-1" *ngIf="joiningCommunity"></span>
             {{ joiningCommunity ? 'Uniéndose...' : 'Unirse' }}
           </button>
 
-          <button *ngIf="isMember" class="btn btn-outline-danger me-2" (click)="leaveCommunity()">
+          <button *ngIf="isMember && !isOwner" class="btn btn-outline-danger" (click)="leaveCommunity()">
             <i class="bi bi-dash-circle me-1"></i>
             Salir
           </button>
         </div>
+      </div>
+
+      <!-- Formulario de edición de comunidad -->
+      <div *ngIf="editMode" class="edit-community-form mb-3 p-3 rounded bg-dark">
+        <h5 class="text-white mb-3">Editar Comunidad</h5>
+        <form (ngSubmit)="updateCommunity()" #editForm="ngForm">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <input [(ngModel)]="editCommunityData.name" name="editName" required 
+                     class="form-control" placeholder="Nombre de la comunidad" />
+            </div>
+            <div class="col-md-6">
+              <input [(ngModel)]="editCommunityData.img_photo" name="editPhoto" 
+                     class="form-control" placeholder="URL del avatar" />
+            </div>
+          </div>
+          <div class="mb-3">
+            <input [(ngModel)]="editCommunityData.img_banner" name="editBanner" 
+                   class="form-control" placeholder="URL del banner" />
+          </div>
+          <div class="mb-3">
+            <textarea [(ngModel)]="editCommunityData.description" name="editDescription" required 
+                      class="form-control" rows="3" placeholder="Descripción de la comunidad"></textarea>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success" [disabled]="updatingCommunity">
+              <span class="spinner-border spinner-border-sm me-1" *ngIf="updatingCommunity"></span>
+              {{ updatingCommunity ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+              Cancelar
+            </button>
+          </div>
+        </form>
       </div>
 
       <p class="text-white">{{ community.description }}</p>
@@ -63,25 +103,62 @@
     <!-- Posts Section -->
     <div class="posts-section d-flex flex-column align-items-center">
       
-<!-- Formulario para crear post -->
-      <div *ngIf="isMember" class="create-post-form w-100 mb-4 p-4 rounded-5 shadow-sm bg-dark text-white">
-        <h5>Crear nueva publicación</h5>
-        <form (ngSubmit)="submitPost()" #postForm="ngForm">
-          <div class="mb-2">
-            <input [(ngModel)]="newPost.title" name="title" required class="form-control" placeholder="Título del post" />
+      <!-- Formulario para crear post mejorado -->
+      <div *ngIf="isMember || isOwner" class="create-post-card w-100 mb-4">
+        <div class="create-post-header">
+          <div class="d-flex align-items-center">
+            <div class="post-icon-container">
+              <i class="bi bi-plus-circle-fill"></i>
+            </div>
+            <h5 class="mb-0">Crear nueva publicación</h5>
           </div>
-          <div class="mb-2">
-            <textarea [(ngModel)]="newPost.content" name="content" required class="form-control" rows="3"
-              placeholder="Contenido del post"></textarea>
-          </div>
-          <div class="mb-2">
-            <input [(ngModel)]="newPost.image" name="image" class="form-control" placeholder="URL de la imagen (opcional)" />
-          </div>
-          <button type="submit" class="btn btn-success" [disabled]="posting">
-            <span class="spinner-border spinner-border-sm me-1" *ngIf="posting"></span>
-            {{ posting ? 'Publicando...' : 'Publicar' }}
-          </button>
-        </form>
+        </div>
+        
+        <div class="create-post-body">
+          <form (ngSubmit)="submitPost()" #postForm="ngForm">
+            <!-- Título e imagen en la misma línea -->
+            <div class="row mb-3">
+              <div class="col-md-7">
+                <div class="form-floating">
+                  <input [(ngModel)]="newPost.title" name="title" required 
+                         class="form-control form-control-custom" id="postTitle" placeholder="" />
+                  <label for="postTitle" class="form-label-custom">
+                    <i class="bi bi-type me-2"></i>Título del post
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-floating">
+                  <input [(ngModel)]="newPost.image" name="image" 
+                         class="form-control form-control-custom" id="postImage" placeholder="" />
+                  <label for="postImage" class="form-label-custom">
+                    <i class="bi bi-image me-2"></i>URL de imagen (opcional)
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Contenido en línea separada -->
+            <div class="mb-3">
+              <div class="form-floating">
+                <textarea [(ngModel)]="newPost.content" name="content" required 
+                          class="form-control form-control-custom" id="postContent" 
+                          placeholder="" rows="4"></textarea>
+                <label for="postContent" class="form-label-custom">
+                  <i class="bi bi-chat-text me-2"></i>Contenido del post
+                </label>
+              </div>
+            </div>
+            
+            <div class="create-post-footer">
+              <button type="submit" class="btn btn-post-submit" [disabled]="posting">
+                <span class="spinner-border spinner-border-sm me-2" *ngIf="posting"></span>
+                <i class="bi bi-send-fill me-2" *ngIf="!posting"></i>
+                {{ posting ? 'Publicando...' : 'Publicar' }}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
 
       <div class="post mb-4 p-3 rounded-5 shadow-sm" *ngFor="let post of posts">

@@ -32,11 +32,7 @@
       }
     }
 
-    .membership-buttons {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      
+    .action-buttons {
       @media (max-width: 768px) {
         flex-direction: column;
         gap: 0.3rem;
@@ -44,6 +40,29 @@
         .btn {
           font-size: 0.85rem;
           padding: 0.4rem 0.8rem;
+        }
+      }
+    }
+
+    // Estilos para el formulario de edición
+    .edit-community-form {
+      border: 2px solid #acc2ef;
+      background: linear-gradient(135deg, #2a3650 0%, #1f2b3e 100%);
+      
+      .form-control {
+        background-color: #3a4b5c;
+        border: 1px solid #acc2ef;
+        color: white;
+        
+        &:focus {
+          background-color: #3a4b5c;
+          border-color: #9bb5ee;
+          box-shadow: 0 0 0 0.2rem rgba(172, 194, 239, 0.25);
+          color: white;
+        }
+        
+        &::placeholder {
+          color: #b8c5d1;
         }
       }
     }
@@ -63,6 +82,130 @@
         display: block;
         margin: 0 auto;
         max-height: 480px; // un pelín más bajo
+      }
+    }
+
+    // Estilos mejorados para el formulario de creación de posts
+    .create-post-card {
+      background: linear-gradient(135deg, #2a3650 0%, #1f2b3e 100%);
+      border-radius: 1.2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #acc2ef, #9bb5ee, #8aa8eb);
+        z-index: -1;
+        margin: -2px;
+        border-radius: inherit;
+      }
+
+      .create-post-header {
+        background: linear-gradient(90deg, #acc2ef 0%, #9bb5ee 100%);
+        padding: 1rem 1.5rem;
+        color: #1f2b3e;
+        
+        .post-icon-container {
+          background: rgba(31, 43, 62, 0.1);
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 1rem;
+          
+          i {
+            font-size: 1.2rem;
+            color: #1f2b3e;
+          }
+        }
+        
+        h5 {
+          font-weight: 600;
+          margin: 0;
+          font-size: 1.1rem;
+        }
+      }
+
+      .create-post-body {
+        padding: 1.5rem;
+        
+        .form-control-custom {
+          background: rgba(58, 75, 92, 0.8);
+          border: 2px solid transparent;
+          color: white;
+          border-radius: 0.8rem;
+          padding: 0.75rem 1rem;
+          transition: all 0.3s ease;
+          
+          &:focus {
+            background: rgba(58, 75, 92, 0.9);
+            border-color: #acc2ef;
+            box-shadow: 0 0 0 0.2rem rgba(172, 194, 239, 0.2);
+            color: white;
+          }
+          
+          &::placeholder {
+            color: #b8c5d1;
+          }
+        }
+        
+        .form-label-custom {
+          
+          color: #acc2ef;
+          font-weight: 500;
+          
+          i {
+            color: #9bb5ee;
+          }
+        }
+        
+        textarea.form-control-custom {
+          min-height: 100px;
+          resize: vertical;
+        }
+      }
+
+      .create-post-footer {
+        padding: 0 1.5rem 1.5rem;
+        display: flex;
+        justify-content: flex-end;
+        
+        .btn-post-submit {
+          background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+          border: none;
+          color: white;
+          padding: 0.75rem 2rem;
+          border-radius: 2rem;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+          
+          &:hover:not(:disabled) {
+            background: linear-gradient(135deg, #218838 0%, #1ea080 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+          }
+          
+          &:disabled {
+            background: #6c757d;
+            transform: none;
+            box-shadow: none;
+          }
+          
+          i {
+            font-size: 0.9rem;
+          }
+        }
       }
     }
   }
@@ -107,6 +250,17 @@ a:hover {
   }
 }
 
+.btn-outline-warning {
+  color: #ffc107;
+  border-color: #ffc107;
+  
+  &:hover {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #1f2b3e;
+  }
+}
+
 .btn-success {
   background-color: #28a745;
   border-color: #28a745;
@@ -114,5 +268,39 @@ a:hover {
   &:hover {
     background-color: #218838;
     border-color: #1e7e34;
+  }
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  
+  &:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+  }
+}
+
+// Mejoras responsivas
+@media (max-width: 768px) {
+  .create-post-card {
+    .create-post-body {
+      padding: 1rem;
+      
+      .row {
+        .col-md-7, .col-md-5 {
+          margin-bottom: 1rem;
+        }
+      }
+    }
+    
+    .create-post-footer {
+      padding: 0 1rem 1rem;
+      
+      .btn-post-submit {
+        width: 100%;
+        padding: 0.75rem 1rem;
+      }
+    }
   }
 }

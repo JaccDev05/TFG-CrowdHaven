@@ -9,6 +9,7 @@ import { MemberCommunityService } from '../../../api/services/member-community/m
 import { MemberCommunityDTO } from '../../../api/dtos/member-community-dto';
 import { RoleService } from '../../../api/services/role/role.service';
 import { PostDTO } from '../../../api/dtos/post-dto';
+import { CommunityDTO } from '../../../api/dtos/community-dto';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -25,7 +26,20 @@ export class CommunityDetailsComponent implements OnInit {
   error: string | null = null;
   loading: boolean = true;
   isMember: boolean = false;
+  isOwner: boolean = false;
   joiningCommunity: boolean = false;
+  
+  // Variables para edición de comunidad
+  editMode: boolean = false;
+  updatingCommunity: boolean = false;
+  editCommunityData: CommunityDTO = {
+    name: '',
+    description: '',
+    img_photo: '',
+    img_banner: '',
+    user: ''
+  };
+  
   newPost: PostDTO = {
     userId: 0,
     communityId: 0,
@@ -59,6 +73,7 @@ export class CommunityDetailsComponent implements OnInit {
     this.communityService.getCommunityById(this.communityId).subscribe({
       next: (data) => {
         this.community = data;
+        this.checkOwnership();
         this.loading = false;
       },
       error: (err) => {
@@ -67,6 +82,10 @@ export class CommunityDetailsComponent implements OnInit {
         console.error(err);
       }
     });
+  }
+
+  checkOwnership(): void {
+    this.isOwner = this.community.user.id === this.userId;
   }
 
   loadCommunityPosts(): void {
@@ -91,6 +110,105 @@ export class CommunityDetailsComponent implements OnInit {
       }
     });
   }
+
+  toggleEditMode(): void {
+    if (!this.editMode) {
+      // Inicializar datos de edición con los valores actuales
+      this.editCommunityData = {
+        name: this.community.name,
+        description: this.community.description,
+        img_photo: this.community.img_photo,
+        img_banner: this.community.img_banner,
+        user: this.community.user.username
+      };
+    }
+    this.editMode = !this.editMode;
+  }
+
+  cancelEdit(): void {
+    this.editMode = false;
+    this.editCommunityData = {
+      name: '',
+      description: '',
+      img_photo: '',
+      img_banner: '',
+      user: ''
+    };
+  }
+
+  /*updateCommunity(): void {
+    if (!this.editCommunityData.name || !this.editCommunityData.description) {
+      console.log('Datos incompletos:', this.editCommunityData);
+      return;
+    }
+
+    console.log('Iniciando actualización de comunidad:', this.editCommunityData);
+    this.updatingCommunity = true;
+
+    // Verificar si el método existe en el servicio
+    if (!this.communityService.updateCommunity) {
+      console.error('El método updateCommunity no existe en CommunityService');
+      this.updatingCommunity = false;
+      alert('Error: Método de actualización no implementado');
+      return;
+    }
+
+    this.communityService.updateCommunity(this.communityId, this.editCommunityData).subscribe({
+      next: (updatedCommunity) => {
+        console.log('Comunidad actualizada exitosamente:', updatedCommunity);
+        this.community = updatedCommunity;
+        this.editMode = false;
+        this.updatingCommunity = false;
+        this.cancelEdit();
+        alert('Comunidad actualizada exitosamente');
+      },
+      error: (err) => {
+        console.error('Error al actualizar la comunidad:', err);
+        this.updatingCommunity = false;
+        alert('Error al actualizar la comunidad: ' + (err.message || err.error?.message || 'Error desconocido'));
+      }
+    });
+  }*/
+
+    updateCommunity(): void {
+      if (!this.editCommunityData.name || !this.editCommunityData.description) {
+        console.log('Datos incompletos:', this.editCommunityData);
+        return;
+      }
+    
+      console.log('Iniciando actualización de comunidad:', this.editCommunityData);
+      this.updatingCommunity = true;
+    
+      // Crear el objeto Community completo que espera el backend
+      const communityUpdate: Community = {
+        id: this.community.id,
+        name: this.editCommunityData.name,
+        description: this.editCommunityData.description,
+        img_photo: this.editCommunityData.img_photo,
+        img_banner: this.editCommunityData.img_banner,
+        user: this.community.user, // Mantener el objeto User completo original
+        createdAt: this.community.createdAt,
+        updatedAt: this.community.updatedAt,
+        roles: this.community.roles || [],
+        members: this.community.members || []
+      };
+    
+      this.communityService.updateCommunity(this.communityId, communityUpdate).subscribe({
+        next: (updatedCommunity) => {
+          console.log('Comunidad actualizada exitosamente:', updatedCommunity);
+          this.community = updatedCommunity;
+          this.editMode = false;
+          this.updatingCommunity = false;
+          this.cancelEdit();
+          alert('Comunidad actualizada exitosamente');
+        },
+        error: (err) => {
+          console.error('Error al actualizar la comunidad:', err);
+          this.updatingCommunity = false;
+          alert('Error al actualizar la comunidad: ' + (err.message || err.error?.message || 'Error desconocido'));
+        }
+      });
+    }
 
   joinCommunity(): void {
     if (this.joiningCommunity) return;
