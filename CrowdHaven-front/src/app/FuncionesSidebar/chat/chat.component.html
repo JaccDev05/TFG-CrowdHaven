@@ -1,7 +1,0 @@
-<div *ngFor="let msg of chatHistory">
-    <b>{{ msg.senderId === currentUserId ? 'You' : 'Other' }}:</b> {{ msg.content }}
-  </div>
-  
-  <input [(ngModel)]="message" placeholder="Write a message" />
-  <button (click)="sendMessage()">Send</button>
-  
