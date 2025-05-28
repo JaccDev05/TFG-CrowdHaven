@@ -95,6 +95,19 @@ export class MenuSidebarComponent implements OnInit {
 
     this.onClose();
   }
+
+  goToChat() {
+    if (!this.user?.id) return;
+    
+    this.popupService.loader("Cargando...");
+    setTimeout(() => {
+      this.popupService.close();
+      this.router.navigate([`/user/chat/${this.user?.id}`]); // <- ruta correcta sin ':'
+    }, 800);
+
+    this.onClose();
+  }
+
   loadUserInfo() {
     this.username = this.userStateService.getUsername();
     if (this.username) {
