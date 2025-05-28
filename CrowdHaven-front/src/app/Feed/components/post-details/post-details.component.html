@@ -1,87 +1,108 @@
 <div class="container mt-4 feed-container d-flex flex-column align-items-center justify-content-center w-75">
 
-    <!-- Post -->
-    <div 
-      class="post mb-4 p-3 border rounded-5 shadow-sm w-75" 
-      *ngIf="post"
-    >
-      
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <div class="d-flex justify-content-between align-items-center w-100 my-1">
-            <div class="d-flex gap-2">
-                <div>
-                    <img [src]="post.user.avatar" class="rounded-circle me-2" width="25" height="25" (error)="post.user.avatar='err.jpg'" >
+  <!-- Post -->
+  <div class="post mb-4 p-3 border rounded-5 shadow-sm w-75" *ngIf="post">
 
-                </div>
-                <div>
-                    <strong class="text-white">{{ post.user.username }} en <a [routerLink]="['/community', post.community.id]" > ch/{{ post.community.name }}</a></strong>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="d-flex justify-content-between align-items-center w-100 my-1">
+        <div class="d-flex gap-2">
+          <div>
+            <img [src]="post.user.avatar" class="rounded-circle me-2" width="25" height="25"
+              (error)="post.user.avatar='err.jpg'">
 
-                </div>
-            </div>
-          <small class="text-white m-0 align-self-end">  {{ post.createdAt | date: 'dd/MM/yyyy' }}</small>
-        </div>
-      </div>
-  
-      <h4 class="mb-2 text-white">{{ post.title }}</h4>
-      <img *ngIf="post.image" [src]="post.image" alt="Imagen del post" class="w-100 post-img img-fluid rounded m-auto mb-2" />
-      <p class="text-white">{{ post.content }}</p>
-  
-      <div class="d-flex justify-content-between align-items-center mt-3 w-100">
-
-        <!-- Botones de Like y Dislike -->
-        <div>
-          <button class="btn btn-outline-success btn-sm me-2" (click)="likePost(post.id)">
-            <i class="bi bi-hand-thumbs-up-fill fs-6 m-0"></i> {{ post.like_count }}
-          </button>
-          <button class="btn btn-outline-danger btn-sm me-2" (click)="dislikePost(post.id)">
-            <i class="bi bi-hand-thumbs-down-fill fs-6 m-0"></i> {{ post.dislike_count }}
-          </button>
-        </div>
-      </div>
-    </div> 
-  
-    <!-- Sección de comentarios -->
-    <div *ngIf="post" class="w-75 mb-5">
-      <h5 class="text-white mt-4 mb-3">Comentarios</h5>
-  
-      <!-- Lista de comentarios -->
-    <div *ngIf="post.comments && post.comments.length > 0">
-        <div 
-          *ngFor="let comment of post.comments" 
-          class="border rounded-4 text-white p-3 rounded mb-4"
-        >
-          <div class="d-flex justify-content-between mb-3">
-            <div class="d-flex gap-2">
-                <div>
-                    <img [src]="comment.user.avatar" class="rounded-circle me-2" width="25" height="25" (error)="comment.user.avatar='err.jpg'">
-
-                </div>
-                <div>
-                    <strong>{{ comment.user.username }}</strong>
-
-                </div>
-            </div>
-            <small>{{ comment.createdAt | date: 'dd/MM/yyyy' }}</small>
           </div>
-          <p class="mb-3">{{ comment.content }}</p>
-  
-          <!-- Reacciones del comentario -->
-          <div class="d-flex justify-content-start align-items-center mt-2">
-            <button class="btn btn-outline-success btn-sm me-2" (click)="likeComment(comment.id)">
-              <i class="bi bi-hand-thumbs-up-fill fs-6 m-0"></i> ({{ comment.like_count }})
-            </button>
-            <button class="btn btn-outline-danger btn-sm me-2" (click)="dislikeComment(comment.id)">
-              <i class="bi bi-hand-thumbs-down-fill fs-6 m-0"></i> ({{ comment.dislike_count }})
-            </button>
+          <div>
+            <strong class="text-white">{{ post.user.username }} en <a [routerLink]="['/community', post.community.id]">
+                ch/{{ post.community.name }}</a></strong>
+
           </div>
         </div>
-      </div>
-  
-      <!-- Sin comentarios -->
-      <div *ngIf="post.comments?.length === 0" class="text-secondary mt-2">
-        No hay comentarios aún.
+        <small class="text-white m-0 align-self-end"> {{ post.createdAt | date: 'dd/MM/yyyy' }}</small>
       </div>
     </div>
-  
+
+    <h4 class="mb-2 text-white">{{ post.title }}</h4>
+    <img *ngIf="post.image" [src]="post.image" alt="Imagen del post"
+      class="w-100 post-img img-fluid rounded m-auto mb-2" />
+    <p class="text-white">{{ post.content }}</p>
+
+    <div class="d-flex justify-content-between align-items-center mt-3 w-100">
+
+      <!-- Botones de Like y Dislike -->
+      <div>
+        <button class="btn btn-outline-success btn-sm me-2" (click)="likePost(post.id)">
+          <i class="bi bi-hand-thumbs-up-fill fs-6 m-0"></i> {{ post.like_count }}
+        </button>
+        <button class="btn btn-outline-danger btn-sm me-2" (click)="dislikePost(post.id)">
+          <i class="bi bi-hand-thumbs-down-fill fs-6 m-0"></i> {{ post.dislike_count }}
+        </button>
+      </div>
+    </div>
   </div>
-  
+
+  <!-- Sección de comentarios -->
+  <div *ngIf="post" class="w-75 mb-4">
+    <h5 class="co text-white mt-4 mb-3  pb-2 ">Comentarios</h5>
+
+    <div class="mb-3 ">
+      <form [formGroup]="commentForm" (ngSubmit)="createComment()">
+        <label for="content" class="text-white fs-5 fw-light mb-2">Agrega un comentario: </label>
+        
+        <div class="input-group">
+          <input 
+            id="content" 
+            type="text" 
+            class="inpu form-control" 
+            formControlName="content" 
+            placeholder="Escribe tu comentario..." 
+          />
+          <button type="submit" class="btn btn-outline-primary"
+          [disabled]="commentForm.invalid"
+          >
+            <i class="bi bi-arrow-right-circle-fill fs-5"></i>
+          </button>
+        </div>
+        
+      </form>
+    </div>
+
+
+
+    <!-- Lista de comentarios -->
+    <div *ngIf="post.comments && post.comments.length > 0">
+      <div *ngFor="let comment of post.comments" class="border rounded-4 text-white p-3 rounded mb-4">
+        <div class="d-flex justify-content-between mb-3">
+          <div class="d-flex gap-2">
+            <div>
+              <img [src]="comment.user.avatar" class="rounded-circle me-2" width="25" height="25"
+                (error)="comment.user.avatar='err.jpg'">
+
+            </div>
+            <div>
+              <strong>{{ comment.user.username }}</strong>
+
+            </div>
+          </div>
+          <small>{{ comment.createdAt | date: 'dd/MM/yyyy' }}</small>
+        </div>
+        <p class="mb-3">{{ comment.content }}</p>
+
+        <!-- Reacciones del comentario -->
+        <div class="d-flex justify-content-start align-items-center mt-2">
+          <button class="btn btn-outline-success btn-sm me-2" (click)="likeComment(comment.id)">
+            <i class="bi bi-hand-thumbs-up-fill fs-6 m-0"></i> ({{ comment.like_count }})
+          </button>
+          <button class="btn btn-outline-danger btn-sm me-2" (click)="dislikeComment(comment.id)">
+            <i class="bi bi-hand-thumbs-down-fill fs-6 m-0"></i> ({{ comment.dislike_count }})
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sin comentarios -->
+    <div *ngIf="post.comments?.length === 0" class="text-secondary mt-2">
+      No hay comentarios aún.
+    </div>
+  </div>
+
+</div>

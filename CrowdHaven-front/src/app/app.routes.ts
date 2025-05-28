@@ -13,6 +13,7 @@ import { UserCommunitiesComponent } from './FuncionesSidebar/user-communities/us
 import { UserPostsComponent } from './FuncionesSidebar/user-posts/user-posts.component';
 import { CommunityDetailsComponent } from './Feed/components/community-details/community-details.component';
 import { RewardsShopComponent } from './FuncionesSidebar/rewards-shop/rewards-shop.component';
+import { ChatComponent } from './FuncionesSidebar/chat/chat.component';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,7 @@ export const routes: Routes = [
       { path: ':userId/community/:communityId', component: CommunityDetailsComponent},      
       {path: 'posts-user/:id', component: UserPostsComponent},
       { path: "perfil/:id", component: PerfilComponent},
+      { path: "chat/:id", component: ChatComponent},
       {path: 'shop-rewards', component: RewardsShopComponent}
     ]
   },
