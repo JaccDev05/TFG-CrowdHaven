@@ -1,99 +1,211 @@
 <div class="community-details">
-  
-    <!-- Loading state -->
-    <div *ngIf="loading" class="text-center text-white mt-5">
-      Cargando comunidad...
-    </div>
-  
-    <!-- Error state -->
-    <div *ngIf="error" class="text-center text-danger mt-5">
-      {{ error }}
-    </div>
-  
-    <!-- Community content -->
-    <div *ngIf="!loading && !error && community" class="container mt-4 community-container">
-      
-      <!-- Community Header -->
-      <div class="community-header mb-4 p-4 rounded-5 shadow-sm">
-        <div *ngIf="community.img_banner" class="community-banner mb-3">
-          <img [src]="community.img_banner" class="w-100 rounded">
-        </div>
-        
-        <div class="d-flex align-items-center mb-3">
-          <img [src]="community.img_photo" class="community-avatar rounded-circle me-3" 
-               width="60" height="60" (error)="community.img_photo='err.jpg'">
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="text-center text-white mt-5">
+    Cargando comunidad...
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error" class="text-center text-danger mt-5">
+    {{ error }}
+  </div>
+
+  <!-- Community content -->
+  <div *ngIf="!loading && !error && community" class="container mt-4 community-container">
+
+    <!-- Community Header -->
+    <div class="community-header mb-4 p-4 rounded-5 shadow-sm">
+      <div *ngIf="community.img_banner" class="community-banner mb-3">
+        <img [src]="community.img_banner" class="w-100 rounded">
+      </div>
+
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center">
+          <img [src]="community.img_photo" class="community-avatar rounded-circle me-3" width="60" height="60"
+            (error)="community.img_photo='err.jpg'">
           <div>
             <h2 class="text-white mb-1">ch/{{ community.name }}</h2>
             <p class="text-white mb-0">Creada por {{ community.user.username }}</p>
             <small class="text-white">{{ community.createdAt | date: 'dd/MM/yyyy' }}</small>
           </div>
         </div>
-        
-        <p class="text-white">{{ community.description }}</p>
-        
-        <div class="community-stats d-flex gap-3">
-          <span class="text-white">
-            <i class="bi bi-people-fill me-1"></i>
-            {{ community.members?.length || 0 }} miembros
-          </span>
-          <span class="text-white">
-            <i class="bi bi-file-text-fill me-1"></i>
-            {{ posts.length }} publicaciones
-          </span>
+
+        <!-- Botones de membresía y edición -->
+        <div class="action-buttons d-flex gap-2">
+          <!-- Botón editar comunidad (solo para el creador) -->
+          <button *ngIf="isOwner" class="btn btn-outline-warning" (click)="toggleEditMode()">
+            <i class="bi bi-pencil-fill me-1"></i>
+            {{ editMode ? 'Cancelar' : 'Editar' }}
+          </button>
+
+          <button *ngIf="!isMember && !isOwner" class="btn btn-primary" (click)="joinCommunity()"
+            [disabled]="joiningCommunity">
+            <i class="bi bi-plus-circle me-1" *ngIf="!joiningCommunity"></i>
+            <span class="spinner-border spinner-border-sm me-1" *ngIf="joiningCommunity"></span>
+            {{ joiningCommunity ? 'Uniéndose...' : 'Unirse' }}
+          </button>
+
+          <button *ngIf="isMember && !isOwner" class="btn btn-outline-danger" (click)="leaveCommunity()">
+            <i class="bi bi-dash-circle me-1"></i>
+            Salir
+          </button>
         </div>
       </div>
-  
-      <!-- Posts Section -->
-      <div class="posts-section d-flex flex-column align-items-center">
-        <div 
-          class="post mb-4 p-3 rounded-5 shadow-sm" 
-          *ngFor="let post of posts"
-        >
-          <!-- Post Header -->
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <div class="d-flex justify-content-between align-items-center w-100 my-1">
-              <div class="d-flex gap-1">
-                <div>
-                  <img [src]="post.user.avatar" class="rounded-circle me-2" 
-                       width="25" height="25" (error)="post.user.avatar='err.jpg'">
-                </div>
-                <div>
-                  <strong class="text-white">{{ post.user.username }}</strong>
+
+      <!-- Formulario de edición de comunidad -->
+      <div *ngIf="editMode" class="edit-community-form mb-3 p-3 rounded bg-dark">
+        <h5 class="text-white mb-3">Editar Comunidad</h5>
+        <form (ngSubmit)="updateCommunity()" #editForm="ngForm">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <input [(ngModel)]="editCommunityData.name" name="editName" required 
+                     class="form-control" placeholder="Nombre de la comunidad" />
+            </div>
+            <div class="col-md-6">
+              <input [(ngModel)]="editCommunityData.img_photo" name="editPhoto" 
+                     class="form-control" placeholder="URL del avatar" />
+            </div>
+          </div>
+          <div class="mb-3">
+            <input [(ngModel)]="editCommunityData.img_banner" name="editBanner" 
+                   class="form-control" placeholder="URL del banner" />
+          </div>
+          <div class="mb-3">
+            <textarea [(ngModel)]="editCommunityData.description" name="editDescription" required 
+                      class="form-control" rows="3" placeholder="Descripción de la comunidad"></textarea>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success" [disabled]="updatingCommunity">
+              <span class="spinner-border spinner-border-sm me-1" *ngIf="updatingCommunity"></span>
+              {{ updatingCommunity ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <p class="text-white">{{ community.description }}</p>
+
+      <div class="community-stats d-flex gap-3">
+        <span class="text-white">
+          <i class="bi bi-people-fill me-1"></i>
+          {{ community.members?.length || 0 }} miembros
+        </span>
+        <span class="text-white">
+          <i class="bi bi-file-text-fill me-1"></i>
+          {{ posts.length }} publicaciones
+        </span>
+      </div>
+    </div>
+
+    <!-- Posts Section -->
+    <div class="posts-section d-flex flex-column align-items-center">
+      
+      <!-- Formulario para crear post mejorado -->
+      <div *ngIf="isMember || isOwner" class="create-post-card w-100 mb-4">
+        <div class="create-post-header">
+          <div class="d-flex align-items-center">
+            <div class="post-icon-container">
+              <i class="bi bi-plus-circle-fill"></i>
+            </div>
+            <h5 class="mb-0">Crear nueva publicación</h5>
+          </div>
+        </div>
+        
+        <div class="create-post-body">
+          <form (ngSubmit)="submitPost()" #postForm="ngForm">
+            <!-- Título e imagen en la misma línea -->
+            <div class="row mb-3">
+              <div class="col-md-7">
+                <div class="form-floating">
+                  <input [(ngModel)]="newPost.title" name="title" required 
+                         class="form-control form-control-custom" id="postTitle" placeholder="" />
+                  <label for="postTitle" class="form-label-custom">
+                    <i class="bi bi-type me-2"></i>Título del post
+                  </label>
                 </div>
               </div>
-              <small class="text-white m-0 align-self-end">{{ post.createdAt | date: 'dd/MM/yyyy' }}</small>
+              <div class="col-md-5">
+                <div class="form-floating">
+                  <input [(ngModel)]="newPost.image" name="image" 
+                         class="form-control form-control-custom" id="postImage" placeholder="" />
+                  <label for="postImage" class="form-label-custom">
+                    <i class="bi bi-image me-2"></i>URL de imagen (opcional)
+                  </label>
+                </div>
+              </div>
             </div>
-          </div>
-  
-          <h4 class="mb-2 text-white">{{ post.title }}</h4>
-          <img *ngIf="post.image" [src]="post.image" 
-               class="w-100 post-img img-fluid rounded m-auto mb-2" />
-          <p class="text-white">{{ post.content }}</p>
-  
-          <div class="d-flex justify-content-between align-items-center mt-3 w-100">
-            <!-- Botones de Like y Dislike a la izquierda -->
-            <div>
-              <button class="btn btn-outline-success btn-sm me-2" (click)="likePost(post.id)">
-                <i class="bi bi-hand-thumbs-up-fill fs-6 m-0"></i> {{ post.like_count }}
-              </button>
-              <button class="btn btn-outline-danger btn-sm me-2" (click)="dislikePost(post.id)">
-                <i class="bi bi-hand-thumbs-down-fill fs-6 m-0"></i> {{ post.dislike_count }}
+            
+            <!-- Contenido en línea separada -->
+            <div class="mb-3">
+              <div class="form-floating">
+                <textarea [(ngModel)]="newPost.content" name="content" required 
+                          class="form-control form-control-custom" id="postContent" 
+                          placeholder="" rows="4"></textarea>
+                <label for="postContent" class="form-label-custom">
+                  <i class="bi bi-chat-text me-2"></i>Contenido del post
+                </label>
+              </div>
+            </div>
+            
+            <div class="create-post-footer">
+              <button type="submit" class="btn btn-post-submit" [disabled]="posting">
+                <span class="spinner-border spinner-border-sm me-2" *ngIf="posting"></span>
+                <i class="bi bi-send-fill me-2" *ngIf="!posting"></i>
+                {{ posting ? 'Publicando...' : 'Publicar' }}
               </button>
             </div>
-          
-            <!-- Botón de comentarios alineado a la derecha -->
-            <div class="ms-auto">
-              <button class="btn btn-outline-secondary btn-sm m-0" (click)="commentOnPost(post.id)">
-                <i class="bi bi-chat-left-text-fill fs-6 m-0 me-2 mt-1"></i>({{ post.comments.length }})
-              </button>
-            </div>
-          </div>
-        </div>
-  
-        <div *ngIf="posts.length === 0 && !loading" class="text-center text-white">
-          No hay publicaciones en esta comunidad aún.
+          </form>
         </div>
       </div>
-  
+
+      <div class="post mb-4 p-3 rounded-5 shadow-sm" *ngFor="let post of posts">
+        <!-- Post Header -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="d-flex justify-content-between align-items-center w-100 my-1">
+            <div class="d-flex gap-1">
+              <div>
+                <img [src]="post.user.avatar" class="rounded-circle me-2" width="25" height="25"
+                  (error)="post.user.avatar='err.jpg'">
+              </div>
+              <div>
+                <strong class="text-white">{{ post.user.username }}</strong>
+              </div>
+            </div>
+            <small class="text-white m-0 align-self-end">{{ post.createdAt | date: 'dd/MM/yyyy' }}</small>
+          </div>
+        </div>
+
+        <h4 class="mb-2 text-white">{{ post.title }}</h4>
+        <img *ngIf="post.image" [src]="post.image" class="w-100 post-img img-fluid rounded m-auto mb-2" />
+        <p class="text-white">{{ post.content }}</p>
+
+        <div class="d-flex justify-content-between align-items-center mt-3 w-100">
+          <!-- Botones de Like y Dislike a la izquierda -->
+          <div>
+            <button class="btn btn-outline-success btn-sm me-2" (click)="likePost(post.id)">
+              <i class="bi bi-hand-thumbs-up-fill fs-6 m-0"></i> {{ post.like_count }}
+            </button>
+            <button class="btn btn-outline-danger btn-sm me-2" (click)="dislikePost(post.id)">
+              <i class="bi bi-hand-thumbs-down-fill fs-6 m-0"></i> {{ post.dislike_count }}
+            </button>
+          </div>
+
+          <!-- Botón de comentarios alineado a la derecha -->
+          <div class="ms-auto">
+            <button class="btn btn-outline-secondary btn-sm m-0" (click)="commentOnPost(post.id)">
+              <i class="bi bi-chat-left-text-fill fs-6 m-0 me-2 mt-1"></i>({{ post.comments.length }})
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="posts.length === 0 && !loading" class="text-center text-white">
+        No hay publicaciones en esta comunidad aún.
+      </div>
     </div>
+
   </div>
+</div>
