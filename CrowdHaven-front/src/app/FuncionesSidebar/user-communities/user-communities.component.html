@@ -2,7 +2,7 @@
 <h4 class="text-white text-center mb-3">Comunidades a las que perteneces</h4>
 <ul class="com-list m-0 w-75 m-auto">
     <li *ngFor="let community of communities" class="com-cont my-4">
-      <a [routerLink]="['/community', community.id]" class="com">
+      <a [routerLink]="['/user', userId, 'community', community.id]" class="com">
 
         <div class="d-flex gap-3">
           <div>

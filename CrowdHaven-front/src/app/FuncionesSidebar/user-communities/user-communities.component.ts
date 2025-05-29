@@ -18,6 +18,7 @@ import { MemberCommunityService } from '../../api/services/member-community/memb
 export class UserCommunitiesComponent implements OnInit {
 
   communities: Community[] = [];
+  userId: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,6 +33,10 @@ export class UserCommunitiesComponent implements OnInit {
         this.loadCommunities(userId);
       }
     });
+  }
+  getId() {
+     const userId = this.route.snapshot.paramMap.get('id');
+     return userId
   }
 
   loadCommunities(userId: number): void {
