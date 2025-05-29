@@ -49,7 +49,9 @@ export class SidebarComunidadesComponent implements OnInit {
 
   loadCommunities(): void {
     this.communityService.getAllCommunities().subscribe((data) => {
-      this.communities = data;
+      this.communities = data
+        .sort((a, b) => b.members.length - a.members.length) // ordenar de mayor a menor
+        .slice(0, 5); // solo las primeras 5
     });
-  }
+  }  
 }

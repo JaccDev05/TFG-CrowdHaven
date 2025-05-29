@@ -41,7 +41,14 @@ export class UserCommunitiesComponent implements OnInit {
 
   loadCommunities(userId: number): void {
     this.comService.getCommunitiesByUser(userId).subscribe((data) => {
-      this.communities = data;
+      // Filtra comunidades duplicadas por ID
+      const uniqueCommunities = data.filter((community, index, self) =>
+        index === self.findIndex(c => c.id === community.id)
+      );
+  
+      // Ordena por cantidad de miembros descendente
+      this.communities = uniqueCommunities.sort((a, b) => b.members.length - a.members.length);
     });
   }
+  
 }

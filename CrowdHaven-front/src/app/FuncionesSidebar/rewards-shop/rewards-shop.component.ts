@@ -34,7 +34,7 @@ export class RewardsShopComponent implements OnInit {
 
   loadRewards(): void {
     this.rewardService.getAllRewards().subscribe(data => {
-      this.rewards = data
+      this.rewards = data.sort((a, b) => a.price - b.price);
     })
   }
 

@@ -58,8 +58,7 @@ export class VistaFeedComponent implements OnInit {
   loadPosts(): void {
     this.postService.getAllPosts().subscribe({
       next: (data) => {
-        this.posts = data;
-        
+        this.posts = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       },
       error: (err) => {
         this.error = 'Error al cargar las publicaciones';
@@ -67,6 +66,7 @@ export class VistaFeedComponent implements OnInit {
       }
     });
   }
+  
 
   likePost(postId: number): void {
     this.postService.updatePostReaction(postId, true).subscribe({

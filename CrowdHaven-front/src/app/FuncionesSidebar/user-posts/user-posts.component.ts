@@ -60,7 +60,7 @@ export class UserPostsComponent {
 
   loadPosts(userId: number): void {
     this.postService.getPostsByUser(userId).subscribe((data) => {
-      this.posts = data;
+      this.posts = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     });
   }
 
