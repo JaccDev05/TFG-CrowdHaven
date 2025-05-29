@@ -2,7 +2,7 @@
   <h5 class="text-white text-center pb-2">Popular Communities</h5>
   <ul class="com-list m-0">
     <li *ngFor="let community of communities" class="com-cont my-2">
-      <a [routerLink]="['/community', community.id]" class="com">
+      <a [routerLink]="['/user', user.id, 'community', community.id]" class="com">
 
         <div class="d-flex gap-3">
           <div>

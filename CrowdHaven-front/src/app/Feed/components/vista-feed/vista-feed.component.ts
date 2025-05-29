@@ -6,6 +6,9 @@ import { RouterLink } from '@angular/router';
 //import { DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { SidebarComunidadesComponent } from '../sidebar-comunidades/sidebar-comunidades.component';
+import { UserStateService } from '../../../PagInicio/loginservices/user-state.service';
+import { User } from '../../../api/models/user.model';
+import { UserService } from '../../../api/services/user/user.service';
 
 @Component({
   selector: 'app-vista-feed',
@@ -21,15 +24,35 @@ import { SidebarComunidadesComponent } from '../sidebar-comunidades/sidebar-comu
 export class VistaFeedComponent implements OnInit {
   posts: Post[] = [];
   error: string | null = null;
+  user!: User;                // Usuario logueado
+  
 
   constructor(
     private postService: PostService,
-    private router: Router
+    private router: Router,
+    private userStateService: UserStateService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.loadPosts();
-    
+    this.getUser();
+  }
+
+  getUser(): void {
+    const name = this.userStateService.getUsername();
+    if (!name) {
+      return;
+    }
+
+    this.userService.getUserProfile(name).subscribe({
+      next: (user) => {
+        this.user = user;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
   }
 
   loadPosts(): void {

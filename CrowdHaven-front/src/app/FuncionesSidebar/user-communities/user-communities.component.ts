@@ -4,6 +4,7 @@ import { Community } from '../../api/models/community.model';
 import { CommunityService } from '../../api/services/community/community.service';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MemberCommunityService } from '../../api/services/member-community/member-community.service';
 
 @Component({
   selector: 'app-user-communities',
@@ -20,7 +21,7 @@ export class UserCommunitiesComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private comService: CommunityService
+    private comService: MemberCommunityService
   ) {}
 
   ngOnInit(): void {

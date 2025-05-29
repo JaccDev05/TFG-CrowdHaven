@@ -17,7 +17,7 @@
                 <img [src]="post.user.avatar" class="rounded-circle me-2 " width="25" height="25" (error)="post.user.avatar='err.jpg'" >
             </div>
             <div class="">
-                <strong class="text-white ">{{ post.user.username }} en <a [routerLink]="['/community', post.community.id]"  >ch/{{ post.community.name }}</a> </strong>
+                <strong class="text-white ">{{ post.user.username }} en <a [routerLink]="['/user', user.id, 'community', post.community.id]">ch/{{ post.community.name }}</a> </strong>
             </div>
         </div>
       <small class="text-white m-0 align-self-end">  {{ post.createdAt | date: 'dd/MM/yyyy' }}</small>

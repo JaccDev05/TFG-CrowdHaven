@@ -12,7 +12,7 @@
 
           </div>
           <div>
-            <strong class="text-white">{{ post.user.username }} en <a [routerLink]="['/community', post.community.id]">
+            <strong class="text-white">{{ post.user.username }} en <a [routerLink]="['/user', user.id, 'community', post.community.id]">
                 ch/{{ post.community.name }}</a></strong>
 
           </div>

@@ -97,8 +97,7 @@ public class SecurityConfig {
 
                                 "/chat",
                                 "/chat/send",
-                                "/chat/history/{user1Id}/{user2Id}",
-                                "/ws/**"
+                                "/chat/history/{user1Id}/{user2Id}"
 
 
 

@@ -53,8 +53,6 @@ export class PostDetailsComponent implements OnInit {
 
   createComment(): void {
     if (!this.user) return;
-    if (this.commentForm.invalid) return;
-
 
     const CommentDTO = {
       userId: this.user.id,

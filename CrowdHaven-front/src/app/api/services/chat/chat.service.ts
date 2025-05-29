@@ -1,58 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Client, IMessage, Stomp } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
-import { Subject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ChatMessage } from '../../models/chat-message.model';
+import { ChatMessageDTO } from '../../dtos/Chatmessage-dto';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ChatService {
-  private stompClient!: Client;
-  private messageSubject = new Subject<any>();
+  private apiUrl = 'http://localhost:8080/CrowdHaven/chat';
 
-  connect(userId: number) {
-    this.stompClient = new Client({
-      // Usa SockJS para crear el WebSocket
-      brokerURL: 'ws://localhost:8080/ws',
-  reconnectDelay: 5000,
-      onConnect: () => {
-        console.log('WebSocket connected');
+  constructor(private http: HttpClient) {}
 
-        this.stompClient.subscribe(
-          `/user/${userId}/queue/messages`, // Cola personalizada por usuario
-          (message: IMessage) => {
-            const msg = JSON.parse(message.body);
-            this.messageSubject.next(msg);
-          }
-        );
-      },
-      onStompError: (frame) => {
-        console.error('STOMP error', frame);
-      },
-    });
-
-    this.stompClient.activate();
+  getHistory(user1Id: number, user2Id: number): Observable<ChatMessage[]> {
+    return this.http.get<ChatMessage[]>(`${this.apiUrl}/history/${user1Id}/${user2Id}`);
   }
 
-  sendMessage(senderId: number, receiverId: number, content: string) {
-    if (this.stompClient && this.stompClient.connected) {
-      const message = {
-        senderId,
-        receiverId,
-        content,
-        timestamp: new Date().toISOString(),
-      };
-
-      this.stompClient.publish({
-        destination: '/app/send', // debe coincidir con @MessageMapping("/send")
-        body: JSON.stringify(message),
-      });
-    } else {
-      console.warn('No STOMP connection available');
-    }
-  }
-
-  getMessages(): Observable<any> {
-    return this.messageSubject.asObservable();
+  sendMessage(message: ChatMessageDTO): Observable<ChatMessageDTO> {
+    return this.http.post<ChatMessageDTO>(`${this.apiUrl}/send`, message);
   }
 }

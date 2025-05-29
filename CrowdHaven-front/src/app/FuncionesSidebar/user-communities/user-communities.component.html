@@ -18,6 +18,9 @@
         </div>
       </a>
     </li>
+    <div **ngIf="communities.length === 0">
+      <p class="text-white text-center">No perteneces a ninguna comunidad</p>
+    </div>
   </ul>
   <div class="d-flex justify-content-center">
     <button class="btn btn-outline-success align-items-center justify-content-center fs-4">! Crea tu comunidad !</button>

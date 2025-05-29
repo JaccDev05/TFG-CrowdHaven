@@ -102,7 +102,7 @@ export class MenuSidebarComponent implements OnInit {
     this.popupService.loader("Cargando...");
     setTimeout(() => {
       this.popupService.close();
-      this.router.navigate([`/user/chat/${this.user?.id}`]); // <- ruta correcta sin ':'
+      this.router.navigate([`/user/${this.user?.id}/chat`]); // <- ruta correcta sin ':'
     }, 800);
 
     this.onClose();
