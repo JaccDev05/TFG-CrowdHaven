@@ -6,7 +6,7 @@ import {
   AfterViewChecked
 } from '@angular/core';
 import { ChatMessage } from '../../api/models/chat-message.model';
-import { ChatService } from '../../api/services/Chat/chat.service';
+import { ChatService } from '../../api/services/chat/chat.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommunityService } from '../../api/services/community/community.service';
 import { UserStateService } from '../../PagInicio/loginservices/user-state.service';
