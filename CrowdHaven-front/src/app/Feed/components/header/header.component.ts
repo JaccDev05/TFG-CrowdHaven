@@ -25,13 +25,12 @@ import { FormsModule } from '@angular/forms';
 export class HeaderComponent {
 
   isLoggedIn = false;
-  user: User | null = null;
   sidebarOpen = false;
   showSidebar = false;
   allCommunities: Community[] = [];
   filteredCommunities: Community[] = [];
   searchQuery = '';
-user!: User
+  user!: User
 
   constructor(
     private userStateService: UserStateService,
@@ -42,24 +41,15 @@ private userService: UserService
   ) {}
 
   ngOnInit(): void {
-    this.checkSession();
     this.getUser();
     this.communityService.getAllCommunities().subscribe(communities => {
       this.allCommunities = communities;
     });
 
-    this.userStateService.currentUser$.subscribe(user => {
-    this.username = user;
-    const existeUsuario = !!user;
-    const tieneToken = !!this.tokenService.getAccessToken();
-    this.isLoggedIn = existeUsuario && tieneToken;
-  });
+   
   }
 
-  checkSession() {
-    this.username = this.userStateService.getUsername();
-    this.isLoggedIn = !!this.username && !!this.tokenService.getAccessToken();
-  }
+  
   clearSearch(): void {
     this.searchQuery = '';
     this.filteredCommunities = [];
