@@ -5,6 +5,7 @@ import { UserStateService } from '../../../PagInicio/loginservices/user-state.se
 import { TokenService } from '../../../api/auth-services/token.service';
 import { CommonModule } from '@angular/common';
 import { MenuSidebarComponent } from '../menu-sidebar/menu-sidebar.component';
+import { User } from '../../../api/models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -19,11 +20,10 @@ import { MenuSidebarComponent } from '../menu-sidebar/menu-sidebar.component';
 export class HeaderComponent {
 
   isLoggedIn = false;
-  username: string | null = null;
+  user: User | null = null;
   sidebarOpen = false;
   showSidebar = false;
-
-
+  username: string | null = null;
 
   constructor(
     private userStateService: UserStateService,
@@ -33,6 +33,13 @@ export class HeaderComponent {
 
   ngOnInit() {
     this.checkSession();
+
+    this.userStateService.currentUser$.subscribe(user => {
+    this.username = user;
+    const existeUsuario = !!user;
+    const tieneToken = !!this.tokenService.getAccessToken();
+    this.isLoggedIn = existeUsuario && tieneToken;
+  });
   }
 
   checkSession() {
@@ -44,7 +51,6 @@ export class HeaderComponent {
     this.router.navigate(['/auth/login']);
   }
 
-  // Método para redirigir a la página de Register
   goToRegister(): void {
     this.router.navigate(['/auth/register']);
   }

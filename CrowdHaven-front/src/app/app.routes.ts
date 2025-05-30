@@ -24,7 +24,7 @@ export const routes: Routes = [
 
   {
     path: "user", component: UserFunctionsLayoutComponent, children: [
-      { path: ':userId/community/:communityId', component: CommunityDetailsComponent},      
+      { path: ':username/community/:communityId', component: CommunityDetailsComponent},      
       {path: 'posts-user/:id', component: UserPostsComponent},
       { path: "perfil/:id", component: PerfilComponent},
       {path: 'shop-rewards', component: RewardsShopComponent}

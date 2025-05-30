@@ -78,12 +78,15 @@ public class MemberCommunityService {
 
     @Transactional
     public void removeUserFromCommunity(Long userId, Long communityId) {
-        // Buscamos el miembro específico de la comunidad con userId y communityId
-
-        // Eliminamos el miembro encontrado
         memberCommunityRepository.deleteByUserIdAndCommunityId(userId, communityId);
 
+        communityRepository.findById(communityId).ifPresent(community -> {
+            userRepository.findById(userId).ifPresent(user -> {
+                community.getMembers().remove(user); // <-- actualizar el List de members
+            });
+        });
     }
+
 
 
 }

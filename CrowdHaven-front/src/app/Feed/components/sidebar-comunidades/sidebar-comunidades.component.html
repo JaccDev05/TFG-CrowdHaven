@@ -2,17 +2,16 @@
   <h5 class="text-white text-center pb-2">Popular Communities</h5>
   <ul class="com-list m-0">
     <li *ngFor="let community of communities" class="com-cont my-2">
-      <a [routerLink]="['/community', community.id]" class="com">
+      <a [routerLink]="['/user', username, 'community', community.id]" class="com">
 
         <div class="d-flex gap-3">
           <div>
-            <img [src]="community.img_photo" class="com-img img-fluid " (error)="community.img_photo='pperr.jpg'">
+            <img [src]="community.img_photo" class="com-img img-fluid" (error)="community.img_photo='pperr.jpg'">
           </div>
 
           <div>
             <strong class="m-0 mb-0 text-white">{{ community.name }}</strong><br>
             <p class="m-0 mt-0 text-white">{{ community.members.length }} members</p>
-
           </div>
 
         </div>

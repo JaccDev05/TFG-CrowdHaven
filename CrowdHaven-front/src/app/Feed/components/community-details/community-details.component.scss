@@ -159,19 +159,50 @@
           }
         }
         
-        .form-label-custom {
+        // FIX: Mejorar las floating labels para evitar que tapen el texto
+        .form-floating {
+          position: relative;
           
-          color: #acc2ef;
-          font-weight: 500;
+          .form-control-custom {
+            padding-top: 1.625rem; // Más espacio arriba para la etiqueta
+            padding-bottom: 0.625rem;
+            line-height: 1.25;
+          }
           
-          i {
-            color: #9bb5ee;
+          .form-label-custom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 1rem 0.75rem;
+            overflow: hidden;
+            text-align: start;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            pointer-events: none;
+            border: 1px solid transparent;
+            transform-origin: 0 0;
+            transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+            color: #acc2ef;
+            font-weight: 500;
+            
+            i {
+              color: #9bb5ee;
+            }
+          }
+          
+          .form-control-custom:focus ~ .form-label-custom,
+          .form-control-custom:not(:placeholder-shown) ~ .form-label-custom {
+            opacity: 0.65;
+            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
           }
         }
         
         textarea.form-control-custom {
           min-height: 100px;
           resize: vertical;
+          padding-top: 1.625rem; // Mismo padding que los inputs
         }
       }
 

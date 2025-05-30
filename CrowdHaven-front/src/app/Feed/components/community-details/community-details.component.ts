@@ -11,6 +11,8 @@ import { RoleService } from '../../../api/services/role/role.service';
 import { PostDTO } from '../../../api/dtos/post-dto';
 import { CommunityDTO } from '../../../api/dtos/community-dto';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../../api/services/user/user.service';
+import { User } from '../../../api/models/user.model';
 
 @Component({
   selector: 'app-community-details',
@@ -22,6 +24,7 @@ export class CommunityDetailsComponent implements OnInit {
   community: Community = {} as Community;
   posts: Post[] = [];
   communityId: number = 0;
+  username: string = '';
   userId: number = 0;
   error: string | null = null;
   loading: boolean = true;
@@ -51,18 +54,25 @@ export class CommunityDetailsComponent implements OnInit {
   
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private communityService: CommunityService,
-    private postService: PostService,
-    private memberCommunityService: MemberCommunityService,
-    private roleService: RoleService
+    private route: ActivatedRoute, private router: Router, private communityService: CommunityService, private postService: PostService, 
+    private memberCommunityService: MemberCommunityService, private roleService: RoleService, private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.userId = Number(params['userId']);
       this.communityId = Number(params['communityId']);
+      this.username = params['username'];
+      this.userService.getUserProfile(this.username).subscribe({
+        next: (user: User) => {
+          this.userId = user.id;
+          console.log('User ID:', this.userId);
+        },
+        error: (err) => {
+          console.error('Error obteniendo usuario:', err);
+          this.userId = 0;
+        }
+      });
+
       this.loadCommunityData();
       this.loadCommunityPosts();
       this.checkMembership();
@@ -83,11 +93,6 @@ export class CommunityDetailsComponent implements OnInit {
       }
     });
   }
-
-  checkOwnership(): void {
-    this.isOwner = this.community.user.id === this.userId;
-  }
-
   loadCommunityPosts(): void {
     this.postService.getPostsByCommunity(this.communityId).subscribe({
       next: (data) => {
@@ -100,6 +105,9 @@ export class CommunityDetailsComponent implements OnInit {
     });
   }
 
+  checkOwnership(): void {
+    this.isOwner = this.community.user.id === this.userId;
+  }
   checkMembership(): void {
     this.memberCommunityService.getCommunitiesByUser(this.userId).subscribe({
       next: (communities) => {
@@ -124,7 +132,6 @@ export class CommunityDetailsComponent implements OnInit {
     }
     this.editMode = !this.editMode;
   }
-
   cancelEdit(): void {
     this.editMode = false;
     this.editCommunityData = {
@@ -135,40 +142,6 @@ export class CommunityDetailsComponent implements OnInit {
       user: ''
     };
   }
-
-  /*updateCommunity(): void {
-    if (!this.editCommunityData.name || !this.editCommunityData.description) {
-      console.log('Datos incompletos:', this.editCommunityData);
-      return;
-    }
-
-    console.log('Iniciando actualización de comunidad:', this.editCommunityData);
-    this.updatingCommunity = true;
-
-    // Verificar si el método existe en el servicio
-    if (!this.communityService.updateCommunity) {
-      console.error('El método updateCommunity no existe en CommunityService');
-      this.updatingCommunity = false;
-      alert('Error: Método de actualización no implementado');
-      return;
-    }
-
-    this.communityService.updateCommunity(this.communityId, this.editCommunityData).subscribe({
-      next: (updatedCommunity) => {
-        console.log('Comunidad actualizada exitosamente:', updatedCommunity);
-        this.community = updatedCommunity;
-        this.editMode = false;
-        this.updatingCommunity = false;
-        this.cancelEdit();
-        alert('Comunidad actualizada exitosamente');
-      },
-      error: (err) => {
-        console.error('Error al actualizar la comunidad:', err);
-        this.updatingCommunity = false;
-        alert('Error al actualizar la comunidad: ' + (err.message || err.error?.message || 'Error desconocido'));
-      }
-    });
-  }*/
 
     updateCommunity(): void {
       if (!this.editCommunityData.name || !this.editCommunityData.description) {
@@ -255,7 +228,6 @@ export class CommunityDetailsComponent implements OnInit {
     this.memberCommunityService.removeUserFromCommunity(this.userId, this.communityId).subscribe({
       next: () => {
         this.isMember = false;
-        // Recargar
         this.loadCommunityData();
       },
       error: (err) => {

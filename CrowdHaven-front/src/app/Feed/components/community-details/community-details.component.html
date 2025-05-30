@@ -58,21 +58,21 @@
         <form (ngSubmit)="updateCommunity()" #editForm="ngForm">
           <div class="row mb-3">
             <div class="col-md-6">
-              <input [(ngModel)]="editCommunityData.name" name="editName" required 
-                     class="form-control" placeholder="Nombre de la comunidad" />
+              <input [(ngModel)]="editCommunityData.name" name="editName" required class="form-control"
+                placeholder="Nombre de la comunidad" />
             </div>
             <div class="col-md-6">
-              <input [(ngModel)]="editCommunityData.img_photo" name="editPhoto" 
-                     class="form-control" placeholder="URL del avatar" />
+              <input [(ngModel)]="editCommunityData.img_photo" name="editPhoto" class="form-control"
+                placeholder="URL del avatar" />
             </div>
           </div>
           <div class="mb-3">
-            <input [(ngModel)]="editCommunityData.img_banner" name="editBanner" 
-                   class="form-control" placeholder="URL del banner" />
+            <input [(ngModel)]="editCommunityData.img_banner" name="editBanner" class="form-control"
+              placeholder="URL del banner" />
           </div>
           <div class="mb-3">
-            <textarea [(ngModel)]="editCommunityData.description" name="editDescription" required 
-                      class="form-control" rows="3" placeholder="Descripción de la comunidad"></textarea>
+            <textarea [(ngModel)]="editCommunityData.description" name="editDescription" required class="form-control"
+              rows="3" placeholder="Descripción de la comunidad"></textarea>
           </div>
           <div class="d-flex gap-2">
             <button type="submit" class="btn btn-success" [disabled]="updatingCommunity">
@@ -102,8 +102,8 @@
 
     <!-- Posts Section -->
     <div class="posts-section d-flex flex-column align-items-center">
-      
-      <!-- Formulario para crear post mejorado -->
+
+      <!-- Formulario para crear post -->
       <div *ngIf="isMember || isOwner" class="create-post-card w-100 mb-4">
         <div class="create-post-header">
           <div class="d-flex align-items-center">
@@ -113,43 +113,42 @@
             <h5 class="mb-0">Crear nueva publicación</h5>
           </div>
         </div>
-        
+
         <div class="create-post-body">
           <form (ngSubmit)="submitPost()" #postForm="ngForm">
             <!-- Título e imagen en la misma línea -->
             <div class="row mb-3">
               <div class="col-md-7">
                 <div class="form-floating">
-                  <input [(ngModel)]="newPost.title" name="title" required 
-                         class="form-control form-control-custom" id="postTitle" placeholder="" />
+                  <input [(ngModel)]="newPost.title" name="title" required class="form-control form-control-custom"
+                    id="postTitle" autocomplete="off" />
                   <label for="postTitle" class="form-label-custom">
-                    <i class="bi bi-type me-2"></i>Título del post
+                    <i class="bi bi-type"></i> Título del post
                   </label>
                 </div>
               </div>
               <div class="col-md-5">
                 <div class="form-floating">
-                  <input [(ngModel)]="newPost.image" name="image" 
-                         class="form-control form-control-custom" id="postImage" placeholder="" />
+                  <input [(ngModel)]="newPost.image" name="image" class="form-control form-control-custom"
+                    id="postImage" autocomplete="off" />
                   <label for="postImage" class="form-label-custom">
-                    <i class="bi bi-image me-2"></i>URL de imagen (opcional)
+                    <i class="bi bi-image"></i> URL de imagen (opcional)
                   </label>
                 </div>
               </div>
             </div>
-            
+
             <!-- Contenido en línea separada -->
             <div class="mb-3">
               <div class="form-floating">
-                <textarea [(ngModel)]="newPost.content" name="content" required 
-                          class="form-control form-control-custom" id="postContent" 
-                          placeholder="" rows="4"></textarea>
+                <input [(ngModel)]="newPost.content" name="content" required class="form-control form-control-custom"
+                  id="postContent" rows="4"/>
                 <label for="postContent" class="form-label-custom">
-                  <i class="bi bi-chat-text me-2"></i>Contenido del post
+                  <i class="bi bi-chat-text"></i> Contenido del post
                 </label>
               </div>
             </div>
-            
+
             <div class="create-post-footer">
               <button type="submit" class="btn btn-post-submit" [disabled]="posting">
                 <span class="spinner-border spinner-border-sm me-2" *ngIf="posting"></span>
