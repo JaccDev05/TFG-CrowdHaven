@@ -1,32 +1,115 @@
-<div class="w-75 m-auto my-4">
-<h4 class="text-white text-center mb-3">Comunidades a las que perteneces</h4>
-<div class="community-scroll-container">
-<ul class="com-list m-0 w-75 m-auto">
-    <li *ngFor="let community of communities" class="com-cont my-4">
-      <a [routerLink]="['/user', userId, 'community', community.id]" class="com">
+<div class="w-100 m-auto my-4">
+  <h3 class="m-0 text-white text-center mb-5">Tus Comunidades</h3>
+  <div class="d-flex justify-content-center w-100 m-auto">
+  <div class="community-scroll-container border-end" style="flex: 1 1 400px; max-width: 45%;">
+    <h4 class="text-white text-center mb-3">Comunidades a las que perteneces</h4>
+    <ul class="com-list m-0 w-75 m-auto">
+      <li *ngFor="let community of communities" class="com-cont my-4">
+        <a [routerLink]="['/user', userId, 'community', community.id]" class="com">
 
-        <div class="d-flex gap-3">
-          <div>
-            <img [src]="community.img_photo" class="com-img img-fluid " (error)="community.img_photo='pperr.jpg'">
+          <div class="d-flex gap-3">
+            <div>
+              <img [src]="community.img_photo" class="com-img img-fluid " (error)="community.img_photo='pperr.jpg'">
+            </div>
+
+            <div>
+              <strong class="m-0 mb-0 text-white fs-5">{{ community.name }}</strong><br>
+              <p class="m-0 mt-0 text-white fs-6">{{ community.members.length }} members</p>
+
+            </div>
+
           </div>
+        </a>
+      </li>
+      <div *ngIf="communities.length === 0">
+        <p class="text-white text-center">No perteneces a ninguna comunidad</p>
+      </div>
+    </ul>
+  </div>
 
-          <div>
-            <strong class="m-0 mb-0 text-white fs-5">{{ community.name }}</strong><br>
-            <p class="m-0 mt-0 text-white fs-6">{{ community.members.length }} members</p>
+  <div class="community-scroll-container" style="flex: 1 1 400px; max-width: 45%;">
+    <h4 class="text-white text-center mb-3">Comunidades Creadas por ti</h4>
+    <ul class="com-list m-0 w-75 m-auto">
+      <li *ngFor="let owned of ownedCommunities" class="com-cont my-4">
+        <a [routerLink]="['/user', userId, 'community', owned.id]" class="com">
+
+          <div class="d-flex gap-3">
+            <div>
+              <img [src]="owned.img_photo" class="com-img img-fluid " (error)="owned.img_photo='pperr.jpg'">
+            </div>
+
+            <div>
+              <strong class="m-0 mb-0 text-white fs-5">{{ owned.name }}</strong><br>
+              <p class="m-0 mt-0 text-white fs-6">{{ owned.members.length }} members</p>
+
+            </div>
 
           </div>
-
-        </div>
-      </a>
-    </li>
-    <div **ngIf="communities.length === 0">
-      <p class="text-white text-center">No perteneces a ninguna comunidad</p>
-    </div>
-  </ul>
+        </a>
+      </li>
+      <div *ngIf="communities.length === 0">
+        <p class="text-white text-center">No has creado ninguna comunidad</p>
+      </div>
+    </ul>
+  </div>
 </div>
-  <div class="d-flex justify-content-center my-3">
-    <button class="btn btn-outline-success align-items-center justify-content-center fs-4">! Crea tu comunidad !</button>
+  <div class="d-flex justify-content-center mt-5">
+    <button class="btn btn-outline-success align-items-center justify-content-center fs-4" (click)="openModal()">! Crea
+      tu comunidad !</button>
 
   </div>
+
+  <div class="modal fade show d-block " tabindex="-1" *ngIf="showModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Crear Comunidad</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+
+        <form [formGroup]="communityForm" (ngSubmit)="submitForm()">
+          <div class="modal-body">
+            <div class="mb-4">
+              <label for="name" class="form-label">Nombre</label>
+              <input type="text" id="name" class="form-control" formControlName="name"
+                placeholder="Nombre de la comunidad" required>
+              <small class="form-text text-muted ">El nombre es obligatorio </small>
+            </div>
+
+            <div class="mb-4">
+              <label for="description" class="form-label">Descripción</label>
+              <textarea id="description" class="form-control" formControlName="description"
+                placeholder="Descripcion de la comunidad"></textarea>
+            </div>
+
+            <div class="mb-4">
+              <label for="category" class="form-label">Imagen de Comunidad</label>
+              <input type="text" id="category" class="form-control" formControlName="img_photo"
+                placeholder="URL de imagen de la comunidad">
+            </div>
+
+            <div class="mb-4">
+              <label for="img_photo" class="form-label">Imagen del banner </label>
+              <input type="text" id="img_photo" class="form-control" formControlName="img_banner"
+                placeholder="URL de imagen del banner">
+            </div>
+          </div>
+          <div class="mb-3 w-75 m-auto">
+            <small class="form-text text-muted m-0">No te preocupes si te equivocas con los datos, puedes cambiarlo
+              luego en la seccion de editar en tu comunidad. </small>
+          </div>
+          <div class="modal-footer align-items-center justify-content-center">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+            <button type="submit" class="btn btn-success" [disabled]="communityForm.invalid">Crear</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Backdrop manual -->
+  <div class="modal-backdrop fade show" *ngIf="showModal"></div>
 
 </div>

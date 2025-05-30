@@ -11,6 +11,7 @@ import { RoleService } from '../../../api/services/role/role.service';
 import { PostDTO } from '../../../api/dtos/post-dto';
 import { CommunityDTO } from '../../../api/dtos/community-dto';
 import { FormsModule } from '@angular/forms';
+import { last } from 'rxjs';
 
 @Component({
   selector: 'app-community-details',
@@ -66,8 +67,12 @@ export class CommunityDetailsComponent implements OnInit {
       this.loadCommunityData();
       this.loadCommunityPosts();
       this.checkMembership();
+    
     });
+    
   }
+
+  
 
   loadCommunityData(): void {
     this.communityService.getCommunityById(this.communityId).subscribe({
@@ -75,6 +80,7 @@ export class CommunityDetailsComponent implements OnInit {
         this.community = data;
         this.checkOwnership();
         this.loading = false;
+
       },
       error: (err) => {
         this.error = 'Error al cargar la comunidad';
@@ -86,6 +92,21 @@ export class CommunityDetailsComponent implements OnInit {
 
   checkOwnership(): void {
     this.isOwner = this.community.user.id === this.userId;
+    const dto = {
+      userId: this.userId,
+      communityId: this.communityId,
+      roleId: 13
+    }
+
+    this.memberCommunityService.addUserToCommunity(dto).subscribe({
+      next: () => {
+        
+      },
+      error: (err) => {
+      
+        console.error('Error al unirse a la comunidad', err);
+      }
+    })
   }
 
   loadCommunityPosts(): void {

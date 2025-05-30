@@ -10,6 +10,7 @@ import com.CrowdHaven.Backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +55,11 @@ public class CommunityService {
             community.setImg_photo(communityFromFront.getImg_photo());
             community.setImg_banner(communityFromFront.getImg_banner());
             community.setUser(optionalAdmin.get());
+
+            if (community.getMembers() == null) {
+                community.setMembers(new ArrayList<>());
+            }
+            community.getMembers().add(optionalAdmin.get());
             //mod
             this.communityRepository.save(community);
             return community;
