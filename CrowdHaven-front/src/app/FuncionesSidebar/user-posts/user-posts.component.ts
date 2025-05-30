@@ -3,6 +3,9 @@ import { Post } from '../../api/models/post.model';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PostService } from '../../api/services/post/post.service';
 import { CommonModule } from '@angular/common';
+import { User } from '../../api/models/user.model';
+import { UserService } from '../../api/services/user/user.service';
+import { UserStateService } from '../../PagInicio/loginservices/user-state.service';
 
 @Component({
   selector: 'app-user-posts',
@@ -15,11 +18,15 @@ import { CommonModule } from '@angular/common';
 export class UserPostsComponent {
 
   posts: Post[] = [];
+    user!: User;                // Usuario logueado
+  
 
   constructor(
     private route: ActivatedRoute,
     private postService: PostService,
-    private router: Router
+    private router: Router,
+    private userStateService: UserStateService,
+        private userService: UserService
 
   ) {}
 
@@ -31,11 +38,29 @@ export class UserPostsComponent {
         this.loadPosts(userId);
       }
     });
+    this.getUser();
+
+  }
+
+  getUser(): void {
+    const name = this.userStateService.getUsername();
+    if (!name) {
+      return;
+    }
+
+    this.userService.getUserProfile(name).subscribe({
+      next: (user) => {
+        this.user = user;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
   }
 
   loadPosts(userId: number): void {
     this.postService.getPostsByUser(userId).subscribe((data) => {
-      this.posts = data;
+      this.posts = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     });
   }
 

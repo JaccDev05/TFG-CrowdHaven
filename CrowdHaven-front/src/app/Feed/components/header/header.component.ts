@@ -5,13 +5,18 @@ import { UserStateService } from '../../../PagInicio/loginservices/user-state.se
 import { TokenService } from '../../../api/auth-services/token.service';
 import { CommonModule } from '@angular/common';
 import { MenuSidebarComponent } from '../menu-sidebar/menu-sidebar.component';
+import { Community } from '../../../api/models/community.model';
+import { CommunityService } from '../../../api/services/community/community.service';
 import { User } from '../../../api/models/user.model';
+import { UserService } from '../../../api/services/user/user.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
   imports: [RouterLink,
     CommonModule,
-    MenuSidebarComponent
+    MenuSidebarComponent,
+    FormsModule
   ],
   standalone: true,
   templateUrl: './header.component.html',
@@ -23,16 +28,25 @@ export class HeaderComponent {
   user: User | null = null;
   sidebarOpen = false;
   showSidebar = false;
-  username: string | null = null;
+  allCommunities: Community[] = [];
+  filteredCommunities: Community[] = [];
+  searchQuery = '';
+user!: User
 
   constructor(
     private userStateService: UserStateService,
     private tokenService: TokenService,
-    private router: Router
+    private router: Router,
+    private communityService: CommunityService,
+private userService: UserService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.checkSession();
+    this.getUser();
+    this.communityService.getAllCommunities().subscribe(communities => {
+      this.allCommunities = communities;
+    });
 
     this.userStateService.currentUser$.subscribe(user => {
     this.username = user;
@@ -46,6 +60,41 @@ export class HeaderComponent {
     this.username = this.userStateService.getUsername();
     this.isLoggedIn = !!this.username && !!this.tokenService.getAccessToken();
   }
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.filteredCommunities = [];
+  }
+
+  onSearchChange(): void {
+    const query = this.searchQuery.trim().toLowerCase();
+  
+    if (!query) {
+      this.filteredCommunities = [];
+      return;
+    }
+  
+    this.filteredCommunities = this.allCommunities.filter(comm =>
+      comm.name.toLowerCase().includes(query)
+    );
+  }
+
+  getUser(): void {
+    const name = this.userStateService.getUsername();
+    if (!name) {
+      return;
+    }
+
+    this.userService.getUserProfile(name).subscribe({
+      next: (user) => {
+        this.user = user;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
+  }
+
+
 
   goToLogin(): void {
     this.router.navigate(['/auth/login']);

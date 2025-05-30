@@ -1,8 +1,8 @@
 <div class="sidebar-container bg-secundario">
-  <h5 class="text-white text-center pb-2">Popular Communities</h5>
+  <h5 class="text-white text-center p-2 border-bottom">Popular Communities</h5>
   <ul class="com-list m-0">
-    <li *ngFor="let community of communities" class="com-cont my-2">
-      <a [routerLink]="['/user', username, 'community', community.id]" class="com">
+    <li *ngFor="let community of communities" class="com-cont my-3">
+      <a [routerLink]="['/user', user.id, 'community', community.id]" class="com">
 
         <div class="d-flex gap-3">
           <div>

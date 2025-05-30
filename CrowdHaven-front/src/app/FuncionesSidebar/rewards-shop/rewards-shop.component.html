@@ -1,13 +1,13 @@
-<h4 class="text-white text-center my-4">Rewards Shop</h4>
+<h4 class="text-white text-center ">Rewards Shop</h4>
 
 <div class="container my-2">
   <div class="row justify-content-center">
-    <div class="col-md-4 mb-2 d-flex justify-content-center" *ngFor="let reward of rewards">
-      <div class="border rounded p-2 w-100" style="min-height: 200px;">
+    <div class="col-md-4 mb-3 d-flex justify-content-center" *ngFor="let reward of rewards">
+      <div class="border rounded p-2 w-100" style="min-height: 180px;">
         <p class="text-white m-0 fs-5">{{ reward.name }}</p>
         <p class="text-white">{{ reward.description }}</p>
         <p class="text-white text-end me-1">{{ reward.price }} crowdcoin$</p>
-        <button class="btn btn-success w-100 m-0" (click)="buyReward(reward)">Comprar</button>
+        <button class="btn btn-success w-100 mt-3" (click)="buyReward(reward)">Comprar</button>
       </div>
     </div>
   </div>

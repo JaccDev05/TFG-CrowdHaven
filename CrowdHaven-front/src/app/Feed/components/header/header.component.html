@@ -6,9 +6,43 @@
       </a>
   
       <form class="d-flex search-bar position-relative m-auto">
-        <input class="form-control ps-5" type="search" placeholder="Search" aria-label="Search">
-        <i class="bi bi-search position-absolute" style="left: 15px; top: 50%; transform: translateY(-50%); color: gray;"></i>
+        <input class="form-control ps-5"
+               type="search"
+               [(ngModel)]="searchQuery"
+               (ngModelChange)="onSearchChange()"
+               name="search"
+               placeholder="Buscar comunidad"
+               aria-label="Search"
+               autocomplete="off">
+      
+        <i class="bi bi-search position-absolute"
+           style="left: 15px; top: 50%; transform: translateY(-50%); color: gray;"></i>
+      
+        <!-- Resultados -->
+        <ul *ngIf="filteredCommunities.length > 0"
+            class="list-group position-absolute w-100"
+            style="top: 100%; z-index: 1000; max-height: 300px; overflow-y: auto;">
+          <li class="list-group-item list-group-item-action"
+              *ngFor="let community of filteredCommunities"
+              [routerLink]="['/user', user.id, 'community', community.id]">
+              <div class="d-flex gap-3">
+                <div>
+                  <img [src]="community.img_photo" class="com-img img-fluid my-2"  (error)="community.img_photo='pperr.jpg'">
+                </div>
+      
+                <div>
+                  <strong class="m-0 mb-0 ">{{ community.name }}</strong><br>
+                  <p class="m-0 mt-0">{{ community.members.length }} members</p>
+      
+                </div>
+      
+              </div>
+          </li>
+        </ul>
+
+        
       </form>
+      
       
 
 

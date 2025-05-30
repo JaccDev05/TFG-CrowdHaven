@@ -1,8 +1,8 @@
 export interface CommunityDTO {
-    name: string;
-    description: string;
-    img_photo: string;
-    img_banner: string;
-    user: string;
+    name: string | any;
+    description: string | any ;
+    img_photo: string | any;
+    img_banner: string | any;
+    user: string | any;
   }
   

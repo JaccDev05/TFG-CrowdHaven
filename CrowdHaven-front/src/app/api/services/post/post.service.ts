@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from '../../models/post.model';
 import { PostDTO } from '../../dtos/post-dto';
@@ -29,6 +29,9 @@ export class PostService {
   }
 
   createPost(postDTO: PostDTO): Observable<Post> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
     return this.http.post<Post>(this.apiUrl, postDTO);
   }
 

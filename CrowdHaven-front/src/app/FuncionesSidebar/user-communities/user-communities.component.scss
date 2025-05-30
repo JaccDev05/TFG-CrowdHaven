@@ -35,3 +35,21 @@ ul  {
     object-fit: cover;
     border-radius: 50%; /* Por si no se carga Bootstrap */
   }
+
+  .community-scroll-container {
+    max-height: 520px; /* ajusta según el diseño */
+    overflow-y: auto;
+    padding-right: 10px; /* espacio para evitar que el scroll tape contenido */
+  }
+  
+  /* Opcional: estiliza la barra de scroll */
+  .community-scroll-container::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .community-scroll-container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  

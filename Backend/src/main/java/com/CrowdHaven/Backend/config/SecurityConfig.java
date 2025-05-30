@@ -93,12 +93,17 @@ public class SecurityConfig {
                                 "/comments",
                                 "/comments/post/{postId}",
                                 "/comments/{commentId}/reaction",
-                                "/comments/delete/{commentId}"
+                                "/comments/delete/{commentId}",
+
+                                "/chat",
+                                "/chat/send",
+                                "/chat/history/{user1Id}/{user2Id}"
 
 
 
 
-                                ).permitAll()
+
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

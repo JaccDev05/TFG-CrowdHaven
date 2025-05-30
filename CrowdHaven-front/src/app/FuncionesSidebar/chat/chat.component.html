@@ -1,0 +1,68 @@
+<div class="d-flex" style=" overflow: hidden;">
+    <!-- Sidebar -->
+    <div class="chat-sidebar-container bg-secundario p-3">
+        <h4 class="text-white text-center p-2 border-bottom">Chat</h4>
+        <ul class="user-list m-0">
+            <li *ngFor="let user of users" class="user-item my-2">
+                <a [routerLink]="['/user', userLoggedId, 'chat', user.id]"
+                    class="user-link d-flex align-items-center gap-2">
+                    <img [src]="user.avatar" class="user-avatar" (error)="user.avatar='err.jpg'">
+                    <span class="text-white">{{ user.username }}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Contenedor principal del chat -->
+    <div class="chat-container flex-grow-1 d-flex flex-column bg-light">
+        <ng-container *ngIf="chatIsActive">
+            <!-- Área de mensajes -->
+            <div class="chat-messages flex-grow-1 overflow-auto p-3">
+                <div *ngFor="let msg of messages" 
+                     [ngClass]="{
+                       'message-right text-end': msg.senderId === userLoggedId,
+                       'message-left text-start': msg.senderId !== userLoggedId
+                     }">
+                  
+                  <div class="chat-bubble p-1 rounded shadow-sm d-inline-block mb-2 mx-1">
+                    
+                    <!-- Nombre del emisor -->
+                    <p class="m-0 small fw-bold text-start px-1">
+                      {{ msg.senderId === userLoggedId ? user.username : receiverUser?.username }}
+                    </p>
+              
+                    <!-- Mensaje y hora -->
+                    <div class="d-flex flex-column">
+                      
+                      <div class="d-flex justify-content-end ">
+                        <span class="fs-5 m-0 px-1">{{ msg.content }}</span>
+                        <small class="text-muted text-end m-0 m-auto pt-1 ms-5">{{ msg.timestamp | date:'shortTime' }}</small>
+                      </div>
+                    </div>
+
+                   
+
+              
+                  </div> 
+                </div>
+
+                <div #bottom></div>
+
+              </div>
+              
+
+            <!-- Input fijo abajo -->
+            <div class="chat-input border-top d-flex gap-2 p-3">
+                <input [(ngModel)]="newMessage" class="form-control" placeholder="Escribe un mensaje..." />
+                <button class="btn btn-primary" (click)="sendMessage()">Enviar</button>
+            </div>
+
+        </ng-container>
+
+        <!-- Si no hay chat activo -->
+        <div *ngIf="!chatIsActive"
+            class="ina d-flex justify-content-center align-items-center flex-grow-1 text-muted text-white">
+            <p>Selecciona un usuario para iniciar el chat</p>
+        </div>
+    </div>
+</div>

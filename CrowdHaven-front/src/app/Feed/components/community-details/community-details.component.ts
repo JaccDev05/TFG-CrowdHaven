@@ -11,6 +11,7 @@ import { RoleService } from '../../../api/services/role/role.service';
 import { PostDTO } from '../../../api/dtos/post-dto';
 import { CommunityDTO } from '../../../api/dtos/community-dto';
 import { FormsModule } from '@angular/forms';
+import { last } from 'rxjs';
 import { UserService } from '../../../api/services/user/user.service';
 import { User } from '../../../api/models/user.model';
 
@@ -76,8 +77,12 @@ export class CommunityDetailsComponent implements OnInit {
       this.loadCommunityData();
       this.loadCommunityPosts();
       this.checkMembership();
+    
     });
+    
   }
+
+  
 
   loadCommunityData(): void {
     this.communityService.getCommunityById(this.communityId).subscribe({
@@ -85,6 +90,7 @@ export class CommunityDetailsComponent implements OnInit {
         this.community = data;
         this.checkOwnership();
         this.loading = false;
+
       },
       error: (err) => {
         this.error = 'Error al cargar la comunidad';
@@ -93,6 +99,49 @@ export class CommunityDetailsComponent implements OnInit {
       }
     });
   }
+
+  checkOwnership(): void {
+    if (!this.community.user) return;
+  
+    this.isOwner = this.community.user.id === this.userId;
+  
+    const dto = {
+      userId: this.userId,
+      communityId: this.communityId,
+      roleId: 13
+    };
+  
+    // Paso 1: Obtener todos los miembros de la comunidad
+    this.memberCommunityService.getUsersByCommunity(this.communityId).subscribe({
+      next: (members) => {
+        // Paso 2: Verificar si ya existe una combinación igual
+        const yaExiste = members.some((member: any) =>
+          member.user.id === dto.userId &&
+          member.community.id === dto.communityId &&
+          member.role.id === dto.roleId
+        );
+  
+        if (yaExiste) {
+          console.log('El usuario ya pertenece a la comunidad con ese rol.');
+          return; // Detener ejecución
+        }
+  
+        // Paso 3: Si no existe, enviar la solicitud
+        this.memberCommunityService.addUserToCommunity(dto).subscribe({
+          next: () => {
+            console.log('Usuario unido a la comunidad');
+          },
+          error: (err) => {
+            console.error('Error al unirse a la comunidad', err);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error al obtener miembros de la comunidad', err);
+      }
+    });
+  }
+  
   loadCommunityPosts(): void {
     this.postService.getPostsByCommunity(this.communityId).subscribe({
       next: (data) => {
@@ -190,18 +239,14 @@ export class CommunityDetailsComponent implements OnInit {
   
     this.roleService.getRolesByCommunity(this.communityId).subscribe({
       next: (roles) => {
-        if (roles.length === 0) {
-          console.error('No hay roles en la comunidad');
-          this.joiningCommunity = false;
-          return;
-        }
+        
   
         const firstRole = roles[0];
   
         const memberDTO: MemberCommunityDTO = {
           userId: this.userId,
           communityId: this.communityId,
-          roleId: firstRole.id
+          roleId: 13
         };
   
         this.memberCommunityService.addUserToCommunity(memberDTO).subscribe({
