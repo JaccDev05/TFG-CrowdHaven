@@ -42,6 +42,7 @@ export class VistaFeedComponent implements OnInit {
   getUser(): void {
     const name = this.userStateService.getUsername();
     if (!name) {
+      this.user = {} as User; // O null, si lo prefieres y actualizas el tipo
       return;
     }
 
