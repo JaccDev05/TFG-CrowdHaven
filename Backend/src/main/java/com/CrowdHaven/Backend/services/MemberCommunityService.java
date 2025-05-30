@@ -83,6 +83,11 @@ public class MemberCommunityService {
         // Eliminamos el miembro encontrado
         memberCommunityRepository.deleteByUserIdAndCommunityId(userId, communityId);
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        Community community = communityRepository.findById(communityId).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        community.getMembers().remove(user);
     }
 
 
