@@ -76,7 +76,7 @@ export class CommunityDetailsComponent implements OnInit {
 
       this.loadCommunityData();
       this.loadCommunityPosts();
-      this.checkMembership();
+      this.checkOwnership();
     
     });
     
@@ -154,19 +154,8 @@ export class CommunityDetailsComponent implements OnInit {
     });
   }
 
-  checkOwnership(): void {
-    this.isOwner = this.community.user.id === this.userId;
-  }
-  checkMembership(): void {
-    this.memberCommunityService.getCommunitiesByUser(this.userId).subscribe({
-      next: (communities) => {
-        this.isMember = communities.some(community => community.id === this.communityId);
-      },
-      error: (err) => {
-        console.error('Error al verificar membresía', err);
-      }
-    });
-  }
+
+  
 
   toggleEditMode(): void {
     if (!this.editMode) {

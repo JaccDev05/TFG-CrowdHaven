@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 export class HeaderComponent {
 
   isLoggedIn = false;
+  username: string | null = null;
   sidebarOpen = false;
   showSidebar = false;
   allCommunities: Community[] = [];
@@ -41,6 +42,7 @@ private userService: UserService
   ) {}
 
   ngOnInit(): void {
+    this.checkSession();
     this.getUser();
     this.communityService.getAllCommunities().subscribe(communities => {
       this.allCommunities = communities;
@@ -49,7 +51,10 @@ private userService: UserService
    
   }
 
-  
+  checkSession() {
+    this.username = this.userStateService.getUsername();
+    this.isLoggedIn = !!this.username && !!this.tokenService.getAccessToken();
+  }
   clearSearch(): void {
     this.searchQuery = '';
     this.filteredCommunities = [];
