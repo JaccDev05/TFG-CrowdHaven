@@ -11,9 +11,9 @@ import { RoleService } from '../../../api/services/role/role.service';
 import { PostDTO } from '../../../api/dtos/post-dto';
 import { CommunityDTO } from '../../../api/dtos/community-dto';
 import { FormsModule } from '@angular/forms';
-import { last } from 'rxjs';
 import { UserService } from '../../../api/services/user/user.service';
 import { User } from '../../../api/models/user.model';
+import { last } from 'rxjs';
 
 @Component({
   selector: 'app-community-details',
@@ -76,7 +76,7 @@ export class CommunityDetailsComponent implements OnInit {
 
       this.loadCommunityData();
       this.loadCommunityPosts();
-      this.checkOwnership();
+      this.checkMembership();
     
     });
     
@@ -99,6 +99,7 @@ export class CommunityDetailsComponent implements OnInit {
       }
     });
   }
+
 
   checkOwnership(): void {
     if (!this.community.user) return;
@@ -154,8 +155,17 @@ export class CommunityDetailsComponent implements OnInit {
     });
   }
 
-
   
+  checkMembership(): void {
+    this.memberCommunityService.getCommunitiesByUser(this.userId).subscribe({
+      next: (communities) => {
+        this.isMember = communities.some(community => community.id === this.communityId);
+      },
+      error: (err) => {
+        console.error('Error al verificar membresía', err);
+      }
+    });
+  }
 
   toggleEditMode(): void {
     if (!this.editMode) {
