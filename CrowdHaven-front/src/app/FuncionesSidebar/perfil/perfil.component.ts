@@ -235,7 +235,7 @@ export class PerfilComponent implements OnInit {
     this.userService.updateUser(this.user.id, updatedUser).subscribe({
       next: (u) => {
         this.user = u;
-
+        this.userStateService.updateUsername(this.user.username);
         this.showEditModal = false; this.isLoading = false; 
         this.previewAvatar = null; 
         
@@ -247,6 +247,7 @@ export class PerfilComponent implements OnInit {
         this.isLoading = false;
       }
     });
+
   }
 
 

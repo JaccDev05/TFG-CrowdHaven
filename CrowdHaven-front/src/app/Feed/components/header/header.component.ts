@@ -42,7 +42,12 @@ private userService: UserService
   ) {}
 
   ngOnInit(): void {
+
     this.checkSession();
+    this.userStateService.currentUser$.subscribe(user => {
+      this.username = user;
+      this.checkSession();
+    })
     this.getUser();
     this.communityService.getAllCommunities().subscribe(communities => {
       this.allCommunities = communities;
