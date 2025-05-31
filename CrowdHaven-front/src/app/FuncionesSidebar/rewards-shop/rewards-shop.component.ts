@@ -18,6 +18,8 @@ export class RewardsShopComponent implements OnInit {
 
   user!: User;
   rewards: Reward[] = [];
+  userPurchases: string[] = []; // Guarda los nombres de recompensas compradas
+
   constructor(
     private rewardService: RewardService,
     private userStateService: UserStateService,
@@ -26,6 +28,8 @@ export class RewardsShopComponent implements OnInit {
     private popupService: PopupService,
 
   ) { }
+
+
 
   ngOnInit(): void {
     this.loadRewards();
@@ -43,6 +47,17 @@ export class RewardsShopComponent implements OnInit {
     if (username) {
       this.userService.getUserProfile(username).subscribe(data => {
         this.user = data;
+        this.loadUserPurchases(); // Nuevo
+
+      });
+    }
+  }
+
+  loadUserPurchases(): void {
+    const username = this.getUsername();
+    if (username) {
+      this.rewardServ.getRewardPurchaseById(this.user.id).subscribe(data => {
+        this.userPurchases = data.map(p => p.reward.name); // Asumimos que `reward` es el nombre
       });
     }
   }
@@ -55,8 +70,19 @@ export class RewardsShopComponent implements OnInit {
   buyReward(reward: Reward): void {
     if (!this.user) return;
   
+    const rewardAlreadyPurchased = this.userPurchases.includes(reward.name);
+  
+    if (rewardAlreadyPurchased) {
+      this.popupService.showMessage(
+        'Recompensa ya comprada',
+        `Ya has comprado la recompensa "${reward.name}".`,
+        'info'
+      );
+      return;
+    }
+  
     const rewardPurchase = {
-      user: this.getUsername(), 
+      user: this.getUsername(),
       reward: reward.name,
     };
   
@@ -74,16 +100,16 @@ export class RewardsShopComponent implements OnInit {
             );
   
             const dto = {
-              email: this.user?.email,
-              username: this.user?.username,
+              email: this.user.email,
+              username: this.user.username,
               crowdCoin: this.user.crowdCoin - reward.price
             };
   
             this.userService.updateCrowdCoins(this.user.id, dto).subscribe();
   
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
+            // Añadir el reward a la lista local (sin recargar)
+            this.userPurchases.push(reward.name);
+            this.user.crowdCoin -= reward.price;
           },
           error: (err) => {
             this.popupService.close();
@@ -104,6 +130,7 @@ export class RewardsShopComponent implements OnInit {
       );
     }
   }
+  
   
   
 

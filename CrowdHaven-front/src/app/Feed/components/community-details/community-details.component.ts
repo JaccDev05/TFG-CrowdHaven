@@ -12,6 +12,9 @@ import { PostDTO } from '../../../api/dtos/post-dto';
 import { CommunityDTO } from '../../../api/dtos/community-dto';
 import { FormsModule } from '@angular/forms';
 import { last } from 'rxjs';
+import { User } from '../../../api/models/user.model';
+import { UserService } from '../../../api/services/user/user.service';
+import { PopupService } from '../../../PagInicio/loginservices/popup.service';
 
 @Component({
   selector: 'app-community-details',
@@ -29,6 +32,7 @@ export class CommunityDetailsComponent implements OnInit {
   isMember: boolean = false;
   isOwner: boolean = false;
   joiningCommunity: boolean = false;
+  user!: User;
   
   // Variables para edición de comunidad
   editMode: boolean = false;
@@ -57,7 +61,10 @@ export class CommunityDetailsComponent implements OnInit {
     private communityService: CommunityService,
     private postService: PostService,
     private memberCommunityService: MemberCommunityService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private userService: UserService,
+    private popupService: PopupService
+    
   ) {}
 
   ngOnInit(): void {
@@ -67,11 +74,22 @@ export class CommunityDetailsComponent implements OnInit {
       this.loadCommunityData();
       this.loadCommunityPosts();
       this.checkMembership();
-    
+      this.getUser();
     });
     
   }
 
+  getUser(): void {
+    this.userService.getUserById(this.userId).subscribe({
+      next: (data) => {
+        this.user = data;
+      },
+      error: (err) => {
+        this.error = 'Error al cargar el usuario';
+        console.error(err);
+      }
+    });
+  }
   
 
   loadCommunityData(): void {
@@ -316,6 +334,24 @@ export class CommunityDetailsComponent implements OnInit {
         this.posts.unshift(createdPost); // Añadirlo arriba
         this.newPost = { userId: this.userId, communityId: this.communityId, title: '', content: '', image: '' };
         this.posting = false;
+
+        if (this.user) {
+        const dto = {
+          email: this.user.email,
+          username: this.user.username,
+          avatar: this.user.avatar,
+          crowdCoin: this.user.crowdCoin + 30
+        }
+
+        this.userService.updateCrowdCoins(this.user.id, dto).subscribe();
+
+        this.popupService.showMessage(
+          '¡Comentario creado!',
+          'Tu post ha sido creado con éxito,  has ganado  +30 CrowdCoins',
+          'success'
+        );
+      }
+
       },
       error: (err) => {
         console.error('Error al crear el post', err);

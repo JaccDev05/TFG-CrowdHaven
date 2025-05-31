@@ -64,9 +64,18 @@ export class PostDetailsComponent implements OnInit {
     this.commentService.createComment(CommentDTO).subscribe({
       next: () => {
 
+        const dto = {
+          email: this.user?.email,
+          username: this.user?.username,
+          avatar: this.user?.avatar,
+          crowdCoin: this.user.crowdCoin + 20
+        };
+
+        this.userService.updateCrowdCoins(this.user.id, dto).subscribe();
+
         this.popupService.showMessage(
           '¡Comentario creado!',
-          'Tu comentario ha sido creado con éxito',
+          'Tu comentario ha sido creado con éxito,  has ganado  +15 CrowdCoins',
           'success'
         );
         this.commentForm.reset();

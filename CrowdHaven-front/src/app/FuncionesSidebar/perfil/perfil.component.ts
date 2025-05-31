@@ -163,7 +163,10 @@ export class PerfilComponent implements OnInit {
 
     this.rewPurchaseService.getRewardPurchaseById(this.userId).subscribe({
       next: (rewards) => {
-        this.userRewards = rewards.slice(0, 6);
+        const uniqueRewards = rewards.filter((reward, index, self) =>
+          index === self.findIndex(r => r.reward.id === reward.reward.id)
+        );
+        this.userRewards = uniqueRewards.slice(0, 6);
       },
       error: (error) => {
         console.error('Error loading rewards:', error);
