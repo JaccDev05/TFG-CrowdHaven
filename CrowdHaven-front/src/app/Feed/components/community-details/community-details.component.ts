@@ -14,8 +14,6 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../api/services/user/user.service';
 import { User } from '../../../api/models/user.model';
 import { last } from 'rxjs';
-import { User } from '../../../api/models/user.model';
-import { UserService } from '../../../api/services/user/user.service';
 import { PopupService } from '../../../PagInicio/loginservices/popup.service';
 
 @Component({
@@ -59,7 +57,6 @@ export class CommunityDetailsComponent implements OnInit {
   
 
   constructor(
-<<<<<<< HEAD
     private route: ActivatedRoute,
     private router: Router,
     private communityService: CommunityService,
@@ -69,10 +66,6 @@ export class CommunityDetailsComponent implements OnInit {
     private userService: UserService,
     private popupService: PopupService
     
-=======
-    private route: ActivatedRoute, private router: Router, private communityService: CommunityService, private postService: PostService, 
-    private memberCommunityService: MemberCommunityService, private roleService: RoleService, private userService: UserService
->>>>>>> acfbb3a3bacfe248e14755326cb14aa36a4b904d
   ) {}
 
   ngOnInit(): void {
