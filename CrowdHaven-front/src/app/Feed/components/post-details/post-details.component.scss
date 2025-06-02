@@ -1,28 +1,108 @@
-.post {
-    width: 70%;
-    background-color: #1f2b3e;
+$like-color: #22c55e; $dislike-color: #ef4444;
 
-    .post-image {
-        max-width: 100%;
-        height: auto;
-        border-radius: 0.5rem;
-        object-fit: contain;
-        display: block;
-        margin: 0 auto;
-        max-height: 500px; /* Limita la altura para evitar imágenes demasiado grandes */
-      }
+.feed-container {
+  background-color: #0f1c2e;
 }
+
+     //like
+.btn-outline-success {
+  border-color: #52775f;  color: $like-color;
+  transition: transform 0.08s ease-in-out;
+  &:hover { 
+    background-color: #20944a; color: white;         
+    transform: scale(1.05);
+    border-color: #89aa95;
+    border-width: 0.5px;
+  }
+  &:active {
+    transform: scale(0.9); // se reduce ligeramente durante el clic
+  }
+  &:hover:not(:active) {
+    transform: scale(1.05); // vuelve a agrandar si el cursor sigue encima
+  }
+}   
+      //dislike
+.btn-outline-danger {
+  border-color: #754848; color: $dislike-color;
+  transition: transform 0.08s ease-in-out;
+  &:hover { 
+    background-color: #c22e2e; color: white;         
+    transform: scale(1.05);
+    border-color: #9e7b7b;
+    border-width: 0.5px;
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+  &:hover:not(:active) {
+    transform: scale(1.05);
+  }
+}
+
+.post {
+  background-color: #1f2b3e;
+  outline: 0.5px solid #c8ced6;
+  width: 80% !important;
+
+  .post-img {
+    max-width: 60%;
+    max-height: 220px;
+    width: auto;
+    height: auto;
+    border-radius: 0.5rem;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.w-75:not(.post) {
+  width: 60% !important;
+  
+  .rounded-4 {
+    background-color: #1f2b3e;
+    outline: 0.5px solid #6b7280;
+  }
+  
+  .btn-outline-primary {
+    border-color: #6b7280;
+    color: #6b7280;
+    transition: all 0.3s ease;
+    &:hover { 
+      background-color: #3b82f6; 
+      border-color: #3b82f6;
+      color: white; 
+      transform: scale(1.05);
+    }
+  }
+  
+  .inpu {
+    background-color: #0f1c2e;
+    border-color: #6b7280;
+    color: white;
+    transition: border-color 0.3s ease;
+    
+    &::placeholder { color: #9ca3af; }
+    
+    &:focus { 
+      border-color: #3b82f6; 
+      box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25); //sombra azul del input
+    }
+    
+    &:not(:placeholder-shown) + .btn-outline-primary { // para que cuando se empiece a escribir el boton se ilumine de azul
+      border-color: #3b82f6;
+      color: #3b82f6;
+      background-color: rgba(59, 130, 246, 0.1);
+    }
+  }
+}
+
+.co { border-bottom: 1px solid #6b7280; }
+
+.text-secondary { color: #9ca3af !important; }
 
 a {
-  text-decoration: none;
   color: #acc2ef;
-}
-
-a:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.co{
-  border-bottom: 1px solid #acc2ef;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
 }

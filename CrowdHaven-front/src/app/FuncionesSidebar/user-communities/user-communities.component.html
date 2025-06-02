@@ -1,4 +1,4 @@
-<div class="w-100 m-auto my-4">
+<div class="contenedor w-100 m-auto my-1">
   <h3 class="m-0 text-white text-center mb-5">Tus Comunidades</h3>
   <div class="d-flex justify-content-center w-100 m-auto">
   <div class="community-scroll-container" style="flex: 1 1 400px; max-width: 45%;">
@@ -22,7 +22,7 @@
         </a>
       </li>
       <div *ngIf="communities.length === 0">
-        <p class="text-white text-center">No perteneces a ninguna comunidad</p>
+        <p class="empty-message text-white text-center">No perteneces a ninguna comunidad</p>
       </div>
     </ul>
   </div>
@@ -54,11 +54,10 @@
   </div>
 </div>
   <div class="d-flex justify-content-center mt-5">
-    <button class="btn btn-outline-success align-items-center justify-content-center fs-4" (click)="openModal()">! Crea
-      tu comunidad !</button>
+    <button class="btn btn-outline-success align-items-center justify-content-center fs-4" (click)="openModal()">Crea tu comunidad</button>
 
   </div>
-
+<!--modal-->
   <div class="modal fade show d-block " tabindex="-1" *ngIf="showModal">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -74,7 +73,7 @@
               <label for="name" class="form-label">Nombre</label>
               <input type="text" id="name" class="form-control" formControlName="name"
                 placeholder="Nombre de la comunidad" required>
-              <small class="form-text text-muted ">El nombre es obligatorio </small>
+              <small class="form-text text-secondary ">El nombre es obligatorio </small>
             </div>
 
             <div class="mb-4">
@@ -96,7 +95,7 @@
             </div>
           </div>
           <div class="mb-3 w-75 m-auto">
-            <small class="form-text text-muted m-0">No te preocupes si te equivocas con los datos, puedes cambiarlo
+            <small class="form-text text-secondary m-0">No te preocupes si te equivocas con los datos, puedes cambiarlo
               luego en la seccion de editar en tu comunidad. </small>
           </div>
           <div class="modal-footer align-items-center justify-content-center">

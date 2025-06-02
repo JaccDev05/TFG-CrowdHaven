@@ -1,7 +1,7 @@
-<div class="container mt-4 feed-container d-flex flex-column align-items-center justify-content-center w-75">
+<div class="container mt-4 feed-container d-flex flex-column align-items-center justify-content-start">
 
   <!-- Post -->
-  <div class="post mb-4 p-3 border rounded-5 shadow-sm w-75" *ngIf="post">
+  <div class="post mb-4 p-3 rounded-5 shadow-sm w-75" *ngIf="post">
 
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div class="d-flex justify-content-between align-items-center w-100 my-1">
@@ -12,7 +12,8 @@
 
           </div>
           <div>
-            <strong class="text-white">{{ post.user.username }} en <a [routerLink]="['/user', user.id, 'community', post.community.id]">
+            <strong class="text-white">{{ post.user.username }} en <a
+                [routerLink]="['/user', user.id, 'community', post.community.id]">
                 ch/{{ post.community.name }}</a></strong>
 
           </div>
@@ -42,27 +43,20 @@
 
   <!-- Sección de comentarios -->
   <div *ngIf="post" class="w-75 mb-4">
-    <h5 class="co text-white mt-4 mb-3  pb-2 ">Comentarios</h5>
+    <h5 class="co text-white mt-4 mb-3 pb-2">Comentarios</h5>
 
     <div class="mb-3 ">
       <form [formGroup]="commentForm" (ngSubmit)="createComment()">
         <label for="content" class="text-white fs-5 fw-light mb-2">Agrega un comentario: </label>
-        
+
         <div class="input-group">
-          <input 
-            id="content" 
-            type="text" 
-            class="inpu form-control" 
-            formControlName="content" 
-            placeholder="Escribe tu comentario..." 
-          />
-          <button type="submit" class="btn btn-outline-primary"
-          [disabled]="commentForm.invalid"
-          >
+          <input id="content" type="text" class="inpu form-control" formControlName="content"
+            placeholder="Escribe tu comentario..." />
+          <button type="submit" class="btn btn-outline-primary" [disabled]="commentForm.invalid">
             <i class="bi bi-arrow-right-circle-fill fs-5"></i>
           </button>
         </div>
-        
+
       </form>
     </div>
 
@@ -70,7 +64,7 @@
 
     <!-- Lista de comentarios -->
     <div *ngIf="post.comments && post.comments.length > 0">
-      <div *ngFor="let comment of post.comments" class="border rounded-4 text-white p-3 rounded mb-4">
+      <div *ngFor="let comment of post.comments" class="borde rounded-4 text-white p-3 rounded mb-4">
         <div class="d-flex justify-content-between mb-3">
           <div class="d-flex gap-2">
             <div>
@@ -90,10 +84,10 @@
         <!-- Reacciones del comentario -->
         <div class="d-flex justify-content-start align-items-center mt-2">
           <button class="btn btn-outline-success btn-sm me-2" (click)="likeComment(comment.id)">
-            <i class="bi bi-hand-thumbs-up-fill fs-6 m-0"></i> ({{ comment.like_count }})
+            <i class="bi bi-hand-thumbs-up-fill fs-6 m-0"></i> {{ comment.like_count }}
           </button>
           <button class="btn btn-outline-danger btn-sm me-2" (click)="dislikeComment(comment.id)">
-            <i class="bi bi-hand-thumbs-down-fill fs-6 m-0"></i> ({{ comment.dislike_count }})
+            <i class="bi bi-hand-thumbs-down-fill fs-6 m-0"></i> {{ comment.dislike_count }}
           </button>
         </div>
       </div>
