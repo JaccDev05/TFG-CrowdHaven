@@ -7,7 +7,8 @@ import { BehaviorSubject } from 'rxjs';
 export class UserStateService {
 
   private readonly USER_KEY = "crowdH";
-
+  //private readonly LOGGED_USERS_KEY = "logged_users";
+  
   private currentUser = new BehaviorSubject<string | null>(null);
   currentUser$ = this.currentUser.asObservable();
 

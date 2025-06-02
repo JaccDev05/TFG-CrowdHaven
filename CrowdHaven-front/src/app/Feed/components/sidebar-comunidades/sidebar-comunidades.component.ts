@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Community } from '../../../api/models/community.model';
@@ -15,9 +14,9 @@ import { User } from '../../../api/models/user.model';
   templateUrl: './sidebar-comunidades.component.html',
   styleUrl: './sidebar-comunidades.component.scss'
 })
-
 export class SidebarComunidadesComponent implements OnInit {
   communities: Community[] = [];
+  username: string | null = null;
   user!: User;                // Usuario logueado
 
 
@@ -27,6 +26,7 @@ export class SidebarComunidadesComponent implements OnInit {
     private userService: UserService) { }
 
   ngOnInit(): void {
+    this.username = this.userStateService.getUsername();
     this.loadCommunities();
     this.getUser();
   }

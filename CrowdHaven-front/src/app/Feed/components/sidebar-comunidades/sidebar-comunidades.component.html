@@ -6,13 +6,12 @@
 
         <div class="d-flex gap-3">
           <div>
-            <img [src]="community.img_photo" class="com-img img-fluid " (error)="community.img_photo='pperr.jpg'">
+            <img [src]="community.img_photo" class="com-img img-fluid" (error)="community.img_photo='pperr.jpg'">
           </div>
 
           <div>
             <strong class="m-0 mb-0 text-white">{{ community.name }}</strong><br>
             <p class="m-0 mt-0 text-white">{{ community.members.length }} members</p>
-
           </div>
 
         </div>

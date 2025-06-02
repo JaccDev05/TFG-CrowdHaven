@@ -31,7 +31,7 @@ export class HeaderComponent {
   allCommunities: Community[] = [];
   filteredCommunities: Community[] = [];
   searchQuery = '';
-user!: User
+  user!: User
 
   constructor(
     private userStateService: UserStateService,
@@ -52,6 +52,8 @@ private userService: UserService
     this.communityService.getAllCommunities().subscribe(communities => {
       this.allCommunities = communities;
     });
+
+   
   }
 
   checkSession() {
@@ -98,7 +100,6 @@ private userService: UserService
     this.router.navigate(['/auth/login']);
   }
 
-  // Método para redirigir a la página de Register
   goToRegister(): void {
     this.router.navigate(['/auth/register']);
   }

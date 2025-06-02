@@ -64,6 +64,7 @@ export class RewardsShopComponent implements OnInit {
 
   getUsername(): string | null {
     const username = this.userStateService.getUsername();
+
     return username
   }
 

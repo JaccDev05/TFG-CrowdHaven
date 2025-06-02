@@ -17,13 +17,7 @@ export class CredentialsService {
     return this.http.post<any>(`${environment.apiUrl}/users/login`, credentials)
   }
 
-
   register(userData: RegisterInterface): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/users/register`, userData)
   }
-
-  /*changePassword(username: string, payload: { username: string; currentPassword: string; newPassword: string; }, newPassword: any) {
-    return this.http.post<{ message: string }>('/api/auth/change-password', payload);
-  }*/
-  
 }

@@ -46,7 +46,7 @@ export class PerfilComponent implements OnInit {
   // Estadísticas del usuario
   userStats: UserStats = {
     totalPosts: 0,
-    totalComments: 0 // Lo dejaremos en 0 por ahora
+    totalComments: 0 // Por ahora no funciona xd
   };
 
   // Roles y recompensas
@@ -54,22 +54,14 @@ export class PerfilComponent implements OnInit {
   userRewards: RewardPurchase[] = [];
   userCommunities: Community[] = [];
 
-  // Para obtener el ID del usuario (puede venir de la ruta o del usuario logueado)
-  userId: number | null = null;
+  userId: number | null = null;// para obtener el id por ruta
 
-  // Lista de usuarios que se han logueado en el dispositivo
-  loggedUsers: User[] = [];
+  loggedUsers: User[] = [];// Lista de usuarios que se han logueado en el dispositivo
+  //selectedUser: string | null = null;
 
   constructor(
-    private fb: FormBuilder,
-    private userService: UserService,
-    private postService: PostService,
-    private communityService: CommunityService,
-    private rewardService: RewardService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private userStateService: UserStateService,
-    private rewPurchaseService: RewardPurchaseService
+    private fb: FormBuilder, private userService: UserService, private postService: PostService, private communityService: CommunityService,
+    private route: ActivatedRoute, private router: Router, private userStateService: UserStateService, private rewPurchaseService: RewardPurchaseService
   ) {
     this.editProfileForm = this.createForm();
   }
@@ -311,23 +303,14 @@ export class PerfilComponent implements OnInit {
     }
   }
 
-  /*getRewardTypeIcon(rewardType: string): string {
-    const icons: { [key: string]: string } = {
-      'badge': '🏆',
-      'achievement': '🎖️',
-      //⭐, 👑, 🎁, etc.
-    };
-    return icons[rewardType.toLowerCase()] || icons['default'];
-  }*/
+  //getRewardTypeIcon(rewardType: ):  {}
 
   // Getters para errores de validación
   get usernameErrors(): string {
     const control = this.editProfileForm.get('username');
     if (control?.errors) {
-      if (control.errors['required']) return 'El nombre de usuario es requerido';
-      if (control.errors['minlength']) return 'Mínimo 3 caracteres'; if (control.errors['maxlength']) return 'Máximo 20 caracteres';
-      if (control.errors['pattern']) return 'Solo letras, números y guiones bajos';
-    }   return '';
+      if (control.errors['required']) return 'El nombre de usuario es requerido'; if (control.errors['minlength']) return 'Mínimo 3 caracteres'; if (control.errors['maxlength']) return 'Máximo 20 caracteres';
+      if (control.errors['pattern']) return 'Solo letras, números y guiones bajos'; }   return '';
   }
 
   get avatarUrlErrors(): string {
