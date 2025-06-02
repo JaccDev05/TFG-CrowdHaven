@@ -1,55 +1,292 @@
-ul  {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-  }
-  
-  .com-cont {
-    margin-bottom: 1rem;
-  }
-  
-  .com {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: background-color 0.2s;
-  }
-  
-  .com:visited,
-  .com:active,
-  .com:focus {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .com:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ccc;
-  }
-  
-  .com-img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 50%; /* Por si no se carga Bootstrap */
-  }
+$primary-blue: #203c5c; $container-bg: #1f2b3e; $background: #0f1c2e; $accent-blue: #1F3A5F; $hover-bg: rgba(255, 255, 255, 0.08);
+$text-primary: #ffffff; $text-secondary: #b8c5d1; $text-muted: #8a9aa9; $border-color: rgba(255, 255, 255, 0.1); $success: $accent-blue;
 
-  .community-scroll-container {
-    max-height: 520px; /* ajusta según el diseño */
-    overflow-y: auto;
-    padding-right: 10px; /* espacio para evitar que el scroll tape contenido */
-  }
-  
-  /* Opcional: estiliza la barra de scroll */
-  .community-scroll-container::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  .community-scroll-container::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 3px;
-  }
 
+// Contenedor principal
+.contenedor {
+ background: $background;
+ padding: 2rem 1rem;
+  h3 {
+   color: $text-primary;
+   font-weight: 600;
+   text-align: center;
+   margin-bottom: 3rem;
   
+   &::after {
+     content: '';
+     display: block;
+     width: 400px;
+     height: 3px;
+     background: linear-gradient(90deg, $primary-blue, $accent-blue);
+     margin: 0.5rem auto 0;
+     border-radius: 2px;
+   }
+ }
+}
+
+
+// Grid de comunidades
+.d-flex.justify-content-center.w-100.m-auto {
+ gap: 2rem;
+ max-width: 1200px;
+  @media (max-width: 768px) {
+   flex-direction: column;
+   gap: 1.5rem;
+ }
+}
+
+
+// Contenedores de scroll
+.community-scroll-container {
+ background: $container-bg;
+ border-radius: 16px;
+ padding: 1.5rem;
+ box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+ border: 1px solid $border-color;
+  h4 {
+   color: $text-primary;
+   font-weight: 600;
+   text-align: center;
+   margin-bottom: 1.5rem;
+ }
+}
+
+
+// Lista de comunidades
+.com-list {
+ list-style: none;
+ padding: 0;
+ margin: 0;
+ max-height: 400px;
+ overflow-y: auto;
+  &::-webkit-scrollbar {
+   width: 6px;
+ }
+  &::-webkit-scrollbar-track {
+   background: rgba(255, 255, 255, 0.05);
+   border-radius: 3px;
+ }
+  &::-webkit-scrollbar-thumb {
+   background: linear-gradient(180deg, $primary-blue, $accent-blue);
+   border-radius: 3px;
+ }
+}
+
+
+// Elemento de comunidad con contorno
+.com-cont {
+ margin-bottom: 1rem;
+ border: 1px solid rgba(255, 255, 255, 0.15);
+ border-radius: 12px;
+ transition: all 0.3s ease;
+  &:hover {
+   border-color: rgba(255, 255, 255, 0.25);
+   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+ }
+}
+
+
+.com {
+ display: block;
+ text-decoration: none;
+ color: inherit;
+ padding: 1rem;
+ border-radius: 12px;
+ transition: all 0.3s ease;
+  &:hover {
+   background: $hover-bg;
+   transform: translateY(-2px);
+  
+   .com-img {
+     transform: scale(1.05);
+   }
+ }
+  &:visited, &:active, &:focus {
+   text-decoration: none;
+   color: inherit;
+ }
+}
+
+
+// Contenido de la comunidad
+.d-flex.gap-3 {
+ align-items: center;
+}
+
+
+.com-img {
+ width: 60px;
+ height: 60px;
+ object-fit: cover;
+ border-radius: 50%;
+ border: 2px solid $border-color;
+ transition: all 0.3s ease;
+ flex-shrink: 0;
+}
+
+
+strong {
+ color: $text-primary;
+ transition: color 0.3s ease;
+}
+small {
+ display: block;
+ color: $text-muted;
+ font-size: 0.85rem;
+ margin-top: 0.25rem;
+ line-height: 1.2;
+}
+p {
+ color: $text-secondary;
+}
+
+
+// Estado vacío
+.empty-message {
+ text-align: center;
+ padding: 2rem 1rem;
+ color: $text-muted;
+}
+
+
+// Botón crear comunidad
+.btn.btn-outline-success {
+ background: #284979;
+ border: none;
+ color: $text-primary;
+ font-weight: 600;
+ padding: 1rem 2rem;
+ border-radius: 12px;
+ transition: all 0.3s ease;
+
+
+ &:hover {
+   transform: translateY(-2px);
+ }
+}
+
+
+// Modal
+.modal.fade.show.d-block {
+ backdrop-filter: blur(8px);
+  .modal-content {
+   background: $container-bg;
+   border: 1px solid $border-color;
+   border-radius: 16px;
+   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+ }
+  .modal-header {
+   background: linear-gradient(135deg, $primary-blue, $accent-blue);
+   border-bottom: 1px solid $border-color;
+  
+   .modal-title {
+     color: $text-primary;
+     font-weight: 600;
+   }
+  
+   .btn-close {
+     filter: invert(1);
+     opacity: 0.8;
+    
+     &:hover {
+       opacity: 1;
+     }
+   }
+ }
+  .modal-body {
+   background: $container-bg;
+ }
+  .modal-footer {
+   background: $container-bg;
+   border-top: 1px solid $border-color;
+   gap: 1rem;
+ }
+}
+
+
+// Labels del formulario en blanco
+.form-label {
+ color: $text-primary !important;
+ font-weight: 500;
+}
+
+
+// Campos del formulario
+.form-control {
+ background: $background;
+ border: 1px solid $border-color;
+ border-radius: 8px;
+ color: $text-primary;
+ transition: all 0.3s ease;
+  &::placeholder {
+   color: $text-muted;
+ }
+  &:focus {
+   background: $background;
+   border-color: $primary-blue;
+   color: $text-primary;
+   box-shadow: 0 0 0 3px rgba(32, 60, 92, 0.1);
+   outline: none;
+ }
+}
+
+
+.form-text {
+ color: $text-muted;
+}
+
+
+// Botones del modal
+.btn-secondary {
+ background: $background;
+ border: 1px solid $border-color;
+ color: $text-secondary;
+ transition: all 0.3s ease;
+  &:hover {
+   background: lighten($background, 5%);
+   border-color: $text-secondary;
+   color: $text-primary;
+ }
+}
+
+
+.btn-success {
+ background: #284979;
+ border: none;
+ color: $text-primary;
+ font-weight: 600;
+ transition: all 0.3s ease;
+
+
+ &:hover:not(:disabled) {
+   transform: translateY(-1px);
+ }
+
+
+ &:disabled {
+   background: $text-muted;
+   opacity: 0.6;
+   cursor: not-allowed;
+   transform: none;
+   box-shadow: none;
+ }
+}
+
+
+// Backdrop del modal
+.modal-backdrop.fade.show {
+ background: rgba(15, 28, 46, 0.8);
+ backdrop-filter: blur(4px);
+}
+
+
+// Responsive
+@media (max-width: 768px) {
+ .com-img {
+   width: 50px;
+   height: 50px;
+ }
+  .modal-dialog {
+   margin: 1rem;
+ }
+}

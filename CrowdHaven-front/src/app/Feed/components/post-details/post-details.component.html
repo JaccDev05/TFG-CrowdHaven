@@ -71,7 +71,7 @@
     <!-- Lista de comentarios -->
     <div *ngIf="post.comments && post.comments.length > 0">
       <div *ngFor="let comment of post.comments" class="border rounded-4 text-white p-3 rounded mb-4">
-        <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex  justify-content-between mb-3">
           <div class="d-flex gap-2">
             <div>
               <img [src]="comment.user.avatar" class="rounded-circle me-2" width="25" height="25"
