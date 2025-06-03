@@ -17,6 +17,7 @@ import { RewardPurchaseService } from '../../api/services/rew-purchase/reward-pu
 import { RewardPurchase } from '../../api/models/reward-purchase.model';
 import { MemberCommunityService } from '../../api/services/member-community/member-community.service';
 import { MemberCommunity } from '../../api/models/member-community';
+import { CommentService } from '../../api/services/comment/comment.service';
 
 interface UserStats {
   totalPosts: number;
@@ -72,7 +73,8 @@ export class PerfilComponent implements OnInit {
     private router: Router,
     private userStateService: UserStateService,
     private rewPurchaseService: RewardPurchaseService,
-    private memberService: MemberCommunityService
+    private memberService: MemberCommunityService,
+    private commentService: CommentService
   ) {
     this.editProfileForm = this.createForm();
   }
@@ -147,6 +149,15 @@ export class PerfilComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading user posts:', error);
+      }
+    });
+
+    this.commentService.getCommentsByUser(this.userId).subscribe({
+      next: (comments) => {
+        this.userStats.totalComments = comments.length;
+      },
+      error: (error) => {
+        console.error('Error loading user comments:', error);
       }
     });
   }

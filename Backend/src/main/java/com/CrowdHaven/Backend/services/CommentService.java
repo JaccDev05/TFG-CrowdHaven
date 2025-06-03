@@ -27,6 +27,9 @@ public class CommentService {
         return commentRepository.findByPostId(postId);
     }
 
+    public List<Comment> getByUserId(Long userId) {
+        return commentRepository.findByUserId(userId);
+    }
     public Comment createComment(CommentDTO commentFromFront) {
 
         if(this.memberCommunityRepository.findByUserIdAndCommunityId(commentFromFront.getUserId(),

@@ -92,6 +92,7 @@ public class SecurityConfig {
                                 "/posts/{id}/reaction",
 
                                 "/comments",
+                                "/comments/{userId}",
                                 "/comments/post/{postId}",
                                 "/comments/{commentId}/reaction",
                                 "/comments/delete/{commentId}",

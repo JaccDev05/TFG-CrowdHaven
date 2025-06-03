@@ -24,6 +24,11 @@ public class CommentController {
         List<Comment> comments = commentService.getCommentsByPostID(postId);
         return ResponseEntity.ok(comments);
     }
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<Comment>> getCommentsByUserId(@PathVariable Long userId) {
+        List<Comment> comments = commentService.getByUserId(userId);
+        return ResponseEntity.ok(comments);
+    }
 
     // Crear un nuevo comentario
     @PostMapping

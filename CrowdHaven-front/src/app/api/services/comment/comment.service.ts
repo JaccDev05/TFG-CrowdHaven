@@ -16,6 +16,9 @@ export class CommentService {
     return this.http.get<Comment[]>(`${this.apiUrl}/post/${postId}`);
   }
 
+  getCommentsByUser(userId: number): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.apiUrl}/${userId}`);
+  }
   
   createComment(commentDTO: CommentDTO): Observable<CommentDTO> {
     const headers = new HttpHeaders({

@@ -18,3 +18,9 @@
     object-fit: cover;
     border-radius: 50%; /* Por si no se carga Bootstrap */
   }
+
+  @media (max-width: 850px) {
+    .titulo {
+      display: none !important;
+    }
+  }
