@@ -75,6 +75,32 @@
     }
   }
  
+  .edit-role-form {
+    border: 2px solid #acc2ef;
+    background: linear-gradient(135deg, #2a3650 0%, #1f2b3e 100%);
+  
+    .form-label {
+      color: white;
+    }
+  
+    .form-control {
+      background-color: #3a4b5c;
+      border: 1px solid #acc2ef;
+      color: white;
+  
+      &:focus {
+        background-color: #3a4b5c;
+        border-color: #9bb5ee;
+        box-shadow: 0 0 0 0.2rem rgba(172, 194, 239, 0.25);
+        color: white;
+      }
+  
+      &::placeholder {
+        color: #b8c5d1;
+      }
+    }
+  }
+  
  
   .posts-section {
     .post {

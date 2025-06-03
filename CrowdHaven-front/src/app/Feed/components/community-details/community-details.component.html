@@ -33,10 +33,18 @@
         <!-- Botones de membresía y edición -->
         <div class="action-buttons d-flex gap-2">
           <!-- Botón editar comunidad (solo para el creador) -->
-          <button *ngIf="isOwner" class="btn btn-outline-warning" (click)="toggleEditMode()">
-            <i class="bi bi-pencil-fill me-1"></i>
-            {{ editMode ? 'Cancelar' : 'Editar' }}
-          </button>
+           <div *ngIf="isOwner">
+            <button  class="btn btn-outline-primary me-3" (click)="toggleRole()">
+              <i class="bi bi-patch-plus"></i>
+              Add Role
+            </button>
+            <button  class="btn btn-outline-warning" (click)="toggleEditMode()">
+              <i class="bi bi-pencil-fill me-1"></i>
+              {{ editMode ? 'Cancelar' : 'Editar' }}
+            </button>
+            
+           </div>
+          
 
           <button *ngIf="!isMember && !isOwner" class="btn btn-primary" (click)="joinCommunity()"
             [disabled]="joiningCommunity">
@@ -86,6 +94,45 @@
         </form>
       </div>
 
+      <!-- Modal -->
+<div
+class="modal fade show d-block"
+tabindex="-1"
+*ngIf="creatingRole"
+style="background-color: rgba(0, 0, 0, 0.5);"
+>
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content edit-role-form p-2 rounded">
+    <div class="modal-header border-0 pb-0">
+      <h5 class="modal-title text-white">Add Role to {{ community.name }}</h5>
+      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="toggleRole()"></button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="submitRole()">
+        <div class="mb-4">
+          <label for="roleName" class="form-label text-white fs-5">Role Name</label>
+          <input
+            type="text"
+            id="roleName"
+            class="form-control"
+            [(ngModel)]="newRoleName"
+            name="roleName"
+            placeholder="Enter role name"
+            required
+          />
+        </div>
+        <div class="text-end">
+          <button type="submit" class="btn btn-success">Save</button>
+          <button type="button" class="btn btn-secondary ms-2" (click)="toggleRole()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
       <p class="text-white">{{ community.description }}</p>
 
       <div class="community-stats d-flex gap-3">
@@ -99,6 +146,8 @@
         </span>
       </div>
     </div>
+
+   
 
     <!-- Posts Section -->
     <div class="posts-section d-flex flex-column align-items-center">

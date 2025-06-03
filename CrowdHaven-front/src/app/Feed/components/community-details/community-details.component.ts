@@ -54,6 +54,8 @@ export class CommunityDetailsComponent implements OnInit {
     image: ''
   };
   posting: boolean = false;
+  creatingRole: boolean = false;
+  newRoleName = '';
   
 
   constructor(
@@ -383,5 +385,41 @@ export class CommunityDetailsComponent implements OnInit {
 
   commentOnPost(postId: number): void {
     this.router.navigate([`/posts/${postId}`]);
+  }
+
+  toggleRole() {
+    this.creatingRole = !this.creatingRole;
+  }
+
+  submitRole() {
+    if (this.newRoleName) {
+
+      const dto: RoleDTO = {
+        roleName: this.newRoleName,
+        community: this.community.name,
+      };
+     
+      this.roleService.addRoleToCommunity(dto).subscribe({
+        next: (rol) => {
+          this.popupService.showMessage(
+            '¡Rol creado!',
+            'El rol ha sido creado con éxito',
+            'success'
+          )
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000); 
+        },
+        error: (err) => {
+          this.popupService.showMessage(
+            'Error al crear el rol',
+            'Hubo un error al crear el rol',
+            'error'
+          )
+        }
+      })
+      this.newRoleName = '';
+      this.editMode = false;
+    }
   }
 }
