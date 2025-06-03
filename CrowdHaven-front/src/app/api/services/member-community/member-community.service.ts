@@ -34,6 +34,14 @@ export class MemberCommunityService {
     return this.http.delete<void>(`${this.apiUrl}/${userId}/${communityId}`);
   }
 
+  getUserFromCommunity(userId: number, communityId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${userId}/${communityId}`);
+  }
+
+  getRoles(userId: number): Observable<MemberCommunity[]> {
+    return this.http.get<MemberCommunity[]>(`${this.apiUrl}/${userId}`);
+  }
+
   // Asignar rol a un miembro
   assignRoleToMember(userId: number, communityId: number, roleId: number): Observable<MemberCommunity> {
     return this.http.put<MemberCommunity>(

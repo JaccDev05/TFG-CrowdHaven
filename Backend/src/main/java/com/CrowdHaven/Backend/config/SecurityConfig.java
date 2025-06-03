@@ -70,6 +70,7 @@ public class SecurityConfig {
                                 "/roles/{id}",
 
                                 "/members",
+                                "/members/{userId}",
                                 "/members/community/{communityId}",
                                 "/members/user/{userId}",
                                 "/members/{userId}/{comId}",

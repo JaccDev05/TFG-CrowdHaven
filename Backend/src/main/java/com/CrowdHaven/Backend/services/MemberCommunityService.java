@@ -75,6 +75,19 @@ public class MemberCommunityService {
         return memberCommunityRepository.save(member);
     }
 
+    public List<Member_Community> getRolesMember(Long userId) {
+        List<Member_Community> misRoles = memberCommunityRepository.findByUserId(userId);
+        return misRoles;
+    }
+
+    public Member_Community getMember(Long userId, Long communityId) {
+        Member_Community member = memberCommunityRepository
+                .findByUserIdAndCommunityId(userId, communityId)
+                .orElseThrow(() -> new IllegalArgumentException("El miembro no existe en la comunidad"));
+
+        return member;
+    }
+
 
     @Transactional
     public void removeUserFromCommunity(Long userId, Long communityId) {

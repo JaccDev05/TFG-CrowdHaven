@@ -16,6 +16,8 @@ import { User } from '../../../api/models/user.model';
 import { UserService } from '../../../api/services/user/user.service';
 import { PopupService } from '../../../PagInicio/loginservices/popup.service';
 import { RoleDTO } from '../../../api/dtos/role-dto';
+import { Role } from '../../../api/models/role.model';
+import { UserStateService } from '../../../PagInicio/loginservices/user-state.service';
 
 @Component({
   selector: 'app-community-details',
@@ -26,6 +28,7 @@ import { RoleDTO } from '../../../api/dtos/role-dto';
 export class CommunityDetailsComponent implements OnInit {
   community: Community = {} as Community;
   posts: Post[] = [];
+  roles: Role[] = [];
   communityId: number = 0;
   userId: number = 0;
   error: string | null = null;
@@ -34,7 +37,7 @@ export class CommunityDetailsComponent implements OnInit {
   isOwner: boolean = false;
   joiningCommunity: boolean = false;
   user!: User;
-  
+
   // Variables para edición de comunidad
   editMode: boolean = false;
   updatingCommunity: boolean = false;
@@ -45,7 +48,7 @@ export class CommunityDetailsComponent implements OnInit {
     img_banner: '',
     user: ''
   };
-  
+
   newPost: PostDTO = {
     userId: 0,
     communityId: 0,
@@ -56,7 +59,11 @@ export class CommunityDetailsComponent implements OnInit {
   posting: boolean = false;
   creatingRole: boolean = false;
   newRoleName = '';
-  
+  selectedRole: Role = {} as Role;
+  showAssignRoleModal = false;
+  selectedUsername: string = '';
+  selectedUserId: number = 0;
+  selectedNewRoleName: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -67,8 +74,9 @@ export class CommunityDetailsComponent implements OnInit {
     private roleService: RoleService,
     private userService: UserService,
     private popupService: PopupService,
-    
-  ) {}
+    private userStateService: UserStateService
+
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -78,8 +86,9 @@ export class CommunityDetailsComponent implements OnInit {
       this.loadCommunityPosts();
       this.checkMembership();
       this.getUser();
+      this.loadRoles();
     });
-    
+
   }
 
   getUser(): void {
@@ -93,7 +102,7 @@ export class CommunityDetailsComponent implements OnInit {
       }
     });
   }
-  
+
 
   loadCommunityData(): void {
     this.communityService.getCommunityById(this.communityId).subscribe({
@@ -113,9 +122,9 @@ export class CommunityDetailsComponent implements OnInit {
 
   checkOwnership(): void {
     if (!this.community.user) return;
-  
+
     this.isOwner = this.community.user.id === this.userId;
-  
+
     // Paso 1: Obtener roles de la comunidad
     this.roleService.getRolesByCommunity(this.communityId).subscribe({
       next: (roles) => {
@@ -123,15 +132,15 @@ export class CommunityDetailsComponent implements OnInit {
           console.warn('No se encontraron roles para esta comunidad');
           return;
         }
-  
+
         const firstRole = roles[0];
-  
+
         const dto = {
           userId: this.userId,
           communityId: this.communityId,
           roleId: firstRole.id // Asignar primer rol disponible
         };
-  
+
         // Paso 2: Obtener todos los miembros de la comunidad
         this.memberCommunityService.getUsersByCommunity(this.communityId).subscribe({
           next: (members) => {
@@ -141,12 +150,12 @@ export class CommunityDetailsComponent implements OnInit {
               member.community.id === dto.communityId &&
               member.role.id === dto.roleId
             );
-  
+
             if (yaExiste) {
               console.log('El usuario ya pertenece a la comunidad con ese rol.');
               return; // Detener ejecución
             }
-  
+
             // Paso 4: Si no existe, enviar la solicitud
             this.memberCommunityService.addUserToCommunity(dto).subscribe({
               next: () => {
@@ -167,11 +176,11 @@ export class CommunityDetailsComponent implements OnInit {
       }
     });
   }
-  
+
   loadCommunityPosts(): void {
     this.postService.getPostsByCommunity(this.communityId).subscribe({
       next: (data) => {
-        this.posts = data;
+        this.posts = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       },
       error: (err) => {
         this.error = 'Error al cargar las publicaciones';
@@ -217,91 +226,91 @@ export class CommunityDetailsComponent implements OnInit {
   }
 
 
-    updateCommunity(): void {
-      if (!this.editCommunityData.name || !this.editCommunityData.description) {
-        console.log('Datos incompletos:', this.editCommunityData);
-        return;
-      }
-    
-      console.log('Iniciando actualización de comunidad:', this.editCommunityData);
-      this.updatingCommunity = true;
-    
-      // Crear el objeto Community completo que espera el backend
-      const communityUpdate: Community = {
-        id: this.community.id,
-        name: this.editCommunityData.name,
-        description: this.editCommunityData.description,
-        img_photo: this.editCommunityData.img_photo,
-        img_banner: this.editCommunityData.img_banner,
-        user: this.community.user, // Mantener el objeto User completo original
-        createdAt: this.community.createdAt,
-        updatedAt: this.community.updatedAt,
-        roles: this.community.roles || [],
-        members: this.community.members || []
-      };
-    
-      this.communityService.updateCommunity(this.communityId, communityUpdate).subscribe({
-        next: (updatedCommunity) => {
-          console.log('Comunidad actualizada exitosamente:', updatedCommunity);
-          this.community = updatedCommunity;
-          this.editMode = false;
-          this.updatingCommunity = false;
-          this.cancelEdit();
-          this.popupService.showMessage(
-            'Comunidad actualizada exitosamente',
-            'Campos actualizados correctamente',
-            'success'
-          )
-         
-        },
-        error: (err) => {
-          console.error('Error al actualizar la comunidad:', err);
-          this.updatingCommunity = false;
-          alert('Error al actualizar la comunidad: ' + (err.message || err.error?.message || 'Error desconocido'));
-        }
-      });
+  updateCommunity(): void {
+    if (!this.editCommunityData.name || !this.editCommunityData.description) {
+      console.log('Datos incompletos:', this.editCommunityData);
+      return;
     }
 
-    joinCommunity(): void {
-      if (this.joiningCommunity) return;
-    
-      this.joiningCommunity = true;
-    
-      this.roleService.getRolesByCommunity(this.communityId).subscribe({
-        next: (roles) => {
-          if (!roles || roles.length === 0) {
-            console.warn('No se encontraron roles para esta comunidad');
-            this.joiningCommunity = false;
-            return;
-          }
-    
-          const firstRole = roles[0]; // ✅ Se asigna el primer rol
-    
-          const memberDTO: MemberCommunityDTO = {
-            userId: this.userId,
-            communityId: this.communityId,
-            roleId: firstRole.id // ✅ Se usa el ID del primer rol
-          };
-    
-          this.memberCommunityService.addUserToCommunity(memberDTO).subscribe({
-            next: () => {
-              this.isMember = true;
-              this.joiningCommunity = false;
-              this.loadCommunityData(); // ✅ Recarga datos de la comunidad si es necesario
-            },
-            error: (err) => {
-              this.joiningCommunity = false;
-              console.error('Error al unirse a la comunidad:', err);
-            }
-          });
-        },
-        error: (err) => {
+    console.log('Iniciando actualización de comunidad:', this.editCommunityData);
+    this.updatingCommunity = true;
+
+    // Crear el objeto Community completo que espera el backend
+    const communityUpdate: Community = {
+      id: this.community.id,
+      name: this.editCommunityData.name,
+      description: this.editCommunityData.description,
+      img_photo: this.editCommunityData.img_photo,
+      img_banner: this.editCommunityData.img_banner,
+      user: this.community.user, // Mantener el objeto User completo original
+      createdAt: this.community.createdAt,
+      updatedAt: this.community.updatedAt,
+      roles: this.community.roles || [],
+      members: this.community.members || []
+    };
+
+    this.communityService.updateCommunity(this.communityId, communityUpdate).subscribe({
+      next: (updatedCommunity) => {
+        console.log('Comunidad actualizada exitosamente:', updatedCommunity);
+        this.community = updatedCommunity;
+        this.editMode = false;
+        this.updatingCommunity = false;
+        this.cancelEdit();
+        this.popupService.showMessage(
+          'Comunidad actualizada exitosamente',
+          'Campos actualizados correctamente',
+          'success'
+        )
+
+      },
+      error: (err) => {
+        console.error('Error al actualizar la comunidad:', err);
+        this.updatingCommunity = false;
+        alert('Error al actualizar la comunidad: ' + (err.message || err.error?.message || 'Error desconocido'));
+      }
+    });
+  }
+
+  joinCommunity(): void {
+    if (this.joiningCommunity) return;
+
+    this.joiningCommunity = true;
+
+    this.roleService.getRolesByCommunity(this.communityId).subscribe({
+      next: (roles) => {
+        if (!roles || roles.length === 0) {
+          console.warn('No se encontraron roles para esta comunidad');
           this.joiningCommunity = false;
-          console.error('Error al obtener roles de la comunidad:', err);
+          return;
         }
-      });
-    }
-    
+
+        const firstRole = roles[0]; // ✅ Se asigna el primer rol
+
+        const memberDTO: MemberCommunityDTO = {
+          userId: this.userId,
+          communityId: this.communityId,
+          roleId: firstRole.id // ✅ Se usa el ID del primer rol
+        };
+
+        this.memberCommunityService.addUserToCommunity(memberDTO).subscribe({
+          next: () => {
+            this.isMember = true;
+            this.joiningCommunity = false;
+            this.loadCommunityData(); // ✅ Recarga datos de la comunidad si es necesario
+          },
+          error: (err) => {
+            this.joiningCommunity = false;
+            console.error('Error al unirse a la comunidad:', err);
+          }
+        });
+      },
+      error: (err) => {
+        this.joiningCommunity = false;
+        console.error('Error al obtener roles de la comunidad:', err);
+      }
+    });
+  }
+
 
   leaveCommunity(): void {
     this.memberCommunityService.removeUserFromCommunity(this.userId, this.communityId).subscribe({
@@ -318,11 +327,11 @@ export class CommunityDetailsComponent implements OnInit {
 
   submitPost(): void {
     if (!this.newPost.title || !this.newPost.content) return;
-  
+
     this.posting = true;
     this.newPost.userId = this.userId;
     this.newPost.communityId = this.communityId;
-  
+
     this.postService.createPost(this.newPost).subscribe({
       next: (createdPost) => {
         this.posts.unshift(createdPost); // Añadirlo arriba
@@ -330,21 +339,21 @@ export class CommunityDetailsComponent implements OnInit {
         this.posting = false;
 
         if (this.user) {
-        const dto = {
-          email: this.user.email,
-          username: this.user.username,
-          avatar: this.user.avatar,
-          crowdCoin: this.user.crowdCoin + 30
+          const dto = {
+            email: this.user.email,
+            username: this.user.username,
+            avatar: this.user.avatar,
+            crowdCoin: this.user.crowdCoin + 30
+          }
+
+          this.userService.updateCrowdCoins(this.user.id, dto).subscribe();
+
+          this.popupService.showMessage(
+            '¡Post creado!',
+            'Tu post ha sido creado con éxito,  has ganado  +30 CrowdCoins',
+            'success'
+          );
         }
-
-        this.userService.updateCrowdCoins(this.user.id, dto).subscribe();
-
-        this.popupService.showMessage(
-          '¡Post creado!',
-          'Tu post ha sido creado con éxito,  has ganado  +30 CrowdCoins',
-          'success'
-        );
-      }
 
       },
       error: (err) => {
@@ -353,7 +362,7 @@ export class CommunityDetailsComponent implements OnInit {
       }
     });
   }
-  
+
 
   likePost(postId: number): void {
     this.postService.updatePostReaction(postId, true).subscribe({
@@ -398,7 +407,7 @@ export class CommunityDetailsComponent implements OnInit {
         roleName: this.newRoleName,
         community: this.community.name,
       };
-     
+
       this.roleService.addRoleToCommunity(dto).subscribe({
         next: (rol) => {
           this.popupService.showMessage(
@@ -408,7 +417,7 @@ export class CommunityDetailsComponent implements OnInit {
           )
           setTimeout(() => {
             window.location.reload();
-          }, 2000); 
+          }, 2000);
         },
         error: (err) => {
           this.popupService.showMessage(
@@ -422,4 +431,62 @@ export class CommunityDetailsComponent implements OnInit {
       this.editMode = false;
     }
   }
+
+  openAssignRoleModal(username: string) {
+    this.selectedUsername = username;
+    this.showAssignRoleModal = true;
+  }
+
+  toggleAssignRoleModal() {
+    this.showAssignRoleModal = false;
+  }
+
+  loadRoles() {
+    this.roleService.getRolesByCommunity(this.communityId).subscribe({
+      next: (roles) => {
+        this.roles = roles;
+      },
+      error: (err) => {
+        console.error('Error al obtener roles de la comunidad:', err);
+      }
+    });
+  }
+
+  assignRole() {
+    this.userService.getUserProfile(this.selectedUsername).subscribe({
+      next: (user) => {
+        this.selectedUserId = user.id;
+  
+        // Solo una vez obtenido el ID del usuario, asignamos el rol
+        this.memberCommunityService.assignRoleToMember(
+          this.selectedUserId,
+          this.communityId,
+          this.selectedRole.id // ¡asegúrate de que selectedRole es un objeto!
+        ).subscribe({
+          next: (c) => {
+            this.selectedNewRoleName = c.role.roleName
+            this.popupService.showMessage(
+              '¡Rol asignado!',
+              'El rol ha sido asignado con éxito',
+              'success'
+            );
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          },
+          error: (err) => {
+            this.popupService.showMessage(
+              'Error al asignar el rol',
+              'Hubo un error al asignar el rol',
+              'error'
+            );
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error al obtener el usuario:', err);
+      }
+    });
+  }
+  
 }

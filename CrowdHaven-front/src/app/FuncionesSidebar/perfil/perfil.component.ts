@@ -15,6 +15,8 @@ import { UserStateService } from '../../PagInicio/loginservices/user-state.servi
 import { UserDTO } from '../../api/dtos/user-dto';
 import { RewardPurchaseService } from '../../api/services/rew-purchase/reward-purchase.service';
 import { RewardPurchase } from '../../api/models/reward-purchase.model';
+import { MemberCommunityService } from '../../api/services/member-community/member-community.service';
+import { MemberCommunity } from '../../api/models/member-community';
 
 interface UserStats {
   totalPosts: number;
@@ -50,7 +52,7 @@ export class PerfilComponent implements OnInit {
   };
 
   // Roles y recompensas
-  userRoles: Role[] = [];
+  userRoles: MemberCommunity[] = [];
   userRewards: RewardPurchase[] = [];
   userCommunities: Community[] = [];
 
@@ -69,7 +71,8 @@ export class PerfilComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userStateService: UserStateService,
-    private rewPurchaseService: RewardPurchaseService
+    private rewPurchaseService: RewardPurchaseService,
+    private memberService: MemberCommunityService
   ) {
     this.editProfileForm = this.createForm();
   }
@@ -151,15 +154,14 @@ export class PerfilComponent implements OnInit {
   private loadUserRolesAndRewards(): void {
     if (!this.userId) return;
 
-    this.communityService.getCommunitiesByUser(this.userId).subscribe({
-      next: (communities) => {
-        this.userCommunities = communities;
-        this.extractUserRoles(communities);
+    this.memberService.getRoles(this.userId).subscribe({
+      next: (roles) => {
+        this.userRoles = roles;
       },
       error: (error) => {
-        console.error('Error loading user communities:', error);
+        console.error('Error loading user roles:', error);
       }
-    });
+    })
 
     this.rewPurchaseService.getRewardPurchaseById(this.userId).subscribe({
       next: (rewards) => {
@@ -174,7 +176,7 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  private extractUserRoles(communities: Community[]): void {
+  /*private extractUserRoles(communities: Community[]): void {
     this.userRoles = [];
     communities.forEach(community => {
       if (community.roles && community.roles.length > 0) {
@@ -189,7 +191,7 @@ export class PerfilComponent implements OnInit {
         });
       }
     });
-  }
+  }*/
 
   // Cargar usuarios que se han logueado (simulado por ahora)
   private loadLoggedUsers(): void {

@@ -102,13 +102,13 @@
         </h2>
 
         <div class="roles-grid">
-            <div class="role-card" *ngFor="let role of userRoles">
+            <div class="role-card" *ngFor="let rol of userRoles">
                 <div class="role-icon">
                     <i class="fas fa-crown"></i>
                 </div>
                 <div class="role-info">
-                    <h4>{{ role.roleName }}</h4>
-                    <p>{{ role.community.name }}</p>
+                    <h4>{{ rol.role.roleName }}</h4>
+                    <p>{{ rol.community.name }}</p>
                 </div>
             </div>
         </div>

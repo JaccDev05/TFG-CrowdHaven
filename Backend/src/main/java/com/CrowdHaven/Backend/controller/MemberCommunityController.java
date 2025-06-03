@@ -32,6 +32,15 @@ public class MemberCommunityController {
         return memberCommunityService.getCommunitiesByUserId(userId);
     }
 
+    @GetMapping("/{userId}/{communityId}")
+    public Member_Community getMember(@PathVariable Long userId ,@PathVariable Long communityId) {
+        return memberCommunityService.getMember(userId ,communityId);
+    }
+
+    @GetMapping("/{userId}")
+    public List<Member_Community> getRoles(@PathVariable Long userId) {
+        return memberCommunityService.getRolesMember(userId);
+    }
     // Añadir usuario a comunidad
     @PostMapping
     public Member_Community addUserToCommunity(@RequestBody MemberCommunityDTO memberCommunityDTO) {

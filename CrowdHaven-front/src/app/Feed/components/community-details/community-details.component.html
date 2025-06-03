@@ -33,18 +33,18 @@
         <!-- Botones de membresía y edición -->
         <div class="action-buttons d-flex gap-2">
           <!-- Botón editar comunidad (solo para el creador) -->
-           <div *ngIf="isOwner">
-            <button  class="btn btn-outline-primary me-3" (click)="toggleRole()">
+          <div *ngIf="isOwner">
+            <button class="btn btn-outline-primary me-3" (click)="toggleRole()">
               <i class="bi bi-patch-plus"></i>
               Add Role
             </button>
-            <button  class="btn btn-outline-warning" (click)="toggleEditMode()">
+            <button class="btn btn-outline-warning" (click)="toggleEditMode()">
               <i class="bi bi-pencil-fill me-1"></i>
               {{ editMode ? 'Cancelar' : 'Editar' }}
             </button>
-            
-           </div>
-          
+
+          </div>
+
 
           <button *ngIf="!isMember && !isOwner" class="btn btn-primary" (click)="joinCommunity()"
             [disabled]="joiningCommunity">
@@ -66,21 +66,21 @@
         <form (ngSubmit)="updateCommunity()" #editForm="ngForm">
           <div class="row mb-3">
             <div class="col-md-6">
-              <input [(ngModel)]="editCommunityData.name" name="editName" required 
-                     class="form-control" placeholder="Nombre de la comunidad" />
+              <input [(ngModel)]="editCommunityData.name" name="editName" required class="form-control"
+                placeholder="Nombre de la comunidad" />
             </div>
             <div class="col-md-6">
-              <input [(ngModel)]="editCommunityData.img_photo" name="editPhoto" 
-                     class="form-control" placeholder="URL del avatar" />
+              <input [(ngModel)]="editCommunityData.img_photo" name="editPhoto" class="form-control"
+                placeholder="URL del avatar" />
             </div>
           </div>
           <div class="mb-3">
-            <input [(ngModel)]="editCommunityData.img_banner" name="editBanner" 
-                   class="form-control" placeholder="URL del banner" />
+            <input [(ngModel)]="editCommunityData.img_banner" name="editBanner" class="form-control"
+              placeholder="URL del banner" />
           </div>
           <div class="mb-3">
-            <textarea [(ngModel)]="editCommunityData.description" name="editDescription" required 
-                      class="form-control" rows="3" placeholder="Descripción de la comunidad"></textarea>
+            <textarea [(ngModel)]="editCommunityData.description" name="editDescription" required class="form-control"
+              rows="3" placeholder="Descripción de la comunidad"></textarea>
           </div>
           <div class="d-flex gap-2">
             <button type="submit" class="btn btn-success" [disabled]="updatingCommunity">
@@ -95,41 +95,31 @@
       </div>
 
       <!-- Modal -->
-<div
-class="modal fade show d-block"
-tabindex="-1"
-*ngIf="creatingRole"
-style="background-color: rgba(0, 0, 0, 0.5);"
->
-<div class="modal-dialog modal-dialog-centered">
-  <div class="modal-content edit-role-form p-2 rounded">
-    <div class="modal-header border-0 pb-0">
-      <h5 class="modal-title text-white">Add Role to {{ community.name }}</h5>
-      <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="toggleRole()"></button>
-    </div>
-    <div class="modal-body">
-      <form (ngSubmit)="submitRole()">
-        <div class="mb-4">
-          <label for="roleName" class="form-label text-white fs-5">Role Name</label>
-          <input
-            type="text"
-            id="roleName"
-            class="form-control"
-            [(ngModel)]="newRoleName"
-            name="roleName"
-            placeholder="Enter role name"
-            required
-          />
+      <div class="modal fade show d-block" tabindex="-1" *ngIf="creatingRole"
+        style="background-color: rgba(0, 0, 0, 0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content edit-role-form p-2 rounded">
+            <div class="modal-header border-0 pb-0">
+              <h5 class="modal-title text-white">Add Role to {{ community.name }}</h5>
+              <button type="button" class="btn-close btn-close-white" aria-label="Close"
+                (click)="toggleRole()"></button>
+            </div>
+            <div class="modal-body">
+              <form (ngSubmit)="submitRole()">
+                <div class="mb-4">
+                  <label for="roleName" class="form-label text-white fs-5">Role Name</label>
+                  <input type="text" id="roleName" class="form-control" [(ngModel)]="newRoleName" name="roleName"
+                    placeholder="Enter role name" required />
+                </div>
+                <div class="text-end">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary ms-2" (click)="toggleRole()">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <div class="text-end">
-          <button type="submit" class="btn btn-success">Save</button>
-          <button type="button" class="btn btn-secondary ms-2" (click)="toggleRole()">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
+      </div>
 
 
 
@@ -147,11 +137,11 @@ style="background-color: rgba(0, 0, 0, 0.5);"
       </div>
     </div>
 
-   
+
 
     <!-- Posts Section -->
     <div class="posts-section d-flex flex-column align-items-center">
-      
+
       <!-- Formulario para crear post mejorado -->
       <div *ngIf="isMember || isOwner" class="create-post-card w-100 mb-4">
         <div class="create-post-header">
@@ -162,15 +152,15 @@ style="background-color: rgba(0, 0, 0, 0.5);"
             <h5 class="mb-0">Crear nueva publicación</h5>
           </div>
         </div>
-        
+
         <div class="create-post-body">
           <form (ngSubmit)="submitPost()" #postForm="ngForm">
             <!-- Título e imagen en la misma línea -->
             <div class="row mb-3">
               <div class="col-md-7">
                 <div class="form-floating">
-                  <input [(ngModel)]="newPost.title" name="title" required 
-                         class="form-control form-control-custom" id="postTitle" placeholder="" />
+                  <input [(ngModel)]="newPost.title" name="title" required class="form-control form-control-custom"
+                    id="postTitle" placeholder="" />
                   <label for="postTitle" class="form-label-custom">
                     <i class="bi bi-type me-2"></i>Título del post
                   </label>
@@ -178,27 +168,26 @@ style="background-color: rgba(0, 0, 0, 0.5);"
               </div>
               <div class="col-md-5">
                 <div class="form-floating">
-                  <input [(ngModel)]="newPost.image" name="image" 
-                         class="form-control form-control-custom" id="postImage" placeholder="" />
+                  <input [(ngModel)]="newPost.image" name="image" class="form-control form-control-custom"
+                    id="postImage" placeholder="" />
                   <label for="postImage" class="form-label-custom">
                     <i class="bi bi-image me-2"></i>URL de imagen (opcional)
                   </label>
                 </div>
               </div>
             </div>
-            
+
             <!-- Contenido en línea separada -->
             <div class="mb-3">
               <div class="form-floating">
-                <textarea [(ngModel)]="newPost.content" name="content" required 
-                          class="form-control form-control-custom" id="postContent" 
-                          placeholder="" rows="4"></textarea>
+                <textarea [(ngModel)]="newPost.content" name="content" required class="form-control form-control-custom"
+                  id="postContent" placeholder="" rows="4"></textarea>
                 <label for="postContent" class="form-label-custom">
                   <i class="bi bi-chat-text me-2"></i>Contenido del post
                 </label>
               </div>
             </div>
-            
+
             <div class="create-post-footer">
               <button type="submit" class="btn btn-post-submit" [disabled]="posting">
                 <span class="spinner-border spinner-border-sm me-2" *ngIf="posting"></span>
@@ -219,8 +208,51 @@ style="background-color: rgba(0, 0, 0, 0.5);"
                 <img [src]="post.user.avatar" class="rounded-circle me-2" width="25" height="25"
                   (error)="post.user.avatar='err.jpg'">
               </div>
-              <div>
+              <div class="d-flex ">
+
                 <strong class="text-white">{{ post.user.username }}</strong>
+                <button *ngIf="isOwner" class="btn btn-outline-primary d-flex align-items-center px-3 py-1 ms-5"
+                  style="height: 26px;" (click)="openAssignRoleModal(post.user.username)">
+                  <i class="bi bi-pencil-fill me-2 small"></i>
+                  <span class="small m-0">Change Role</span>
+                </button>
+
+                <div class="modal fade show d-block" tabindex="-1" *ngIf="showAssignRoleModal"
+                  style="background-color: rgba(0, 0, 0, 0.5);">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content edit-role-form p-2 rounded">
+                      <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title text-white">Assign Role to {{ selectedUsername }}</h5>
+                        <button type="button" class="btn-close btn-close-white" aria-label="Close"
+                          (click)="toggleAssignRoleModal()"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form (ngSubmit)="assignRole()">
+                          <div class="mb-3">
+                            <label class="form-label text-white fs-5">Username</label>
+                            <input type="text" class="form-control" [value]="selectedUsername" readonly />
+                          </div>
+
+                          <div class="mb-4">
+                            <label for="roleSelect" class="form-label text-white fs-5">Select Role</label>
+                            <select id="roleSelect" class="form-select" [(ngModel)]="selectedRole" name="roleSelect"
+                              required>
+                              <option *ngFor="let role of roles" [ngValue]="role">{{ role.roleName }}</option>
+                            </select>
+                          </div>
+
+                          <div class="text-end">
+                            <button type="submit" class="btn btn-success">Assign</button>
+                            <button type="button" class="btn btn-secondary ms-2"
+                              (click)="toggleAssignRoleModal()">Cancel</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
               </div>
             </div>
             <small class="text-white m-0 align-self-end">{{ post.createdAt | date: 'dd/MM/yyyy' }}</small>
