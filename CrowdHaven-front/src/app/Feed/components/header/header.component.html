@@ -55,7 +55,7 @@
   
         <!-- Mostrar botones si hay sesión -->
         <ng-template #loggedInTpl>
-          <span class="text-white me-3">Hola {{ username }}!</span>
+          <span class="text-white me-3">Hi {{ username }}!</span>
           <button  *ngIf="!sidebarOpen" class="btn text-white me-2 fs-4" (click)="openMenu()">
             <i class="bi bi-list"></i>
           </button>

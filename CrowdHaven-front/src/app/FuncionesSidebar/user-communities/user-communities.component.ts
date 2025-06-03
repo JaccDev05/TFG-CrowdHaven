@@ -8,6 +8,8 @@ import { MemberCommunityService } from '../../api/services/member-community/memb
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserStateService } from '../../PagInicio/loginservices/user-state.service';
 import { PopupService } from '../../PagInicio/loginservices/popup.service';
+import { RoleService } from '../../api/services/role/role.service';
+import { RoleDTO } from '../../api/dtos/role-dto';
 
 @Component({
   selector: 'app-user-communities',
@@ -33,7 +35,8 @@ export class UserCommunitiesComponent implements OnInit {
     private communityService: CommunityService,
     private fb: FormBuilder,
     private userStateService: UserStateService,
-    private popupService: PopupService
+    private popupService: PopupService,
+    private roleService: RoleService
     
   ) {
 
@@ -92,43 +95,61 @@ export class UserCommunitiesComponent implements OnInit {
   
   submitForm(): void {
     if (this.communityForm.valid) {
-      
       const username = this.userStateService.getUsername();
+  
       const CommunityDTO = {
         name: this.communityForm.value.name,
         description: this.communityForm.value.description,
         img_photo: this.communityForm.value.img_photo,
         img_banner: this.communityForm.value.img_banner,
         user: username
-      }
-
-      this.communityService.createCommunity(CommunityDTO).subscribe ({
+      };
+  
+      this.communityService.createCommunity(CommunityDTO).subscribe({
         next: (createdCommunity) => {
-          this.popupService.showMessage(
-            'Comunidad creado!',
-            'Tu comunidad ha sido creado con éxito',
-            'success'
-          );
-          this.communities
-        this.communityForm.reset();
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
+          // ✅ Crear el rol después de crear la comunidad
+          const roleDTO: RoleDTO = {
+            roleName: 'Miembro',
+            community: createdCommunity.name // Asegúrate de usar el nombre real devuelto por el backend
+          };
+  
+          this.roleService.addRoleToCommunity(roleDTO).subscribe({
+            next: () => {
+              this.popupService.showMessage(
+                'Comunidad creada',
+                'Tu comunidad ha sido creada con éxito',
+                'success'
+              );
+  
+              this.communityForm.reset();
+              this.closeModal();
+  
+              setTimeout(() => {
+                window.location.reload();
+              }, 1500);
+            },
+            error: (err) => {
+              this.popupService.close();
+              this.popupService.showMessage(
+                'Error al crear el rol',
+                'La comunidad fue creada, pero el rol no se pudo asignar.',
+                'error'
+              );
+              console.error('Error al crear el rol', err);
+            }
+          });
         },
         error: (err) => {
           this.popupService.close();
           this.popupService.showMessage(
-            'Ups, ocurrido un error',
+            'Ups, ocurrió un error',
             'No se pudo crear la comunidad. Inténtalo más tarde.',
             'error'
           );
-          console.error('Error al crear comentario', err);
-
+          console.error('Error al crear comunidad', err);
         }
-      })
-
-      
-      this.closeModal();
+      });
     }
   }
+  
 }

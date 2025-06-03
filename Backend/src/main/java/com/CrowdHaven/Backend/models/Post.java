@@ -35,7 +35,7 @@ public class Post {
     private Integer dislike_count = 0;
 
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     @CreationTimestamp

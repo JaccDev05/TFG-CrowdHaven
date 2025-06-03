@@ -15,6 +15,7 @@ import { last } from 'rxjs';
 import { User } from '../../../api/models/user.model';
 import { UserService } from '../../../api/services/user/user.service';
 import { PopupService } from '../../../PagInicio/loginservices/popup.service';
+import { RoleDTO } from '../../../api/dtos/role-dto';
 
 @Component({
   selector: 'app-community-details',
@@ -63,7 +64,7 @@ export class CommunityDetailsComponent implements OnInit {
     private memberCommunityService: MemberCommunityService,
     private roleService: RoleService,
     private userService: UserService,
-    private popupService: PopupService
+    private popupService: PopupService,
     
   ) {}
 
@@ -113,39 +114,54 @@ export class CommunityDetailsComponent implements OnInit {
   
     this.isOwner = this.community.user.id === this.userId;
   
-    const dto = {
-      userId: this.userId,
-      communityId: this.communityId,
-      roleId: 13
-    };
-  
-    // Paso 1: Obtener todos los miembros de la comunidad
-    this.memberCommunityService.getUsersByCommunity(this.communityId).subscribe({
-      next: (members) => {
-        // Paso 2: Verificar si ya existe una combinación igual
-        const yaExiste = members.some((member: any) =>
-          member.user.id === dto.userId &&
-          member.community.id === dto.communityId &&
-          member.role.id === dto.roleId
-        );
-  
-        if (yaExiste) {
-          console.log('El usuario ya pertenece a la comunidad con ese rol.');
-          return; // Detener ejecución
+    // Paso 1: Obtener roles de la comunidad
+    this.roleService.getRolesByCommunity(this.communityId).subscribe({
+      next: (roles) => {
+        if (!roles || roles.length === 0) {
+          console.warn('No se encontraron roles para esta comunidad');
+          return;
         }
   
-        // Paso 3: Si no existe, enviar la solicitud
-        this.memberCommunityService.addUserToCommunity(dto).subscribe({
-          next: () => {
-            console.log('Usuario unido a la comunidad');
+        const firstRole = roles[0];
+  
+        const dto = {
+          userId: this.userId,
+          communityId: this.communityId,
+          roleId: firstRole.id // Asignar primer rol disponible
+        };
+  
+        // Paso 2: Obtener todos los miembros de la comunidad
+        this.memberCommunityService.getUsersByCommunity(this.communityId).subscribe({
+          next: (members) => {
+            // Paso 3: Verificar si ya existe una combinación igual
+            const yaExiste = members.some((member: any) =>
+              member.user.id === dto.userId &&
+              member.community.id === dto.communityId &&
+              member.role.id === dto.roleId
+            );
+  
+            if (yaExiste) {
+              console.log('El usuario ya pertenece a la comunidad con ese rol.');
+              return; // Detener ejecución
+            }
+  
+            // Paso 4: Si no existe, enviar la solicitud
+            this.memberCommunityService.addUserToCommunity(dto).subscribe({
+              next: () => {
+                console.log('Usuario unido a la comunidad');
+              },
+              error: (err) => {
+                console.error('Error al unirse a la comunidad', err);
+              }
+            });
           },
           error: (err) => {
-            console.error('Error al unirse a la comunidad', err);
+            console.error('Error al obtener miembros de la comunidad', err);
           }
         });
       },
       error: (err) => {
-        console.error('Error al obtener miembros de la comunidad', err);
+        console.error('Error al obtener los roles de la comunidad', err);
       }
     });
   }
@@ -198,39 +214,6 @@ export class CommunityDetailsComponent implements OnInit {
     };
   }
 
-  /*updateCommunity(): void {
-    if (!this.editCommunityData.name || !this.editCommunityData.description) {
-      console.log('Datos incompletos:', this.editCommunityData);
-      return;
-    }
-
-    console.log('Iniciando actualización de comunidad:', this.editCommunityData);
-    this.updatingCommunity = true;
-
-    // Verificar si el método existe en el servicio
-    if (!this.communityService.updateCommunity) {
-      console.error('El método updateCommunity no existe en CommunityService');
-      this.updatingCommunity = false;
-      alert('Error: Método de actualización no implementado');
-      return;
-    }
-
-    this.communityService.updateCommunity(this.communityId, this.editCommunityData).subscribe({
-      next: (updatedCommunity) => {
-        console.log('Comunidad actualizada exitosamente:', updatedCommunity);
-        this.community = updatedCommunity;
-        this.editMode = false;
-        this.updatingCommunity = false;
-        this.cancelEdit();
-        alert('Comunidad actualizada exitosamente');
-      },
-      error: (err) => {
-        console.error('Error al actualizar la comunidad:', err);
-        this.updatingCommunity = false;
-        alert('Error al actualizar la comunidad: ' + (err.message || err.error?.message || 'Error desconocido'));
-      }
-    });
-  }*/
 
     updateCommunity(): void {
       if (!this.editCommunityData.name || !this.editCommunityData.description) {
@@ -262,7 +245,12 @@ export class CommunityDetailsComponent implements OnInit {
           this.editMode = false;
           this.updatingCommunity = false;
           this.cancelEdit();
-          alert('Comunidad actualizada exitosamente');
+          this.popupService.showMessage(
+            'Comunidad actualizada exitosamente',
+            'Campos actualizados correctamente',
+            'success'
+          )
+         
         },
         error: (err) => {
           console.error('Error al actualizar la comunidad:', err);
@@ -272,42 +260,46 @@ export class CommunityDetailsComponent implements OnInit {
       });
     }
 
-  joinCommunity(): void {
-    if (this.joiningCommunity) return;
-  
-    this.joiningCommunity = true;
-  
-    this.roleService.getRolesByCommunity(this.communityId).subscribe({
-      next: (roles) => {
-        
-  
-        const firstRole = roles[0];
-  
-        const memberDTO: MemberCommunityDTO = {
-          userId: this.userId,
-          communityId: this.communityId,
-          roleId: 13
-        };
-  
-        this.memberCommunityService.addUserToCommunity(memberDTO).subscribe({
-          next: () => {
-            this.isMember = true;
+    joinCommunity(): void {
+      if (this.joiningCommunity) return;
+    
+      this.joiningCommunity = true;
+    
+      this.roleService.getRolesByCommunity(this.communityId).subscribe({
+        next: (roles) => {
+          if (!roles || roles.length === 0) {
+            console.warn('No se encontraron roles para esta comunidad');
             this.joiningCommunity = false;
-            this.loadCommunityData();
-          },
-          error: (err) => {
-            this.joiningCommunity = false;
-            console.error('Error al unirse a la comunidad', err);
+            return;
           }
-        });
-      },
-      error: (err) => {
-        this.joiningCommunity = false;
-        console.error('Error al obtener roles de la comunidad', err);
-      }
-    });
-  }
-  
+    
+          const firstRole = roles[0]; // ✅ Se asigna el primer rol
+    
+          const memberDTO: MemberCommunityDTO = {
+            userId: this.userId,
+            communityId: this.communityId,
+            roleId: firstRole.id // ✅ Se usa el ID del primer rol
+          };
+    
+          this.memberCommunityService.addUserToCommunity(memberDTO).subscribe({
+            next: () => {
+              this.isMember = true;
+              this.joiningCommunity = false;
+              this.loadCommunityData(); // ✅ Recarga datos de la comunidad si es necesario
+            },
+            error: (err) => {
+              this.joiningCommunity = false;
+              console.error('Error al unirse a la comunidad:', err);
+            }
+          });
+        },
+        error: (err) => {
+          this.joiningCommunity = false;
+          console.error('Error al obtener roles de la comunidad:', err);
+        }
+      });
+    }
+    
 
   leaveCommunity(): void {
     this.memberCommunityService.removeUserFromCommunity(this.userId, this.communityId).subscribe({
@@ -346,7 +338,7 @@ export class CommunityDetailsComponent implements OnInit {
         this.userService.updateCrowdCoins(this.user.id, dto).subscribe();
 
         this.popupService.showMessage(
-          '¡Comentario creado!',
+          '¡Post creado!',
           'Tu post ha sido creado con éxito,  has ganado  +30 CrowdCoins',
           'success'
         );

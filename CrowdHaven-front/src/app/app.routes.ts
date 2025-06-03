@@ -14,6 +14,7 @@ import { UserPostsComponent } from './FuncionesSidebar/user-posts/user-posts.com
 import { CommunityDetailsComponent } from './Feed/components/community-details/community-details.component';
 import { RewardsShopComponent } from './FuncionesSidebar/rewards-shop/rewards-shop.component';
 import { ChatComponent } from './FuncionesSidebar/chat/chat.component';
+import { AuthGuard } from './PagInicio/loginservices/auth.guard';
 
 export const routes: Routes = [
   {
@@ -24,14 +25,14 @@ export const routes: Routes = [
   },
 
   {
-    path: "user", component: UserFunctionsLayoutComponent, children: [
+    path: "user", component: UserFunctionsLayoutComponent,    canActivate: [AuthGuard],
+    children: [
       { path: ':userId/community/:communityId', component: CommunityDetailsComponent},      
       {path: 'posts-user/:id', component: UserPostsComponent},
       { path: "perfil/:id", component: PerfilComponent},
       {path: 'shop-rewards', component: RewardsShopComponent},
       {path: ':userId/chat', component: ChatComponent},
       {path: ':userId/chat/:id', component: ChatComponent},
-
       {path: 'comunidades-user/:id', component: UserCommunitiesComponent},
     ]
   },
