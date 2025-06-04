@@ -18,6 +18,7 @@ import { PopupService } from '../../../PagInicio/loginservices/popup.service';
 import { RoleDTO } from '../../../api/dtos/role-dto';
 import { Role } from '../../../api/models/role.model';
 import { UserStateService } from '../../../PagInicio/loginservices/user-state.service';
+import { MemberCommunity } from '../../../api/models/member-community';
 
 @Component({
   selector: 'app-community-details',
@@ -64,6 +65,9 @@ export class CommunityDetailsComponent implements OnInit {
   selectedUsername: string = '';
   selectedUserId: number = 0;
   selectedNewRoleName: string = '';
+  memberCommunitiesByUserId: Map<number, MemberCommunity> = new Map();
+  userRole: string = '';
+  memCommunity: MemberCommunity = {} as MemberCommunity
 
   constructor(
     private route: ActivatedRoute,
@@ -189,6 +193,19 @@ export class CommunityDetailsComponent implements OnInit {
     });
   }
 
+  getMembercommunitiesByUserId(autorId: number): void {
+    this.memberCommunityService.getUserFromCommunity(autorId, this.communityId).subscribe({
+      next: (data) => {
+        this.memCommunity = data;
+      },
+      error: (err) => {
+        this.error = 'Error al cargar el usuario';
+        console.error(err);
+      }
+    })
+  }
+
+  
   checkMembership(): void {
     this.memberCommunityService.getCommunitiesByUser(this.userId).subscribe({
       next: (communities) => {
